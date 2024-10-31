@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 
 import net.lopymine.mtd.modmenu.yacl.custom.category.impl.*;
-import net.lopymine.mtd.utils.mixin.BetterCategoryBuilder;
+import net.lopymine.mtd.utils.interfaces.mixin.BetterCategoryBuilder;
 
 @Pseudo
 @Mixin(ConfigCategoryImpl.BuilderImpl.class)

@@ -50,18 +50,14 @@ public abstract class TabButtonWidgetMixin extends ClickableWidget {
 	//?} else {
 	/^@Dynamic
 	@WrapOperation(at = @At(value = "INVOKE", target = WRAP_TARGET), method = RENDER_METHOD)
-	private void renderTransparencyTab2(DrawContext context, Identifier texture, int x, int y, int width, int height, Operation<Void> original) {
+	private void renderTransparencyTab2(DrawContext context, Identifier textureId, int x, int y, int width, int height, Operation<Void> original) {
 		if (YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen)) {
-			original.call(context, texture, x, y, width, height);
+			original.call(context, textureId, x, y, width, height);
 			return;
 		}
 
 		RenderSystem.enableBlend();
-		//? if >=1.20.2 {
 		context.drawGuiTexture(TransparencySprites.TAB_BUTTON_SPRITES.get(this.isCurrentTab(), this.isSelected()), x, y, width, height);
-		//?} else {
-		context.drawNineSlicedTexture(TransparencySprites.TAB_BUTTON_SPRITES.get(this.isCurrentTab(), this.isSelected()), x, y, width, height, 2, 130, 24, 0, 0);
-		//?}
 		RenderSystem.disableBlend();
 	}
 	^///?}

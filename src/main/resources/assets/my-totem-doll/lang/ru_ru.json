@@ -23,6 +23,17 @@
 	"my-totem-doll.modmenu.option.copy_right_hand_settings.name": "§eИспользовать настройки правой руки",
 	"my-totem-doll.modmenu.option.copy_left_hand_settings.name": "§eИспользовать настройки левой руки",
 
+	"my-totem-doll.tags.info.title": "§lWhat is this?",
+	"my-totem-doll.tags.info.text": "Это §eменю настройки тотема§f. Здесь вы найдёте список §eкнопок§f. Кликая на кнопки, вы можете §eизменить внешний вид§f вашего тотема. К примеру: §eВыключить/включить некоторые части§f, §eизменить текстуры куклы§f, и т.д.",
+
+	"my-totem-doll.tags.title": "§7Теги куклы:",
+	"my-totem-doll.tags.s": "Включить тонкие руки",
+	"my-totem-doll.tags.w": "Включить широкие руки",
+	"my-totem-doll.tags.c": "Отключить плащ",
+	"my-totem-doll.tags.s.applied": "§9Тонкие руки",
+	"my-totem-doll.tags.w.applied": "§9Широкие руки",
+	"my-totem-doll.tags.c.applied": "§9Плащ отключён",
+
 	"my-totem-doll.command.id": "[§lMy Totem Doll§r]",
 
 	"my-totem-doll.command.refresh.all.start": "§6Началась перезагрузка всех загруженных скинов",

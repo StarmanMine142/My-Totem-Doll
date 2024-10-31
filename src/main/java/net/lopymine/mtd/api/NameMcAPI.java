@@ -1,23 +1,16 @@
 package net.lopymine.mtd.api;
 
-//import net.minecraft.client.util.SkinTextures;
-//import net.minecraft.util.Identifier;
-//
-//import net.lopymine.mtd.MyTotemDoll;
-//import net.lopymine.mtd.utils.TextureUtils;
+import net.lopymine.mtd.skin.data.ParsedSkinData;
 
 public class NameMcAPI {
 
-//	public static Response<SkinTextures> loadSkin(String id) {
-//		Identifier skinId = MyTotemDoll.id("doll/textures/skin/" + id.toLowerCase());
-//		String url = NameMcAPI.getSkinUrl(id);
-//		TextureUtils.registerUrlTexture(url, skinId, null, true);
-//
-//		SkinTextures textures = new SkinTextures()
-//		return new Response<>(200, );
-//	}
-//
-//	private static String getSkinUrl(String id) {
-//		return String.format("https://s.namemc.com/i/%s.png", id);
-//	}
+	public static Response<ParsedSkinData> getSkinData(String skin) {
+		String skinUrl = NameMcAPI.getSkinUrl(skin);
+		return new Response<>(200, new ParsedSkinData(skinUrl, null, null, false));
+	}
+
+	private static String getSkinUrl(String id) {
+		return String.format("https://s.namemc.com/i/%s.png", id);
+	}
+
 }

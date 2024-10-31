@@ -35,7 +35,7 @@ public class ModMenuUtils {
 	}
 
 	public static Identifier getContentId(SimpleContent content, String contentId) {
-		return MyTotemDoll.id(String.format("textures/config/%s/%s.%s", content.getFolder(), contentId, content.getFileExtension()));
+		return MyTotemDoll.id(String.format("textures/config/%s.%s", contentId, content.getFileExtension()));
 	}
 
 	public static Text getModTitle() {

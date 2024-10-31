@@ -8,7 +8,7 @@ import net.minecraft.text.Text;
 
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.config.MyTotemDollConfig;
-import net.lopymine.mtd.config.sub.*;
+import net.lopymine.mtd.config.rendering.*;
 import net.lopymine.mtd.modmenu.yacl.custom.screen.MyTotemDollYACLScreen;
 import net.lopymine.mtd.modmenu.yacl.simple.*;
 import net.lopymine.mtd.utils.ModMenuUtils;
@@ -179,10 +179,6 @@ public class YACLConfigurationScreen {
 
 	public static boolean notOpen(Screen currentScreen) {
 		return !(currentScreen instanceof MyTotemDollYACLScreen);
-//		if (currentScreen == null) {
-//			return true;
-//		}
-//		return !ModMenuUtils.getModTitle().getString().equals(currentScreen.getTitle().getString());
 	}
 
 	public static Text getRenderingCategoryTitle() {

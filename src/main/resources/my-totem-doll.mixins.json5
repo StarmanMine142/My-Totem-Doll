@@ -1,0 +1,26 @@
+{
+    "required": true,
+    "package": "net.lopymine.mtd.mixin",
+    "refmap": "${mod_id}.refmap.json",
+    "compatibilityLevel": "JAVA_${java}",
+    "mixins": [
+	    "ItemStackMixin"
+    ],
+    "client": [
+	    "accessor.ItemRendererAccessor",
+	    "accessor.BuiltinModelItemRendererAccessor",
+	    "ItemRendererMixin",
+	    "GameRendererMixin",
+	    "PlayerSkinTextureMixin",
+	    "AnvilScreenMixin",
+	    "ParentElementMixin",
+	    "AnvilScreenHandlerMixin",
+	    "ScreenMixin",
+	    "MinecraftClientMixin",
+	    "EntryListWidgetMixin",
+	    "DrawContextMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

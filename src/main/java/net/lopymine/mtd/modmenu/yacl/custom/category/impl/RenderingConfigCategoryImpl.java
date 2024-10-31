@@ -9,7 +9,7 @@ import net.minecraft.text.Text;
 
 import net.lopymine.mtd.modmenu.yacl.custom.category.RenderingConfigCategory;
 import net.lopymine.mtd.modmenu.yacl.custom.category.tab.RenderingCategoryTab;
-import net.lopymine.mtd.utils.mixin.CustomTabProvider;
+import net.lopymine.mtd.utils.interfaces.mixin.CustomTabProvider;
 
 public record RenderingConfigCategoryImpl(Text name, ImmutableList<OptionGroup> groups,
                                           Text tooltip) implements RenderingConfigCategory, CustomTabProvider {

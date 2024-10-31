@@ -10,7 +10,7 @@ import net.minecraft.text.Text;
 import net.lopymine.mtd.modmenu.yacl.custom.category.BetterConfigCategory;
 import net.lopymine.mtd.modmenu.yacl.custom.category.tab.DefaultCategoryTab;
 
-import net.lopymine.mtd.utils.mixin.CustomTabProvider;
+import net.lopymine.mtd.utils.interfaces.mixin.CustomTabProvider;
 
 public record BetterConfigCategoryImpl(Text name, ImmutableList<OptionGroup> groups, Text tooltip) implements BetterConfigCategory, CustomTabProvider {
 	@Override

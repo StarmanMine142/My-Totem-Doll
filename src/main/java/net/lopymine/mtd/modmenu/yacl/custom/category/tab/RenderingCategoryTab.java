@@ -16,13 +16,12 @@ import net.minecraft.util.math.RotationAxis;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.lopymine.mtd.modmenu.yacl.TransparencySprites;
-import net.lopymine.mtd.modmenu.yacl.custom.category.dummy.*;
 import net.lopymine.mtd.modmenu.yacl.custom.screen.MyTotemDollYACLScreen;
 
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
-public class RenderingCategoryTab implements TabExt /*? if =1.20.2 || =1.20.3 || =1.20 {*//*, DummyCategoryTab *//*?}*/ {
+public class RenderingCategoryTab implements TabExt {
 
 	public final ButtonWidget saveFinishedButton;
 	public final ButtonWidget cancelResetButton;

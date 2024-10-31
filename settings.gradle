@@ -3,6 +3,9 @@ import groovy.json.JsonBuilder
 
 pluginManagement {
 	repositories {
+		mavenLocal()
+		mavenCentral()
+		gradlePluginPortal()
 		maven {
 			name "Fabric"
 			url "https://maven.fabricmc.net/"
@@ -15,16 +18,14 @@ pluginManagement {
 			name "Kiku Releases"
 			url "https://maven.kikugie.dev/releases"
 		}
-		mavenCentral()
-		gradlePluginPortal()
 	}
 }
 
 plugins {
-	id "dev.kikugie.stonecutter" version "0.4.2"
+	id "dev.kikugie.stonecutter" version "0.4.4"
 }
 
-def multiVersions = multi_versions.split(" ")
+def multiVersions = getMultiVersions()
 
 println "Found MC versions: ${multiVersions}"
 
@@ -55,7 +56,6 @@ stonecutter {
 	multiVersions.each { multiVersion ->
 		createGradleProperties(multiVersion, additionalDepends)
 		createAW(multiVersion)
-		createMixin(multiVersion)
 	}
 }
 
@@ -79,32 +79,6 @@ def createAW(String version) {
 	println "Successfully created AW for ${version}"
 }
 
-def createMixin(String version) {
-	def mixinsFolder = file("src/main/resources/mixins/")
-	if (!mixinsFolder.exists() && !mixinsFolder.mkdirs()) {
-		return
-	}
-	def mixinsFile = file("src/main/resources/mixins/${version}-${mod_id}.mixins.json5")
-	if (mixinsFile.exists() || !mixinsFile.createNewFile()) {
-		return
-	}
-
-	def mixinContent = [
-			required: true,
-			package: '${mod_group}.mixin',
-			refmap: '${mod_id}.refmap.json',
-			compatibilityLevel: 'JAVA_${java}',
-			mixins: [],
-			client: [],
-			injectors: [
-					defaultRequire: 1
-			]
-	]
-
-	mixinsFile.text = new JsonBuilder(mixinContent).toPrettyString()
-	println "Successfully created Mixin for ${version}"
-}
-
 def createGradleProperties(String version, ArrayList<String> additionalDepends) {
 	def folderFile = file("/versions/${version}")
 	if (!folderFile.exists() && !folderFile.mkdirs()) {
@@ -120,7 +94,6 @@ def createGradleProperties(String version, ArrayList<String> additionalDepends) 
 	writer.write("\n")
 	writer.write("# Fabric Properties, check https://fabricmc.net/develop/\n")
 	writer.write("build.yarn=${getYarnVersion(version)}\n")
-	writer.write("build.fabric_loader=${getFabricLoaderVersion(version)}\n")
 	writer.write("build.fabric_api=${getDependVersion("fabric-api", version)}")
 	if (!additionalDepends.isEmpty()) {
 		writer.write("\n")
@@ -165,3 +138,17 @@ static String getDependVersion(String modId, String minecraftVersion) {
 
 	return result["version_number"].toString()
 }
+
+String[] getMultiVersions() {
+	def versions = []
+	multi_versions.toString().split(" ").each { s ->
+		def index = s.indexOf("[")
+		if (index == -1) {
+			versions.add(s)
+			return
+		}
+		versions.add(s.substring(0, index))
+	}
+	return versions
+}
+

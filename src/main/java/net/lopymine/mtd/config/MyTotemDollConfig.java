@@ -10,7 +10,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
-import net.lopymine.mtd.config.sub.RenderingConfig;
+import net.lopymine.mtd.config.rendering.RenderingConfig;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

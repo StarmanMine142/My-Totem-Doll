@@ -23,6 +23,17 @@
 	"my-totem-doll.modmenu.option.copy_right_hand_settings.name": "§eCopy Right Hand Settings",
 	"my-totem-doll.modmenu.option.copy_left_hand_settings.name": "§eCopy Left Hand Settings",
 
+	"my-totem-doll.tags.info.title": "§lWhat is this?",
+	"my-totem-doll.tags.info.text": "This is the §eTotem Settings Menu§f. In this menu you can find list of §ebuttons§f. By clicking on the buttons, you can §echange appearance§f of your totem. For example: §eDisable/enable certain parts§f, §echange the texture of the model§f, etc.",
+
+	"my-totem-doll.tags.title": "§7Doll Tags:",
+	"my-totem-doll.tags.s": "Set slim arms",
+	"my-totem-doll.tags.w": "Set wide arms",
+	"my-totem-doll.tags.c": "Disable cape",
+	"my-totem-doll.tags.s.applied": "§9Slim arms",
+	"my-totem-doll.tags.w.applied": "§9Wide arms",
+	"my-totem-doll.tags.c.applied": "§9Disabled cape",
+
 	"my-totem-doll.command.id": "[§lMy Totem Doll§r]",
 
 	"my-totem-doll.command.refresh.all.start": "§6Started refreshing all skin textures",

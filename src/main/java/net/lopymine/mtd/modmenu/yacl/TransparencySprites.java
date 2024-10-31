@@ -11,7 +11,7 @@ public class TransparencySprites {
 			MyTotemDoll.spriteId("transparency/tab/tab"), // disabled
 			MyTotemDoll.spriteId("transparency/tab/tab_selected_highlighted"), // enabled and hovered
 			MyTotemDoll.spriteId("transparency/tab/tab_highlighted") // disabled and hovered
-			);
+	);
 
 	public static final SpriteTextures WIDGET_SPRITES = new SpriteTextures(
 			MyTotemDoll.spriteId("transparency/widget"), // enabled
@@ -34,19 +34,9 @@ public class TransparencySprites {
 
 		public Identifier get(boolean enabled, boolean hovered) {
 			return enabled ?
-					(
-							!hovered ?
-									this.enabled
-									:
-									this.enabledFocused
-					)
+					(!hovered ? this.enabled : this.enabledFocused)
 					:
-					(
-							!hovered ?
-									this.disabled
-									:
-									this.disabledFocused
-					);
+					(!hovered ? this.disabled : this.disabledFocused);
 		}
 
 	}

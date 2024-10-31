@@ -1,7 +1,7 @@
 package net.lopymine.mtd.utils;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.texture.PlayerSkinTexture;
+import net.minecraft.client.texture.*;
 import net.minecraft.client.util.DefaultSkinHelper;
 import net.minecraft.util.Identifier;
 
@@ -15,15 +15,16 @@ import org.jetbrains.annotations.*;
 
 public class TextureUtils {
 
-	public static void registerUrlTexture(@NotNull String textureUrl, @NotNull Identifier textureId, @Nullable Path texturePath, boolean removeAfterReg) {
-		Path cachedTexturePath = TextureUtils.getCachedTexturePath(texturePath, textureUrl);
+	public static void registerUrlTexture(@NotNull String textureUrl, @NotNull Identifier textureId, @Nullable Runnable onSuccessRegistration, @Nullable Runnable onFailedRegistration) {
+		Path cachedTexturePath = TextureUtils.getCachedTexturePath(textureUrl);
 		if (cachedTexturePath == null) {
+			if (onFailedRegistration != null) {
+				onFailedRegistration.run();
+			}
 			return;
 		}
+
 		PlayerSkinTexture playerSkinTexture = new PlayerSkinTexture(cachedTexturePath.toFile(), textureUrl, DefaultSkinHelper.getTexture(), true, () -> {
-			if (!removeAfterReg) {
-				return;
-			}
 			try {
 				if (cachedTexturePath.toFile().exists()) {
 					Files.delete(cachedTexturePath);
@@ -31,21 +32,24 @@ public class TextureUtils {
 			} catch (FileSystemException ignored) {
 			} catch (FileNotFoundException e) {
 				if (MyTotemDollClient.getConfig().isDebugLogEnabled()) {
-					MyTotemDollClient.LOGGER.warn("Failed to find temp texture file at {} to delete it", cachedTexturePath);
+					MyTotemDollClient.LOGGER.warn("Failed to find temp textureId file at {} to delete it", cachedTexturePath);
 				}
 			} catch (Exception e) {
 				if (MyTotemDollClient.getConfig().isDebugLogEnabled()) {
-					MyTotemDollClient.LOGGER.error("Failed to delete temp texture: ", e);
+					MyTotemDollClient.LOGGER.error("Failed to delete temp textureId: ", e);
 				}
 			}
 		});
-		MinecraftClient.getInstance().getTextureManager().registerTexture(textureId, playerSkinTexture);
+
+		PlayerSkinTextureUtils.setOnSuccessAction(playerSkinTexture, onSuccessRegistration);
+		PlayerSkinTextureUtils.setOnFailedAction(playerSkinTexture, onFailedRegistration);
+
+		MinecraftClient.getInstance().send(() -> {
+			MinecraftClient.getInstance().getTextureManager().registerTexture(textureId, playerSkinTexture);
+		});
 	}
 
-	private static @Nullable Path getCachedTexturePath(@Nullable Path texturePath, String textureUrl) {
-		if (texturePath != null) {
-			return texturePath;
-		}
+	private static @Nullable Path getCachedTexturePath(String textureUrl) {
 		Path defCacheFolder = FabricLoader.getInstance().getGameDir().resolve(".cache");
 		File cacheFolderFile = defCacheFolder.toFile();
 		if (!cacheFolderFile.exists() && !cacheFolderFile.mkdirs()) {

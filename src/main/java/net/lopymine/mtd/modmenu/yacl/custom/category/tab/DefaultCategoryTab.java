@@ -2,6 +2,7 @@ package net.lopymine.mtd.modmenu.yacl.custom.category.tab;
 
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.gui.YACLScreen;
+import dev.isxander.yacl3.gui.YACLScreen.CategoryTab;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.math.RotationAxis;
 
@@ -9,7 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.lopymine.mtd.modmenu.yacl.TransparencySprites;
 
-public class DefaultCategoryTab extends /*? if =1.20.2 || =1.20.3 || =1.20 {*/ /*net.lopymine.mtd.modmenu.yacl.custom.category.dummy.DummyCategoryTabImpl *//*?} else {*/ dev.isxander.yacl3.gui.YACLScreen.CategoryTab /*?}*/ {
+public class DefaultCategoryTab extends CategoryTab {
 
 	private final ScreenRect rightPaneDim;
 

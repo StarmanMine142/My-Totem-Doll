@@ -5,3 +5,4 @@ accessible field net/minecraft/client/gui/screen/Screen textRenderer Lnet/minecr
 accessible field net/minecraft/client/gui/screen/Screen client Lnet/minecraft/client/MinecraftClient;
 
 accessible field net/minecraft/client/gui/screen/Screen narrator Lnet/minecraft/client/gui/screen/narration/ScreenNarrator;
+accessible method net/minecraft/client/gui/DrawContext drawTooltip (Lnet/minecraft/client/font/TextRenderer;Ljava/util/List;IILnet/minecraft/client/gui/tooltip/TooltipPositioner;)V

@@ -110,33 +110,6 @@ public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWid
 		return YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen);
 	}
 
-	*///?} elif <=1.20.4 {
-
-	/*@Dynamic
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V", ordinal = 0), method = RENDER_METHOD)
-	private void renderTransparencyScrollerBackground(DrawContext context, int x1, int y1, int x2, int y2, int color, Operation<Void> original) {
-		if (YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen)) {
-			original.call(context, x1, y1, x2, y2, color);
-			return;
-		}
-		RenderSystem.enableBlend();
-		RenderSystem.enableDepthTest();
-		context.drawGuiTexture(TransparencySprites.SCROLLER_BACKGROUND_SPRITE, this.getScrollbarPositionX(), /^? >=1.20.3 {^/ this.getY() /^?} else {^/this.top /^?}^/, 6, /^? >=1.20.3 {^/ this.getBottom() /^?} else {^/ this.bottom /^?}^/);
-	}
-
-	@Dynamic
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V", ordinal = 0), method = RENDER_METHOD)
-	private void renderTransparencyScroller(DrawContext context, Identifier texture, int x, int y, int width, int height, Operation<Void> original) {
-		if (YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen)) {
-			original.call(context, texture, x, y, width, height);
-			return;
-		}
-
-		context.drawGuiTexture(TransparencySprites.SCROLLER_SPRITE, x, y, width, height);
-		RenderSystem.disableBlend();
-		RenderSystem.disableDepthTest();
-	}
-
 	*///?}
 
 	//? <=1.20.1 {

@@ -21,9 +21,9 @@ public class TabNavigationWidgetMixin {
 
 	/*@Dynamic
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIFFIIII)V"), method = "render")
-	private void renderTransparencyHeaderSeparator(DrawContext context, Identifier texture, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight, Operation<Void> original) {
+	private void renderTransparencyHeaderSeparator(DrawContext context, Identifier textureId, int x, int y, float u, float v, int width, int height, int textureWidth, int textureHeight, Operation<Void> original) {
 		if (YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen)) {
-			original.call(context, texture, x, y, u, v, width, height, textureWidth, textureHeight);
+			original.call(context, textureId, x, y, u, v, width, height, textureWidth, textureHeight);
 			return;
 		}
 		RenderSystem.enableBlend();
