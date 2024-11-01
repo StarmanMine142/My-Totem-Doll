@@ -44,6 +44,17 @@ public class TagButtonWidget extends ButtonWidget {
 		this.enabled = !this.enabled;
 	}
 
+	public void setEnabled(boolean enabled) {
+		this.setEnabled(enabled, false);
+	}
+
+	public void setEnabled(boolean enabled, boolean callback) {
+		this.enabled = enabled;
+		if (callback) {
+			this.onPress.onPress(this);
+		}
+	}
+
 	public void setTooltip(@Nullable Text text) {
 		this.tooltipText = text;
 	}

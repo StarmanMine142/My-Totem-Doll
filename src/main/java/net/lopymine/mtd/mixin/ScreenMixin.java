@@ -3,18 +3,25 @@ package net.lopymine.mtd.mixin;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
 
 import net.lopymine.mtd.utils.interfaces.TooltipRequest;
 import net.lopymine.mtd.utils.interfaces.mixin.IRequestableTooltipScreen;
-
-import org.jetbrains.annotations.Nullable;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin extends AbstractParentElement implements Drawable, IRequestableTooltipScreen {
 
 	@Unique
-	@Nullable
 	private TooltipRequest tooltipRequest;
+
+	@Inject(at = @At("TAIL"), method = "render")
+	private void renderWithTooltip(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+		if (this.tooltipRequest != null) {
+			this.tooltipRequest.render(context, mouseX, mouseY, delta);
+			this.tooltipRequest = null;
+		}
+	}
 
 	@Override
 	public void myTotemDoll$requestTooltip(TooltipRequest tooltipRequest) {
@@ -22,7 +29,6 @@ public abstract class ScreenMixin extends AbstractParentElement implements Drawa
 	}
 
 	@Override
-	@Nullable
 	public TooltipRequest myTotemDoll$getCurrentRequest() {
 		return this.tooltipRequest;
 	}

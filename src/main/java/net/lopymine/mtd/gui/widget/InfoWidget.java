@@ -50,6 +50,8 @@ public class InfoWidget implements Drawable {
 		this.hovered = context.scissorContains(mouseX, mouseY) && mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
 		context.drawTexture(this.texture, this.getX(), this.getY(), 0,0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
+
+		this.requestTooltip();
 	}
 
 	public void requestTooltip() {
@@ -73,5 +75,10 @@ public class InfoWidget implements Drawable {
 		tooltipScreen.myTotemDoll$requestTooltip(((c, x, y, d) -> {
 			c.drawTooltip(textRenderer, List.of(component), x, y, HoveredTooltipPositioner.INSTANCE);
 		}));
+	}
+
+	public void setPosition(int x, int y) {
+		this.setX(x);
+		this.setY(y);
 	}
 }

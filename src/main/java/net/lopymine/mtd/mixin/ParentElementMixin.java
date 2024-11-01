@@ -5,9 +5,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.lopymine.mtd.gui.widget.*;
-import net.lopymine.mtd.utils.interfaces.mixin.MTDAnvilScreen;
-
 @Mixin(ParentElement.class)
 public interface ParentElementMixin {
 

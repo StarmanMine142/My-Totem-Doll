@@ -16,9 +16,9 @@
 	    "ParentElementMixin",
 	    "AnvilScreenHandlerMixin",
 	    "ScreenMixin",
-	    "MinecraftClientMixin",
 	    "EntryListWidgetMixin",
-	    "DrawContextMixin"
+	    "DrawContextMixin",
+	    "ForgingScreenMixin"
     ],
     "injectors": {
         "defaultRequire": 1

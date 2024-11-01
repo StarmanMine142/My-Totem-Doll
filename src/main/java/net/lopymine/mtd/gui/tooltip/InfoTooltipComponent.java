@@ -13,7 +13,7 @@ import net.lopymine.mtd.MyTotemDoll;
 public class InfoTooltipComponent implements TooltipComponent {
 
 	public static final Identifier SEPARATOR = MyTotemDoll.id("textures/gui/icon/separator.png");
-	public static final int TITLE_COLOR = Argb.getArgb(197, 64, 100);
+	public static final int TITLE_COLOR = Argb.getArgb(89, 206, 255);
 
 	private final Text title;
 	private final MultilineText text;

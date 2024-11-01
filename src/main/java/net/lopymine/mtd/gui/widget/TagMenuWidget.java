@@ -20,7 +20,7 @@ import java.util.*;
 
 public class TagMenuWidget extends ElementListWidget<TagRow> {
 
-	public static final Identifier BACKGROUND = MyTotemDoll.id("textures/gui/tag_menu/background.png");
+	public static final Identifier BACKGROUND = MyTotemDoll.id("textures/gui/tag_menu/background_new.png");
 
 	public TagMenuWidget(int x, int y, NameApplier nameApplier) {
 		super(MinecraftClient.getInstance(), 50, 166, y, 16);
@@ -104,23 +104,6 @@ public class TagMenuWidget extends ElementListWidget<TagRow> {
 				}
 			}
 		}
-	}
-
-	public void requestTooltip() {
-		MinecraftClient client = MinecraftClient.getInstance();
-		Screen screen = client.currentScreen;
-
-		if (!(screen instanceof IRequestableTooltipScreen tooltipScreen)) {
-			return;
-		}
-
-		if (!this.isHovered()) {
-			return;
-		}
-
-		tooltipScreen.myTotemDoll$requestTooltip(((c, x, y, d) -> {
-			//NO-OP
-		}));
 	}
 
 	public static class TagRow extends ElementListWidget.Entry<TagRow> {

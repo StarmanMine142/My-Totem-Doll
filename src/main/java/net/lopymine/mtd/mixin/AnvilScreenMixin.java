@@ -1,14 +1,15 @@
 package net.lopymine.mtd.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.*;
-
-
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
 import net.minecraft.screen.*;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
@@ -26,20 +27,31 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
 	@Shadow
 	private TextFieldWidget nameField;
+
+	@Shadow public abstract void resize(MinecraftClient client, int width, int height);
+
+	@Shadow protected abstract void setup();
+
 	@Unique
 	private TagButtonWidget tagButton;
 	@Unique
 	private TagMenuWidget tagMenuWidget;
 	@Unique
 	private SmallInfoWidget infoWidget;
+	@Unique
+	private boolean menuVisible = false;
 
 	public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory playerInventory, Text title, Identifier texture) {
 		super(handler, playerInventory, title, texture);
 	}
 
-	@Inject(at = @At("TAIL"), method = "setup")
+	@Inject(at = @At("HEAD"), method = "setup")
 	private void setupTagMenu(CallbackInfo ci) {
-		this.tagMenuWidget         = new TagMenuWidget(this.x + 176 + 5, this.y, new NameApplier() {
+		ItemStack stack = this.handler.getSlot(0).getStack();
+		ItemStack result = this.handler.getSlot(2).getStack();
+		boolean bl = stack.isOf(Items.TOTEM_OF_UNDYING);
+
+		NameApplier nameApplier = new NameApplier() {
 			@Override
 			public String getName() {
 				return nameField.getText();
@@ -49,38 +61,87 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 			public void setName(String name) {
 				nameField.setText(name);
 			}
-		});
-		this.tagMenuWidget.visible = false;
+		};
+		this.tagMenuWidget         = new TagMenuWidget(0, 0, nameApplier);
+		this.tagMenuWidget.visible = this.menuVisible;
+		if (this.tagMenuWidget.visible) {
+			this.tagMenuWidget.updateButtons(result.isEmpty() ? stack : result);
+		}
+		this.addDrawableChild(this.tagMenuWidget);
 
-		this.infoWidget = new SmallInfoWidget(
-				this.tagMenuWidget.getX() + this.tagMenuWidget.getWidth() + 2,
-				this.tagMenuWidget.getY() + 2,
-				new InfoTooltipData("tags.info")
-		);
+		//
+
+		this.infoWidget         = new SmallInfoWidget(0, 0, new InfoTooltipData("tags.info"));
 		this.infoWidget.visible = this.tagMenuWidget.visible;
+		this.addDrawable(this.infoWidget);
 
-		this.tagButton = new TagButtonWidget('t', this.x + 134 + 16 + 4, this.y + 47 + 1, (b) -> {
-			this.tagMenuWidget.visible = !this.tagMenuWidget.visible;
-			this.infoWidget.visible    = this.tagMenuWidget.visible;
-			this.tagMenuWidget.updateButtons(this.handler.getSlot(0).getStack());
+		//
+
+		this.tagButton = new TagButtonWidget('t', 0, 0, (b) -> {
+			this.menuVisible = !b.isEnabled();
+			this.resize(this.client, this.width, this.height);
 		});
-		this.tagButton.setEnabled(false);
-		this.tagButton.visible = false;
+		this.tagButton.setEnabled(this.tagMenuWidget.visible);
+		this.tagButton.visible = bl;
+		this.addDrawableChild(this.tagButton);
 
-		this.checkTotem();
+		//
+
+		if (this.tagMenuWidget.visible) {
+			this.backgroundWidth = 176 + this.tagMenuWidget.getWidth() + 5 + this.infoWidget.getWidth();
+		} else {
+			this.backgroundWidth = 176;
+		}
+
+		this.x = (this.width - this.backgroundWidth) / 2;
+		this.updateWidgetsPositions();
 	}
 
-	@Inject(at = @At("TAIL"), method = "renderForeground")
-	private void checkTotem(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-		this.tagButton.requestTooltip();
-		this.tagMenuWidget.requestTooltip();
-		this.infoWidget.requestTooltip();
+	@Unique
+	private void updateWidgetsPositions() {
+		int tagMenuX = this.x + 176 + 5;
+		int tagMenuY = this.y;
+		this.tagMenuWidget.setPosition(tagMenuX, tagMenuY);
+
+		int infoWidgetX = this.tagMenuWidget.getX() + this.tagMenuWidget.getWidth() + 2;
+		int infoWidgetY = this.tagMenuWidget.getY() + 2;
+		this.infoWidget.setPosition(infoWidgetX, infoWidgetY);
+
+		Slot slot = this.handler.getSlot(2);
+		int tagButtonX = (((176 - slot.x) / 2) + slot.x) + this.x;
+		int tagButtonY = (slot.y + 2) + this.y;
+		this.tagButton.setPosition(tagButtonX, tagButtonY);
 	}
+
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"), method = "drawForeground")
+	private void swapBackgroundValue(DrawContext instance, int x1, int y1, int x2, int y2, int color, Operation<Void> original) {
+		original.call(instance, x1 - this.backgroundWidth + 176, y1, x2 - this.backgroundWidth + 176, y2, color);
+	}
+
+	@Inject(at = @At("TAIL"), method = "drawBackground")
+	private void updateWidgetPositions(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci) {
+		this.updateWidgetsPositions();
+	}
+
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)I"), method = "drawForeground")
+	private int swapBackgroundValue(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color, Operation<Integer> original) {
+		return original.call(instance, textRenderer, text, x - this.backgroundWidth + 176, y, color);
+	}
+
+	//? <1.21 {
+	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), method = "drawInvalidRecipeArrow")
+	private void swapBackgroundValue(DrawContext instance, Identifier identifier, int x, int y, int u, int v, Operation<Void> original) {
+		original.call(instance, identifier, x, y, u - this.backgroundWidth + 176, v);
+	}
+	*///?}
 
 	@Inject(at = @At("HEAD"), method = "onSlotUpdate")
 	private void checkTotem(ScreenHandler handler, int slotId, ItemStack stack, CallbackInfo ci) {
 		if (slotId == 0) {
-			this.checkTotem();
+			this.tagButton.visible = stack.isOf(Items.TOTEM_OF_UNDYING);
+			if (!this.tagButton.visible && this.tagMenuWidget.visible) {
+				this.tagButton.setEnabled(true, true);
+			}
 		}
 	}
 
@@ -91,32 +152,5 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 			return original.call(instance);
 		}
 		return text;
-	}
-
-	@Unique
-	private void checkTotem() {
-		ItemStack stack = this.handler.getSlot(0).getStack();
-		boolean bl = stack.isOf(Items.TOTEM_OF_UNDYING);
-		this.tagButton.visible = bl;
-		this.tagButton.setEnabled(false);
-		if (this.tagMenuWidget.visible && !bl) {
-			this.tagMenuWidget.visible = false;
-			this.infoWidget.visible    = false;
-		}
-	}
-
-	@Override
-	public TagMenuWidget myTotemDoll$getTagMenuWidget() {
-		return this.tagMenuWidget;
-	}
-
-	@Override
-	public TagButtonWidget myTotemDoll$getTagButtonWidget() {
-		return this.tagButton;
-	}
-
-	@Override
-	public SmallInfoWidget myTotemDoll$getInfoWidget() {
-		return this.infoWidget;
 	}
 }
