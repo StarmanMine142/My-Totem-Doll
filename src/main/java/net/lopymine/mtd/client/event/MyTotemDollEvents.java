@@ -1,11 +1,11 @@
 package net.lopymine.mtd.client.event;
 
 import net.minecraft.client.gui.tooltip.*;
-import net.minecraft.util.Formatting;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback;
 
+import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.gui.tooltip.combined.*;
 import net.lopymine.mtd.gui.tooltip.info.*;
 import net.lopymine.mtd.gui.tooltip.preview.*;
@@ -13,7 +13,6 @@ import net.lopymine.mtd.gui.tooltip.state.LoadingStateTooltipData;
 import net.lopymine.mtd.gui.tooltip.tags.*;
 import net.lopymine.mtd.gui.tooltip.wrapped.*;
 import net.lopymine.mtd.thread.MyTotemDollTaskExecutor;
-import net.lopymine.mtd.yacl.custom.renderer.TotemDollPreviewRenderer;
 
 public class MyTotemDollEvents {
 
@@ -31,7 +30,7 @@ public class MyTotemDollEvents {
 				return new InfoTooltipComponent(tooltipData.key());
 			}
 			if (data instanceof LoadingStateTooltipData tooltipData) {
-				return TooltipComponent.of(TotemDollPreviewRenderer.STATUS_TEXT.copy().formatted(Formatting.GRAY).append(tooltipData.state().getText()).asOrderedText());
+				return TooltipComponent.of(MyTotemDoll.text("text.status").append(tooltipData.state().getText()).asOrderedText());
 			}
 			if (data instanceof CombinedTooltipData tooltipData) {
 				return new CombinedTooltipComponent(tooltipData.list());
