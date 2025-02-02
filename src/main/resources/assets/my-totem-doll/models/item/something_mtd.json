@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "my-totem-doll:item/something_mtd"
+  }
+}

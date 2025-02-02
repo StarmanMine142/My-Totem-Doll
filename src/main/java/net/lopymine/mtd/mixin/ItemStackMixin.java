@@ -1,20 +1,34 @@
 package net.lopymine.mtd.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.AnvilScreen;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipData;
-
-
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.lopymine.mtd.gui.tooltip.TagsTooltipData;
-import net.lopymine.mtd.tag.manager.TagTotemDollManager;
-import net.lopymine.mtd.utils.ItemStackUtils;
-import java.util.Optional;
+import net.lopymine.mtd.MyTotemDoll;
+import net.lopymine.mtd.client.MyTotemDollClient;
+import net.lopymine.mtd.doll.data.TotemDollData;
+import net.lopymine.mtd.doll.manager.TotemDollManager;
+import net.lopymine.mtd.extension.ItemStackExtension;
+import net.lopymine.mtd.gui.tooltip.combined.CombinedTooltipData;
+import net.lopymine.mtd.gui.tooltip.state.LoadingStateTooltipData;
+import net.lopymine.mtd.gui.tooltip.tags.*;
+import net.lopymine.mtd.gui.tooltip.wrapped.WrappedTextTooltipData;
+import net.lopymine.mtd.tag.manager.TagsManager;
+
+import java.util.*;
+import java.util.stream.Stream;
 
 @Mixin(ItemStack.class)
+@ExtensionMethod(ItemStackExtension.class)
 public abstract class ItemStackMixin {
 
 	@Shadow
@@ -22,11 +36,14 @@ public abstract class ItemStackMixin {
 
 	@ModifyReturnValue(at = @At("RETURN"), method = "getName")
 	private Text getName(Text original) {
+		if (!MyTotemDollClient.getConfig().isModEnabled() || !this.isOf(Items.TOTEM_OF_UNDYING)) {
+			return original;
+		}
 		String string = original.getString();
 		if (!string.contains("|")) {
 			return original;
 		}
-		String[] data = TagTotemDollManager.getDataFromName(string);
+		String[] data = TagsManager.getDataFromString(string);
 		String name = data[0];
 		String tags = data[1];
 		if (tags == null) {
@@ -37,23 +54,56 @@ public abstract class ItemStackMixin {
 
 	@ModifyReturnValue(at = @At("RETURN"), method = "getTooltipData")
 	private Optional<TooltipData> getTooltipData(Optional<TooltipData> original) {
-		if (!this.isOf(Items.TOTEM_OF_UNDYING)) {
+		if (!MyTotemDollClient.getConfig().isModEnabled() || !this.isOf(Items.TOTEM_OF_UNDYING)) {
 			return original;
 		}
-		Text text = ItemStackUtils.getItemStackCustomName((ItemStack) (Object) this);
-		if (text == null) {
+
+		Text customName = ((ItemStack) (Object) this).getRealCustomName();
+		if (customName == null) {
 			return original;
 		}
-		String string = text.getString();
-		if (!string.contains("|")) {
-			return original;
+
+		String[] data = TagsManager.getDataFromString(customName.getString());
+
+		Optional<TooltipData> loadingStateTooltipData = this.getLoadingStateTooltipData(data);
+		Optional<TooltipData> tagsTooltipData = this.getTagsTooltipData(data);
+
+		List<TooltipComponent> list = Stream.of(loadingStateTooltipData, tagsTooltipData)
+				.flatMap(Optional::stream)
+				.map(TooltipComponent::of)
+				.toList();
+
+		return Optional.of(new CombinedTooltipData(list));
+	}
+
+	@Unique
+	private Optional<TooltipData> getLoadingStateTooltipData(String[] data) {
+		Screen currentScreen = MinecraftClient.getInstance().currentScreen;
+		if (!(currentScreen instanceof AnvilScreen || Screen.hasShiftDown())) {
+			return Optional.empty();
 		}
-		String[] data = TagTotemDollManager.getDataFromName(string);
+		if (data.length == 0) {
+			return Optional.empty();
+		}
+		String o = data[0];
+		TotemDollData totemDollData = TotemDollManager.getDoll(o);
+		return Optional.of(new LoadingStateTooltipData(totemDollData.getTextures().getState()));
+	}
+
+	@Unique
+	private Optional<TooltipData> getTagsTooltipData(String[] data) {
+		if (data.length < 2) {
+			return Optional.empty();
+		}
 		String tags = data[1];
-		if (tags == null) {
-			return original;
+		if (tags == null || tags.isBlank() || tags.isEmpty() || TagsManager.getTagsStream(tags).noneMatch(TagsManager::hasTag)) {
+			return Optional.empty();
 		}
-		return Optional.of(new TagsTooltipData(tags, original));
+		return Optional.of(new CombinedTooltipData(
+					new WrappedTextTooltipData(MyTotemDoll.text("tags.title").formatted(Formatting.GRAY)),
+					new TagsTooltipData(tags)
+				)
+		);
 	}
 
 }

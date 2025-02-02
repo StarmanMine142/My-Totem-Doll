@@ -4,24 +4,30 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import dev.isxander.yacl3.api.*;
 import dev.isxander.yacl3.gui.YACLScreen;
 import dev.isxander.yacl3.gui.tab.TabExt;
-import net.minecraft.client.gui.*;
+
+
+import net.minecraft.client.gui.ScreenRect;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.lopymine.mtd.modmenu.yacl.YACLConfigurationScreen;
-import net.lopymine.mtd.utils.interfaces.mixin.CustomTabProvider;
+
+import net.lopymine.mtd.utils.mixin.yacl.CustomTabProvider;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
 
 @Pseudo
 @Mixin(YACLScreen.class)
-public abstract class YACLScreenMixin extends Screen  {
+public abstract class YACLScreenMixin extends Screen {
 
 	@Dynamic
 	@Shadow(remap = false)
 	@Final
 	public YetAnotherConfigLib config;
+	@Dynamic
+	@Shadow
+	public ScreenRect tabArea;
 
 	protected YACLScreenMixin(Text title) {
 		super(title);
@@ -32,11 +38,8 @@ public abstract class YACLScreenMixin extends Screen  {
 	public abstract void close();
 
 	@Dynamic
-	@Shadow public ScreenRect tabArea;
-
-	@Dynamic
 	@ModifyReturnValue(at = @At("RETURN"), method = "pendingChanges", remap = false)
-	private boolean alwaysTrueBecauseYouCannotUseSaveButtonWithInstantOptionsImVerySadThatINeedToDoThatDoYouAgreeWithMeYeahNoYepNopeWtf(boolean original) {
+	private boolean alwaysTrueBecauseYouCannotUseSaveButtonWithInstantOptionsImVerySadThatINeedThatDoYouAgreeWithMeYeahNoYepNopeWtf(boolean original) {
 		if (YACLConfigurationScreen.notOpen(this)) {
 			return original;
 		}

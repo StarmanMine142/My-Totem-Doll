@@ -1,7 +1,6 @@
 package net.lopymine.mtd.mixin.yacl.widget;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.widget.*;
@@ -9,14 +8,18 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.lopymine.mtd.modmenu.yacl.*;
+import net.lopymine.mtd.gui.BackgroundDrawer;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 @Pseudo
 @Mixin(TextFieldWidget.class)
 public abstract class TextFieldWidgetMixin extends ClickableWidget implements Drawable {
+
+	@Unique
+	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ "renderWidget" /*?} else {*/ /*"renderButton" *//*?}*/;
 
 	public TextFieldWidgetMixin(int x, int y, int width, int height, Text message) {
 		super(x, y, width, height, message);
@@ -25,9 +28,6 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget implements Dr
 	@Dynamic
 	@Shadow
 	protected abstract boolean isEditable();
-
-	@Unique
-	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ "renderWidget" /*?} else {*/ /*"renderButton" *//*?}*/;
 
 	//? if >=1.20.2 {
 
@@ -38,10 +38,7 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget implements Dr
 			original.call(instance, identifier, x, y, width, height);
 			return;
 		}
-
-		RenderSystem.enableBlend();
-		instance.drawGuiTexture(TransparencySprites.WIDGET_SPRITES.get(this.isEditable() && this.active, this.isSelected()), x, y, width, height);
-		RenderSystem.disableBlend();
+		BackgroundDrawer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.isEditable() && this.active, this.isSelected());
 	}
 
 	//?} else {

@@ -1,18 +1,13 @@
 package net.lopymine.mtd.mixin.yacl;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapoperation.*;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.lopymine.mtd.modmenu.yacl.*;
-
-import org.jetbrains.annotations.Nullable;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 @Pseudo
 @Mixin(Screen.class)
@@ -31,7 +26,7 @@ public abstract class ScreenMixin {
 		if (YACLConfigurationScreen.notOpen(((Screen) (Object) this))) {
 			return original;
 		}
-		return TransparencySprites.MENU_BACKGROUND_TEXTURE_V2;
+		return TransparencySprites.getMenuBackgroundTexture();
 	}
 	//?} else {
 

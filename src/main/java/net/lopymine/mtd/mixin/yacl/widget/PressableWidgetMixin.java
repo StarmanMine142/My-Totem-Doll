@@ -8,21 +8,22 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.lopymine.mtd.modmenu.yacl.*;
+import net.lopymine.mtd.gui.BackgroundDrawer;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 @Pseudo
 @Mixin(PressableWidget.class)
 public abstract class PressableWidgetMixin extends ClickableWidget implements Drawable {
 
+	@Unique
+	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ "renderWidget" /*?} else {*/ /*"renderButton" *//*?}*/;
+
 	public PressableWidgetMixin(int x, int y, int width, int height, Text message) {
 		super(x, y, width, height, message);
 	}
-
-	@Unique
-	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ "renderWidget" /*?} else {*/ /*"renderButton" *//*?}*/;
 
 	//? if >=1.20.2 {
 
@@ -33,9 +34,7 @@ public abstract class PressableWidgetMixin extends ClickableWidget implements Dr
 			original.call(instance, identifier, x, y, width, height);
 			return;
 		}
-		RenderSystem.enableBlend();
-		original.call(instance, TransparencySprites.WIDGET_SPRITES.get(this.active, this.isSelected()), x, y, width, height);
-		RenderSystem.disableBlend();
+		BackgroundDrawer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.active, this.isSelected());
 	}
 
 	//?} else {

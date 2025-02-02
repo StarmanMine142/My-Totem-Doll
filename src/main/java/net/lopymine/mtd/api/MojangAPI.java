@@ -3,9 +3,10 @@ package net.lopymine.mtd.api;
 import com.google.gson.*;
 import org.apache.http.client.HttpResponseException;
 
+
+
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.skin.data.ParsedSkinData;
-
 import java.net.URI;
 import java.net.http.*;
 import java.net.http.HttpResponse.BodyHandlers;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.*;
 import com.mojang.util.UndashedUuid;
 //?} else {
 /*import com.mojang.util.UUIDTypeAdapter;
-*///?}
+ *///?}
 
 public class MojangAPI {
 
@@ -67,8 +68,9 @@ public class MojangAPI {
 			UUID uuid = UndashedUuid.fromStringLenient(uuidAsString);
 			//?} else {
 			/*UUID uuid = UUIDTypeAdapter.fromString(uuidAsString);
-			*///?}
+			 *///?}
 			return new Response<>(statusCode, uuid);
+		} catch (InterruptedException ignored) {
 		} catch (Exception e) {
 			MyTotemDollClient.LOGGER.error("Failed to get UUID: ", e);
 		}

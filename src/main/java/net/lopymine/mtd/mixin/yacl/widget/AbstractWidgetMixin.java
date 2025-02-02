@@ -1,18 +1,16 @@
 package net.lopymine.mtd.mixin.yacl.widget;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
-import com.llamalad7.mixinextras.sugar.Local;
 import dev.isxander.yacl3.gui.AbstractWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.lopymine.mtd.modmenu.yacl.*;
+import net.lopymine.mtd.gui.BackgroundDrawer;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 @Pseudo
 @Mixin(AbstractWidget.class)
@@ -27,10 +25,7 @@ public class AbstractWidgetMixin {
 			original.call(drawContext, x, y, width, height, enabled, hovered);
 			return;
 		}
-
-		RenderSystem.enableBlend();
-		drawContext.drawGuiTexture(TransparencySprites.WIDGET_SPRITES.get(enabled, hovered), x, y, width, height);
-		RenderSystem.disableBlend();
+		BackgroundDrawer.drawTransparencyWidgetBackground(drawContext, x, y, width, height, enabled, hovered);
 	}
 	//?} else {
 	/*@Dynamic

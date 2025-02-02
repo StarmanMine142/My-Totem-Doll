@@ -2,29 +2,47 @@ package net.lopymine.mtd.config;
 
 import com.google.gson.*;
 import lombok.*;
-import org.slf4j.*;
 
+
+import net.minecraft.util.Identifier;
+import org.slf4j.*;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.fabricmc.loader.api.FabricLoader;
-
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
-import net.lopymine.mtd.config.rendering.RenderingConfig;
-
+import net.lopymine.mtd.config.rendering.*;
+import net.lopymine.mtd.config.totem.*;
+import net.lopymine.mtd.config.other.vector.Vec2i;
+import net.lopymine.mtd.doll.model.TotemDollModel;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.NotNull;
 
+import static net.lopymine.mtd.utils.CodecUtils.option;
+import static net.lopymine.mtd.utils.CodecUtils.optional;
+
 @Getter
 @Setter
+@AllArgsConstructor
 public class MyTotemDollConfig {
 
 	public static final Codec<MyTotemDollConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			Codec.BOOL.fieldOf("mod_enabled").forGetter(MyTotemDollConfig::isModEnabled),
-			Codec.BOOL.fieldOf("debug_log_enabled").forGetter(MyTotemDollConfig::isDebugLogEnabled),
-			RenderingConfig.CODEC.fieldOf("rendering_config").forGetter(MyTotemDollConfig::getRenderingConfig)
+			option("mod_enabled", Codec.BOOL, MyTotemDollConfig::isModEnabled),
+			option("debug_log_enabled", Codec.BOOL, MyTotemDollConfig::isDebugLogEnabled),
+			option("rendering_config", RenderingConfig.CODEC, MyTotemDollConfig::getRenderingConfig),
+			optional("standard_doll_skin_data", "", Codec.STRING, MyTotemDollConfig::getStandardTotemDollSkinValue),
+			optional("standard_doll_skin_type", TotemDollSkinType.STEVE, TotemDollSkinType.CODEC, MyTotemDollConfig::getStandardTotemDollSkinType),
+			optional("standard_doll_model_data", TotemDollModel.STANDARD_DOLL_ID, Identifier.CODEC, MyTotemDollConfig::getStandardTotemDollModelValue),
+			optional("standard_doll_model_arms_type", TotemDollArmsType.WIDE, TotemDollArmsType.CODEC, MyTotemDollConfig::getStandardTotemDollArmsType),
+			optional("tag_button_pos", new Vec2i(), Vec2i.CODEC, MyTotemDollConfig::getTagButtonPos),
+			optional("custom_model_ids", new HashMap<>(), Codec.unboundedMap(Codec.STRING, Identifier.CODEC), MyTotemDollConfig::getCustomModelIds),
+			optional("use_vanilla_totem_model", false, Codec.BOOL, MyTotemDollConfig::isUseVanillaTotemModel),
+			optional("tag_menu_tooltip_size", TooltipSize.X1, TooltipSize.CODEC, MyTotemDollConfig::getTagMenuTooltipSize),
+			optional("tag_menu_tooltip_model_scale", 1.0F, Codec.FLOAT, MyTotemDollConfig::getTagMenuTooltipModelScale),
+			optional("executor_threads_count", 6, Codec.INT, MyTotemDollConfig::getExecutorThreadsCount)
 	).apply(instance, MyTotemDollConfig::new));
 
 	private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(MyTotemDoll.MOD_ID + ".json5").toFile();
@@ -34,17 +52,31 @@ public class MyTotemDollConfig {
 	private boolean modEnabled;
 	private boolean debugLogEnabled;
 	private RenderingConfig renderingConfig;
+	private String standardTotemDollSkinValue;
+	private TotemDollSkinType standardTotemDollSkinType;
+	private Identifier standardTotemDollModelValue;
+	private TotemDollArmsType standardTotemDollArmsType;
+	private Vec2i tagButtonPos;
+	private Map<String, Identifier> customModelIds;
+	private boolean useVanillaTotemModel;
+	private TooltipSize tagMenuTooltipSize;
+	private float tagMenuTooltipModelScale;
+	private int executorThreadsCount;
 
 	public MyTotemDollConfig() {
-		this.modEnabled      = true;
-		this.debugLogEnabled = false;
-		this.renderingConfig = RenderingConfig.getDefault();
-	}
-
-	public MyTotemDollConfig(boolean modEnabled, boolean debugLogEnabled, RenderingConfig renderingConfig) {
-		this.modEnabled      = modEnabled;
-		this.debugLogEnabled = debugLogEnabled;
-		this.renderingConfig = renderingConfig;
+		this.modEnabled                  = true;
+		this.debugLogEnabled             = false;
+		this.renderingConfig             = RenderingConfig.getDefault();
+		this.standardTotemDollSkinValue  = "";
+		this.standardTotemDollSkinType   = TotemDollSkinType.STEVE;
+		this.standardTotemDollModelValue = TotemDollModel.STANDARD_DOLL_ID;
+		this.standardTotemDollArmsType   = TotemDollArmsType.WIDE;
+		this.tagButtonPos                = new Vec2i(155, 48);
+		this.customModelIds              = new HashMap<>();
+		this.useVanillaTotemModel = false;
+		this.tagMenuTooltipSize   = TooltipSize.X1;
+		this.tagMenuTooltipModelScale = 1.0F;
+		this.executorThreadsCount = 8;
 	}
 
 	public static MyTotemDollConfig getInstance() {

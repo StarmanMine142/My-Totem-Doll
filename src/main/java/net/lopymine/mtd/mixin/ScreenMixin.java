@@ -4,10 +4,11 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.lopymine.mtd.utils.interfaces.TooltipRequest;
-import net.lopymine.mtd.utils.interfaces.mixin.IRequestableTooltipScreen;
+
+import net.lopymine.mtd.utils.tooltip.TooltipRequest;
+import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin extends AbstractParentElement implements Drawable, IRequestableTooltipScreen {

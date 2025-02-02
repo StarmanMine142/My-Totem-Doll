@@ -4,21 +4,22 @@
     "refmap": "${mod_id}.refmap.json",
     "compatibilityLevel": "JAVA_${java}",
     "mixins": [
-	    "ItemStackMixin"
     ],
     "client": [
-	    "accessor.ItemRendererAccessor",
-	    "accessor.BuiltinModelItemRendererAccessor",
+	    "accessor.DilationAccessor",
 	    "ItemRendererMixin",
 	    "GameRendererMixin",
 	    "PlayerSkinTextureMixin",
 	    "AnvilScreenMixin",
-	    "ParentElementMixin",
 	    "AnvilScreenHandlerMixin",
 	    "ScreenMixin",
 	    "EntryListWidgetMixin",
-	    "DrawContextMixin",
-	    "ForgingScreenMixin"
+	    "ForgingScreenMixin",
+	    "ItemStackWithModdedBakedModelMixin",
+	    "ItemStackWithPlayerEntityMixin",
+	    "ItemStackMixin",
+	    "HandledScreenMixin",
+	    "HeldItemRendererMixin"
     ],
     "injectors": {
         "defaultRequire": 1

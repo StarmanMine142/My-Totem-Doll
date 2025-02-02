@@ -1,8 +1,8 @@
 package net.lopymine.mtd.tag;
 
-import net.lopymine.mtd.doll.model.TotemDollModel;
+import net.lopymine.mtd.doll.data.TotemDollData;
 
 public interface TagAction {
 
-	void process(TotemDollModel model);
+	void process(TotemDollData data);
 }

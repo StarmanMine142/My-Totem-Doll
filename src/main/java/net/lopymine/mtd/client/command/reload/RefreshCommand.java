@@ -2,16 +2,13 @@ package net.lopymine.mtd.client.command.reload;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
-
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-
-import net.lopymine.mtd.manager.TotemDollManager;
 import net.lopymine.mtd.client.command.builder.CommandTextBuilder;
-
+import net.lopymine.mtd.doll.manager.TotemDollManager;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
@@ -23,7 +20,7 @@ public class RefreshCommand {
 						.executes(RefreshCommand::reloadAll))
 				.then(literal("player")
 						.then(argument("nickname", StringArgumentType.word())
-								.suggests((context, builder) -> CommandSource.suggestMatching(TotemDollManager.getAllLoaded(), builder))
+								.suggests((context, builder) -> CommandSource.suggestMatching(TotemDollManager.getAllLoadedKeys(), builder))
 								.executes(RefreshCommand::reloadForPlayer)
 						));
 	}

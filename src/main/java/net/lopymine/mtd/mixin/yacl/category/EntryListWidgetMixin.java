@@ -1,29 +1,26 @@
 package net.lopymine.mtd.mixin.yacl.category;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.*;
+
+
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
-import net.lopymine.mtd.modmenu.yacl.*;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 @Pseudo
 @Mixin(EntryListWidget.class)
 public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWidget /*?}*/ {
 
-	//? >=1.20.3 {
-	public EntryListWidgetMixin(int x, int y, int width, int height, Text message) {
-		super(x, y, width, height, message);
-	}
-	//?}
+	@Unique
+	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ "renderWidget" /*?} else {*/ /*"render" *//*?}*/;
+
 
 	//? <=1.20.2 {
 	/*@Shadow
@@ -36,8 +33,11 @@ public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWid
 	protected int height;
 	*///?}
 
-	@Unique
-	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ "renderWidget" /*?} else {*/ /*"render" *//*?}*/;
+	//? >=1.20.3 {
+	public EntryListWidgetMixin(int x, int y, int width, int height, Text message) {
+		super(x, y, width, height, message);
+	}
+	//?}
 
 	//? >=1.20.5 {
 

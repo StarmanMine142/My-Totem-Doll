@@ -4,34 +4,34 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import net.lopymine.mtd.MyTotemDoll;
-import net.lopymine.mtd.modmenu.yacl.simple.SimpleContent;
+import net.lopymine.mtd.yacl.custom.simple.utils.SimpleContent;
 
 import java.util.function.Function;
 
-public class ModMenuUtils {
+public final class ModMenuUtils {
 
 	private ModMenuUtils() {
 		throw new IllegalStateException("Utility class");
 	}
 
 	public static String getOptionKey(String optionId) {
-		return String.format("%s.modmenu.option.%s", MyTotemDoll.MOD_ID, optionId);
+		return String.format("modmenu.option.%s", optionId);
 	}
 
 	public static String getCategoryKey(String categoryId) {
-		return String.format("%s.modmenu.category.%s", MyTotemDoll.MOD_ID, categoryId);
+		return String.format("modmenu.category.%s", categoryId);
 	}
 
 	public static String getGroupKey(String groupId) {
-		return String.format("%s.modmenu.group.%s", MyTotemDoll.MOD_ID, groupId);
+		return String.format("modmenu.group.%s", groupId);
 	}
 
 	public static Text getName(String key) {
-		return Text.translatable(key + ".name");
+		return MyTotemDoll.text(key + ".name");
 	}
 
 	public static Text getDescription(String key) {
-		return Text.translatable(key + ".description");
+		return MyTotemDoll.text(key + ".description");
 	}
 
 	public static Identifier getContentId(SimpleContent content, String contentId) {

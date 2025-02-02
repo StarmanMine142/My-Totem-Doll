@@ -1,19 +1,8 @@
 package net.lopymine.mtd.mixin.yacl.category;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.*;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.At.Shift;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import com.mojang.blaze3d.systems.RenderSystem;
-
-import net.lopymine.mtd.modmenu.yacl.*;
 
 @Pseudo
 @Mixin(TabButtonWidget.class)

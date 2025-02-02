@@ -6,7 +6,7 @@ import net.fabricmc.loader.api.*;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
-import net.lopymine.mtd.modmenu.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
 
 public class ModMenuIntegration implements ModMenuApi {
 
@@ -18,7 +18,7 @@ public class ModMenuIntegration implements ModMenuApi {
 			Version version = modContainer.getMetadata().getVersion();
 			try {
 				Version requestsVersion = Version.parse(MyTotemDoll.YACL_DEPEND_VERSION);
-				if (version.compareTo(requestsVersion) <= 0) {
+				if (version.compareTo(requestsVersion) >= 0) {
 					return YACLConfigurationScreen::createScreen;
 				}
 			} catch (VersionParsingException e) {

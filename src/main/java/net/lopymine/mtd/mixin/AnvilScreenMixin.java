@@ -1,6 +1,7 @@
 package net.lopymine.mtd.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
+import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -9,44 +10,56 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
 import net.minecraft.screen.*;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import net.lopymine.mtd.gui.tooltip.InfoTooltipData;
-import net.lopymine.mtd.gui.widget.*;
-import net.lopymine.mtd.utils.ItemStackUtils;
-import net.lopymine.mtd.utils.interfaces.NameApplier;
-import net.lopymine.mtd.utils.interfaces.mixin.MTDAnvilScreen;
+import net.lopymine.mtd.client.MyTotemDollClient;
+import net.lopymine.mtd.config.MyTotemDollConfig;
+import net.lopymine.mtd.config.other.vector.Vec2i;
+import net.lopymine.mtd.extension.ItemStackExtension;
+import net.lopymine.mtd.gui.tooltip.info.InfoTooltipData;
+import net.lopymine.mtd.gui.widget.info.SmallInfoWidget;
+import net.lopymine.mtd.gui.widget.tag.*;
+import net.lopymine.mtd.gui.widget.tag.TagMenuWidget.NameApplier;
+import net.lopymine.mtd.tag.Tag;
+import net.lopymine.mtd.utils.mixin.MTDAnvilScreen;
+import org.jetbrains.annotations.Nullable;
 
 @Mixin(AnvilScreen.class)
+@ExtensionMethod(ItemStackExtension.class)
 public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler> implements MTDAnvilScreen {
 
 	@Shadow
 	private TextFieldWidget nameField;
-
-	@Shadow public abstract void resize(MinecraftClient client, int width, int height);
-
-	@Shadow protected abstract void setup();
-
 	@Unique
-	private TagButtonWidget tagButton;
+	@Nullable
+	private DraggingTagButtonWidget tagButtonWidget = null;
 	@Unique
-	private TagMenuWidget tagMenuWidget;
+	@Nullable
+	private TagMenuWidget tagMenuWidget = null;
 	@Unique
-	private SmallInfoWidget infoWidget;
+	@Nullable
+	private SmallInfoWidget infoWidget = null;
 	@Unique
 	private boolean menuVisible = false;
-
 	public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory playerInventory, Text title, Identifier texture) {
 		super(handler, playerInventory, title, texture);
 	}
 
+	@Shadow
+	public abstract void resize(MinecraftClient client, int width, int height);
+
+	@Shadow
+	protected abstract void setup();
+
 	@Inject(at = @At("HEAD"), method = "setup")
 	private void setupTagMenu(CallbackInfo ci) {
+		if (!MyTotemDollClient.getConfig().isModEnabled()) {
+			return;
+		}
+
 		ItemStack stack = this.handler.getSlot(0).getStack();
 		ItemStack result = this.handler.getSlot(2).getStack();
 		boolean bl = stack.isOf(Items.TOTEM_OF_UNDYING);
@@ -77,13 +90,14 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
 		//
 
-		this.tagButton = new TagButtonWidget('t', 0, 0, (b) -> {
+		Vec2i tagButtonPos = new MyTotemDollConfig().getTagButtonPos();
+		this.tagButtonWidget = new DraggingTagButtonWidget(Tag.simple('t'), this.x, this.y,  this.x + tagButtonPos.getX(), this.y + tagButtonPos.getY(), 0, 0, (b) -> {
 			this.menuVisible = !b.isEnabled();
 			this.resize(this.client, this.width, this.height);
 		});
-		this.tagButton.setEnabled(this.tagMenuWidget.visible);
-		this.tagButton.visible = bl;
-		this.addDrawableChild(this.tagButton);
+		this.tagButtonWidget.setEnabled(this.tagMenuWidget.visible);
+		this.tagButtonWidget.visible = bl;
+		this.addDrawableChild(this.tagButtonWidget);
 
 		//
 
@@ -99,32 +113,54 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
 	@Unique
 	private void updateWidgetsPositions() {
-		int tagMenuX = this.x + 176 + 5;
+		MyTotemDollConfig config = MyTotemDollClient.getConfig();
+		if (!config.isModEnabled() || this.tagButtonWidget == null || this.tagMenuWidget == null || this.infoWidget == null) {
+			return;
+		}
+
+		int tagMenuX = this.x + 176 + 1;
 		int tagMenuY = this.y;
 		this.tagMenuWidget.setPosition(tagMenuX, tagMenuY);
 
+		ItemStack stack = this.handler.getSlot(0).getStack();
+		ItemStack result = this.handler.getSlot(2).getStack();
+		ItemStack itemStack = result.isEmpty() ? stack : result;
+
+		this.tagMenuWidget.updateButtonsWithCustomModels(itemStack);
+		this.tagMenuWidget.updateButtonsAvailable(itemStack);
+
 		int infoWidgetX = this.tagMenuWidget.getX() + this.tagMenuWidget.getWidth() + 2;
-		int infoWidgetY = this.tagMenuWidget.getY() + 2;
+		int infoWidgetY = this.tagMenuWidget.getWidgetY() + 2;
 		this.infoWidget.setPosition(infoWidgetX, infoWidgetY);
 
-		Slot slot = this.handler.getSlot(2);
-		int tagButtonX = (((176 - slot.x) / 2) + slot.x) + this.x;
-		int tagButtonY = (slot.y + 2) + this.y;
-		this.tagButton.setPosition(tagButtonX, tagButtonY);
+		Vec2i pos = config.getTagButtonPos();
+		this.tagButtonWidget.setPosition(pos.getX() + this.x, pos.getY() + this.y);
+		this.tagButtonWidget.setOriginX(this.x);
+		this.tagButtonWidget.setOriginY(this.y);
 	}
 
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"), method = "drawForeground")
 	private void swapBackgroundValue(DrawContext instance, int x1, int y1, int x2, int y2, int color, Operation<Void> original) {
+		if (!MyTotemDollClient.getConfig().isModEnabled()) {
+			original.call(instance, x1, y1, x2, y2, color);
+			return;
+		}
 		original.call(instance, x1 - this.backgroundWidth + 176, y1, x2 - this.backgroundWidth + 176, y2, color);
 	}
 
 	@Inject(at = @At("TAIL"), method = "drawBackground")
 	private void updateWidgetPositions(DrawContext context, float delta, int mouseX, int mouseY, CallbackInfo ci) {
+		if (!MyTotemDollClient.getConfig().isModEnabled()) {
+			return;
+		}
 		this.updateWidgetsPositions();
 	}
 
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTextWithShadow(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)I"), method = "drawForeground")
 	private int swapBackgroundValue(DrawContext instance, TextRenderer textRenderer, Text text, int x, int y, int color, Operation<Integer> original) {
+		if (!MyTotemDollClient.getConfig().isModEnabled()) {
+			return original.call(instance, textRenderer, text, x, y, color);
+		}
 		return original.call(instance, textRenderer, text, x - this.backgroundWidth + 176, y, color);
 	}
 
@@ -137,20 +173,31 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
 	@Inject(at = @At("HEAD"), method = "onSlotUpdate")
 	private void checkTotem(ScreenHandler handler, int slotId, ItemStack stack, CallbackInfo ci) {
+		if (!MyTotemDollClient.getConfig().isModEnabled() || this.tagButtonWidget == null || this.tagMenuWidget == null || this.infoWidget == null) {
+			return;
+		}
 		if (slotId == 0) {
-			this.tagButton.visible = stack.isOf(Items.TOTEM_OF_UNDYING);
-			if (!this.tagButton.visible && this.tagMenuWidget.visible) {
-				this.tagButton.setEnabled(true, true);
+			this.tagButtonWidget.visible = stack.isOf(Items.TOTEM_OF_UNDYING);
+			if (!this.tagButtonWidget.visible && this.tagMenuWidget.visible) {
+				this.tagButtonWidget.setEnabled(true, true);
 			}
 		}
 	}
 
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getName()Lnet/minecraft/text/Text;"), method = "onSlotUpdate")
-	private Text swapItemName(ItemStack instance, Operation<Text> original) {
-		Text text = ItemStackUtils.getItemStackCustomName(instance);
-		if (text == null) {
-			return original.call(instance);
+	private Text swapItemName(ItemStack stack, Operation<Text> original) {
+		if (!MyTotemDollClient.getConfig().isModEnabled() || !stack.isOf(Items.TOTEM_OF_UNDYING)) {
+			return original.call(stack);
 		}
-		return text;
+		Text customName = stack.getRealCustomName();
+		if (customName == null) {
+			return original.call(stack);
+		}
+		return customName;
+	}
+
+	@Override
+	public @Nullable TagButtonWidget myTotemDoll$getTagButtonWidget() {
+		return this.tagButtonWidget;
 	}
 }

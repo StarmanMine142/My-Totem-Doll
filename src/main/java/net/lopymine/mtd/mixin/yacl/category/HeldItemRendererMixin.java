@@ -8,16 +8,18 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-//? if >=1.20.5 {
-import net.minecraft.component.DataComponentTypes;
- //?}
+
+
 import net.minecraft.item.*;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.custom.category.rendering.RenderingCategoryTab;
 
-import net.lopymine.mtd.modmenu.yacl.YACLConfigurationScreen;
-import net.lopymine.mtd.modmenu.yacl.custom.category.tab.RenderingCategoryTab;
+//? if >=1.20.5 {
+import net.minecraft.component.DataComponentTypes;
+//?}
 
 @Pseudo
 @Mixin(HeldItemRenderer.class)
@@ -47,9 +49,9 @@ public class HeldItemRendererMixin {
 
 			//? if >=1.20.5 {
 			totem.set(DataComponentTypes.CUSTOM_NAME, player.getName());
-			 //?} else {
+			//?} else {
 			/*totem.setCustomName(player.getName());
-			*///?}
+			 *///?}
 
 			original.call(instance, player, tickDelta, pitch, hand, swingProgress, totem, equipProgress, matrices, vertexConsumers, light);
 		} else {

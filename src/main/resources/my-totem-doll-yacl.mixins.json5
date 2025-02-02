@@ -4,27 +4,32 @@
     "refmap": "${mod_id}.refmap.json",
     "compatibilityLevel": "JAVA_${java}",
 	"plugin": "net.lopymine.mtd.compat.yacl.YACLCompatPlugin",
-    "mixins": [],
-    "client": [
-	    "ScreenMixin",
-	    "YACLScreenMixin",
-	    "YetAnotherConfigLibImplBuilderMixin",
-	    "YetAnotherConfigLibImplMixin",
+    "mixins": [
+    ],
+	"client": [
+		"ScreenMixin",
+		"YACLScreenMixin",
+		"YetAnotherConfigLibImplBuilderMixin",
+		"YetAnotherConfigLibImplMixin",
 
-	    "category.HeldItemRendererMixin",
-	    "category.CategoryTabMixin",
-	    "category.EntryListWidgetMixin",
-	    "category.ConfigCategoryImplBuilderImplMixin",
+		"category.HeldItemRendererMixin",
+		"category.EntryListWidgetMixin",
+		"category.ConfigCategoryImplBuilderImplMixin",
 
 	    //? =1.20.1 {
 	    /*"category.TabButtonWidgetMixin",
 	    "category.TabNavigationWidgetMixin",
 	    *///?}
 
+		"option.ListOptionEntryImplEntryControllerMixin",
+		"option.HiddenNameListOptionEntryImplMixin",
+		"option.ListOptionEntryImplMixin",
+		"widget.ListEntryWidgetMixin",
 	    "widget.PressableWidgetMixin",
 	    "widget.AbstractWidgetMixin",
-	    "widget.TextFieldWidgetMixin"
-    ],
+	    "widget.TextFieldWidgetMixin",
+	    "widget.OptionDescriptionWidgetMixin"
+	],
     "injectors": {
         "defaultRequire": 1
     }
