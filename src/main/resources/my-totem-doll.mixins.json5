@@ -6,10 +6,18 @@
     "mixins": [
     ],
     "client": [
-	    "accessor.DilationAccessor",
+	    //? if <=1.21.3 {
+	    /*"PlayerSkinTextureMixin",
 	    "ItemRendererMixin",
+	    *///?}
+
+	    //? if >=1.21.4 {
+	    "ItemModelManagerMixin",
+	    "ItemRenderStateMixin",
+	    //?}
+
+	    "accessor.DilationAccessor",
 	    "GameRendererMixin",
-	    "PlayerSkinTextureMixin",
 	    "AnvilScreenMixin",
 	    "AnvilScreenHandlerMixin",
 	    "ScreenMixin",

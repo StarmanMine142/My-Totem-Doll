@@ -9,6 +9,7 @@ import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.config.MyTotemDollConfig;
@@ -74,17 +75,17 @@ public class CustomModelTagButtonWidget extends TagButtonWidget {
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+	public boolean mouseScrolled(double mouseX, double mouseY, /*? if >=1.21 {*/ double horizontalAmount, /*?}*/ double verticalAmount) {
 		if (!this.isMouseOver(mouseX, mouseY)) {
 			return false;
 		}
 		int amount = ((int) verticalAmount) > 0 ? 1 : -1;
 		MyTotemDollConfig config = MyTotemDollClient.getConfig();
 		if (Screen.hasShiftDown()) {
-			config.setTagMenuTooltipSize(TooltipSize.values()[Math.floorMod(config.getTagMenuTooltipSize().ordinal() + amount, TooltipSize.values().length)]);
+			config.setTagMenuTooltipSize(TooltipSize.values()[MathHelper.floorMod(config.getTagMenuTooltipSize().ordinal() + amount, TooltipSize.values().length)]);
 			return true;
 		} else if (Screen.hasControlDown()) {
-			config.setTagMenuTooltipModelScale(Math.clamp(config.getTagMenuTooltipModelScale() + (amount / 18F), 0.1F, 10F));
+			config.setTagMenuTooltipModelScale(MathHelper.clamp(config.getTagMenuTooltipModelScale() + (amount / 18F), 0.1F, 10F));
 			return true;
 		}
 		return false;

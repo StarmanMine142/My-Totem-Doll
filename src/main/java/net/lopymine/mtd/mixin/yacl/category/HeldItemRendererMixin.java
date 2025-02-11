@@ -21,11 +21,9 @@ import net.lopymine.mtd.yacl.custom.category.rendering.RenderingCategoryTab;
 import net.minecraft.component.DataComponentTypes;
 //?}
 
-@Pseudo
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
 
-	@Dynamic
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"), method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V")
 	private void renderDoll(HeldItemRenderer instance, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, Operation<Void> original) {
 		MinecraftClient client = MinecraftClient.getInstance();

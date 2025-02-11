@@ -2,7 +2,6 @@ package net.lopymine.mtd.gui.widget.tag;
 
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.client.gui.tooltip.*;
@@ -13,11 +12,18 @@ import net.minecraft.util.Identifier;
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.tag.Tag;
 import net.lopymine.mtd.tag.manager.TagsManager;
+import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 
 import java.util.List;
 import java.util.function.*;
 import org.jetbrains.annotations.Nullable;
+
+//? if >=1.21 {
+import net.minecraft.client.gui.screen.ButtonTextures;
+//?} else {
+/*import net.lopymine.mtd.utils.ButtonTextures;
+*///?}
 
 @Getter
 @Setter
@@ -42,6 +48,7 @@ public class TagButtonWidget extends ButtonWidget {
 	@Nullable
 	private Supplier<TooltipComponent> inactiveTooltipComponentSuppler;
 	private boolean pressed;
+	private boolean canBeHovered = true;
 
 	public TagButtonWidget(Tag tag, int x, int y, TagPressAction pressAction) {
 		super(x, y, 14, 14, Text.of(""), (widget) -> pressAction.onPress((TagButtonWidget) widget), ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
@@ -71,8 +78,9 @@ public class TagButtonWidget extends ButtonWidget {
 		this.tooltipText = text;
 	}
 
+
 	@Override
-	public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+	public void /*? if >=1.21 {*/renderWidget/*?} else {*//*renderButton*//*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
 		this.renderButton(context, this.getX(), this.getY());
 		this.requestTooltip();
 	}
@@ -83,18 +91,17 @@ public class TagButtonWidget extends ButtonWidget {
 	}
 
 	protected void renderIcon(DrawContext context, int x, int y) {
-		context.drawTexture(this.icon, x + (this.getWidth() / 2) - 5, y + (this.getHeight() / 2) - 5, 0, 0, 0, 10, 10, 10, 10);
+		DrawUtils.drawTexture(context, this.icon, x + (this.getWidth() / 2) - 5, y + (this.getHeight() / 2) - 5, 0, 0, 10, 10, 10, 10);
 	}
 
 	protected void renderBackground(DrawContext context, int x, int y) {
 		Identifier texture = !this.active ? INACTIVE_TEXTURE : TEXTURES.get(this.isEnabled(), this.isHovered());
-		context.drawTexture(texture, x, y, 0, 0, 0, this.width, this.height, this.width, this.height);
+		DrawUtils.drawTexture(context, texture, x, y, 0, 0, this.width, this.height, this.width, this.height);
 	}
 
 	public void requestTooltip() {
 		MinecraftClient client = MinecraftClient.getInstance();
 		Screen screen = client.currentScreen;
-		TextRenderer textRenderer = client.textRenderer;
 
 		TooltipComponent component = this.getCurrentTooltipComponent();
 		if (component == null) {
@@ -110,7 +117,7 @@ public class TagButtonWidget extends ButtonWidget {
 		}
 
 		tooltipScreen.myTotemDoll$requestTooltip(((c, x, y, d) -> {
-			c.drawTooltip(textRenderer, List.of(component), x, y, HoveredTooltipPositioner.INSTANCE);
+			DrawUtils.drawTooltip(c, List.of(component), x, y);
 		}));
 	}
 
@@ -131,6 +138,20 @@ public class TagButtonWidget extends ButtonWidget {
 
 	public void setActive(boolean bl) {
 		this.active = bl;
+	}
+
+	public boolean over(double mouseX, double mouseY) {
+		return this.active
+				&& this.visible
+				&& mouseX >= (double)this.getX()
+				&& mouseY >= (double)this.getY()
+				&& mouseX < (double)(this.getX() + this.getWidth())
+				&& mouseY < (double)(this.getY() + this.getHeight());
+	}
+
+	@Override
+	public boolean isHovered() {
+		return super.isHovered() && this.isCanBeHovered();
 	}
 
 	@FunctionalInterface

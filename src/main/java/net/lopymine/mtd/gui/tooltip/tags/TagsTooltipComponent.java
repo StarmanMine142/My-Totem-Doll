@@ -9,6 +9,7 @@ import net.minecraft.util.*;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.tag.manager.TagsManager;
+import net.lopymine.mtd.utils.DrawUtils;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -27,7 +28,7 @@ public class TagsTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public int getHeight() {
+	public int getHeight(/*? >=1.21.2 {*/TextRenderer textRenderer/*?}*/) {
 		return 10 * this.rows.size();
 	}
 
@@ -42,12 +43,12 @@ public class TagsTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
+	public void drawItems(TextRenderer textRenderer, int x, int y,/*? >=1.21.2 {*/int w, int h,/*?}*/ DrawContext context) {
 		int yOffset = 0;
 
 		int space = textRenderer.getWidth(ScreenTexts.space());
 		for (Entry<Identifier, Text> entry : this.rows.entrySet()) {
-			context.drawTexture(entry.getKey(), x + space, y + yOffset - 1, 0, 0, 10, 10, 10, 10);
+			DrawUtils.drawTexture(context, entry.getKey(), x + space, y + yOffset - 1, 0, 0, 10, 10, 10, 10);
 			context.drawText(textRenderer, entry.getValue(), x + space + 10 + 4, y + yOffset, -1, true);
 			yOffset += 10;
 		}

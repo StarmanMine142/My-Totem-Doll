@@ -1,20 +1,23 @@
 package net.lopymine.mtd.model.bb;
 
 import lombok.*;
+import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.render.model.json.*;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import org.joml.Vector3f;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.lopymine.mtd.config.other.vector.Vec3f;
+import net.lopymine.mtd.extension.ModelTransformationExtension;
 
 import java.util.*;
 import org.jetbrains.annotations.Nullable;
 import static net.lopymine.mtd.utils.CodecUtils.option;
 import static net.lopymine.mtd.utils.CodecUtils.optional;
+
+//? >=1.21.2
+import net.minecraft.item.ModelTransformationMode;
 
 @Setter
 @Getter
@@ -70,6 +73,7 @@ public class BBModel {
 
 	}
 
+	@ExtensionMethod(ModelTransformationExtension.class)
 	public static final class Transformations {
 
 		private static final Vec3f DEFAULT_ROTATION = new Vec3f(0.0F, 0.0F, 0.0F);
@@ -88,14 +92,14 @@ public class BBModel {
 		}
 
 		public static final Codec<ModelTransformation> MODEL_TRANSFORMATION_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-				optional(ModelTransformationMode.THIRD_PERSON_LEFT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.thirdPersonLeftHand),
-				optional(ModelTransformationMode.THIRD_PERSON_RIGHT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.thirdPersonRightHand),
-				optional(ModelTransformationMode.FIRST_PERSON_LEFT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.firstPersonLeftHand),
-				optional(ModelTransformationMode.FIRST_PERSON_RIGHT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.firstPersonRightHand),
-				optional(ModelTransformationMode.HEAD.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.head),
-				optional(ModelTransformationMode.GUI.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.gui),
-				optional(ModelTransformationMode.GROUND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.ground),
-				optional(ModelTransformationMode.FIXED.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.fixed)
+				optional(ModelTransformationMode.THIRD_PERSON_LEFT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getTl()),
+				optional(ModelTransformationMode.THIRD_PERSON_RIGHT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getTr()),
+				optional(ModelTransformationMode.FIRST_PERSON_LEFT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFl()),
+				optional(ModelTransformationMode.FIRST_PERSON_RIGHT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFr()),
+				optional(ModelTransformationMode.HEAD.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getHead()),
+				optional(ModelTransformationMode.GUI.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getGui()),
+				optional(ModelTransformationMode.GROUND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getGround()),
+				optional(ModelTransformationMode.FIXED.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFixed())
 		).apply(instance, ModelTransformation::new));
 
 	}

@@ -17,10 +17,10 @@ public class CombinedTooltipComponent implements TooltipComponent {
     }
 
     @Override
-    public int getHeight() {
+    public int getHeight(/*? >=1.21.2 {*/TextRenderer textRenderer/*?}*/) {
         int height = 0;
         for (TooltipComponent component : components) {
-            height += component.getHeight() + 1;
+            height += component.getHeight(/*? >=1.21.2 {*/textRenderer/*?}*/) + 1;
         }
         return height;
     }
@@ -40,16 +40,16 @@ public class CombinedTooltipComponent implements TooltipComponent {
         int componentY = 0;
         for (TooltipComponent component : components) {
             component.drawText(textRenderer, x, y + componentY, matrix, vertexConsumers);
-            componentY += component.getHeight() + 1;
+            componentY += component.getHeight(/*? >=1.21.2 {*/textRenderer/*?}*/) + 1;
         }
     }
 
     @Override
-    public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
+    public void drawItems(TextRenderer textRenderer, int x, int y, /*? >=1.21.2 {*/int w, int h,/*?}*/ DrawContext context) {
         int componentY = 0;
         for (TooltipComponent component : components) {
-            component.drawItems(textRenderer, x, y + componentY, context);
-            componentY += component.getHeight() + 1;
+            component.drawItems(textRenderer, x, y + componentY, /*? >=1.21.2 {*/ w, h,/*?}*/ context);
+            componentY += component.getHeight(/*? >=1.21.2 {*/textRenderer/*?}*/) + 1;
         }
     }
 }

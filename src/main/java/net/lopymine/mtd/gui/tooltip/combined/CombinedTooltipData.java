@@ -1,7 +1,11 @@
 package net.lopymine.mtd.gui.tooltip.combined;
 
 import net.minecraft.client.gui.tooltip.TooltipComponent;
+//? if >=1.21 {
 import net.minecraft.item.tooltip.TooltipData;
+//?} else {
+/*import net.minecraft.client.item.TooltipData;
+*///?}
 
 import java.util.*;
 

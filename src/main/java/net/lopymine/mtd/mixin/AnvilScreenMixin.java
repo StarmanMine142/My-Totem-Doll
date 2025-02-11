@@ -7,6 +7,7 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
 import net.minecraft.screen.*;
@@ -25,6 +26,8 @@ import net.lopymine.mtd.gui.widget.tag.*;
 import net.lopymine.mtd.gui.widget.tag.TagMenuWidget.NameApplier;
 import net.lopymine.mtd.tag.Tag;
 import net.lopymine.mtd.utils.mixin.MTDAnvilScreen;
+
+import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 @Mixin(AnvilScreen.class)
@@ -165,9 +168,12 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 	}
 
 	//? <1.21 {
-	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lnet/minecraft/util/Identifier;IIII)V"), method = "drawInvalidRecipeArrow")
-	private void swapBackgroundValue(DrawContext instance, Identifier identifier, int x, int y, int u, int v, Operation<Void> original) {
-		original.call(instance, identifier, x, y, u - this.backgroundWidth + 176, v);
+	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), method = "drawInvalidRecipeArrow")
+	private void swapBackgroundValue(DrawContext instance, Identifier identifier, int x, int y, int a, int b, int c, int d, Operation<Void> original) {
+		if (!MyTotemDollClient.getConfig().isModEnabled()) {
+			original.call(instance, identifier, x, y, a, b, c, d);
+		}
+		original.call(instance, identifier, x, y, a - this.backgroundWidth + 176, b, c, d);
 	}
 	*///?}
 
@@ -199,5 +205,10 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 	@Override
 	public @Nullable TagButtonWidget myTotemDoll$getTagButtonWidget() {
 		return this.tagButtonWidget;
+	}
+
+	@Override
+	public @Nullable TagMenuWidget myTotemDoll$getTagMenuWidget() {
+		return this.tagMenuWidget;
 	}
 }

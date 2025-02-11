@@ -7,6 +7,7 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.model.json.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.*;
 import org.slf4j.Logger;
 
@@ -60,6 +61,7 @@ public class MModel extends ModelPart {
 	public void setLocation(@NotNull Identifier location) {
 		this.location = location;
 
+
 		String name = this.getName();
 		try {
 			if (name.endsWith(".png")) {
@@ -68,7 +70,7 @@ public class MModel extends ModelPart {
 					boolean namespaceValid = Identifier.isNamespaceValid(split[0]);
 					boolean pathValid = Identifier.isPathValid(split[1]);
 					if (namespaceValid && pathValid) {
-						this.builtinTexture = Identifier.of(name);
+						this.builtinTexture = Identifier.of(/*? if <1.21 {*/ /*"minecraft", *//*?}*/ name);
 					}
 				} else {
 					this.builtinTexture = location.getFolderId().withSuffixedPath(this.getName());
@@ -82,7 +84,7 @@ public class MModel extends ModelPart {
 	}
 
 	@Override
-	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, int color) {
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, /*? if >=1.21 {*/int color/*?} else {*//*float red, float green, float blue, float alpha *//*?}*/) {
 		// NO-OP
 	}
 
@@ -105,7 +107,7 @@ public class MModel extends ModelPart {
 		return this;
 	}
 
-	public void draw(MatrixStack matrices, VertexConsumerProvider provider, Function<Identifier, RenderLayer> layerFunction, Identifier mainTexture, Map<String, Supplier<Identifier>> partsTextures, Set<String> requestedParts, int light, int overlay, int color) {
+	public void draw(MatrixStack matrices, VertexConsumerProvider provider, Function<Identifier, RenderLayer> layerFunction, Identifier mainTexture, Map<String, Supplier<Identifier>> partsTextures, Set<String> requestedParts, int light, int overlay, /*? if >=1.21 {*/int color/*?} else {*//*float red, float green, float blue, float alpha *//*?}*/) {
 		// TODO Optimize
 		if (this.skipRendering && !requestedParts.contains(this.getName())) {
 			return;
@@ -128,11 +130,11 @@ public class MModel extends ModelPart {
 		this.rotate(matrices);
 		if (!this.hidden && !this.mCuboids.isEmpty()) {
 			VertexConsumer consumer = provider.getBuffer(layerFunction.apply(texture));
-			this.renderCuboids(matrices.peek(), consumer, light, overlay, color);
+			this.renderCuboids(matrices.peek(), consumer, light, overlay, /*? if >=1.21 {*/ color/*?} else {*/ /*red, green, blue, alpha *//*?}*/);
 		}
 
 		for (MModel model : this.mChildren.values()) {
-			model.draw(matrices, provider, layerFunction, texture, partsTextures, requestedParts, light, overlay, color);
+			model.draw(matrices, provider, layerFunction, texture, partsTextures, requestedParts, light, overlay, /*? if >=1.21 {*/ color/*?} else {*/ /*red, green, blue, alpha *//*?}*/);
 		}
 
 		matrices.pop();

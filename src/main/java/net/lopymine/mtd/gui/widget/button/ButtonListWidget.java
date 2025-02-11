@@ -5,7 +5,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.text.*;
-import net.minecraft.util.math.ColorHelper.Argb;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.gui.widget.list.ListWithStaticHeaderWidget;
@@ -37,17 +36,7 @@ public class ButtonListWidget extends ListWithStaticHeaderWidget<ButtonListEntry
 	}
 
 	@Override
-	protected void drawHeaderAndFooterSeparators(DrawContext context) {
-	}
-
-	@Override
 	protected void drawMenuListBackground(DrawContext context) {
-//		if (this.getHoveredEntry() != null) {
-//			context.fill(this.getX(), this.getY(), this.getRight() + 5, this.getBottom(), Argb.getArgb(0, 255, 0));
-//			context.drawText(MinecraftClient.getInstance().textRenderer, this.getHoveredEntry().getWidget().getMessage().getString(), 0, 0, -1, true);
-//		} else {
-//			context.fill(this.getX(), this.getY(), this.getRight() + 5, this.getBottom(), Argb.getArgb(255, 0, 0));
-//		}
 		if (this.searching && this.searchWidgets.isEmpty()) {
 			int a = (this.getWidth() - this.getRowWidth()) / 2;
 			ClickableWidget.drawScrollableText(context, MinecraftClient.getInstance().textRenderer, NOTHING_FOUND_TEXT, this.getX() + a, this.getY(), this.getX() + this.getWidth() - a, this.getY() + this.getHeight() + 4, -1);
@@ -73,7 +62,7 @@ public class ButtonListWidget extends ListWithStaticHeaderWidget<ButtonListEntry
 	}
 
 	@Override
-	protected boolean isScrollbarVisible() {
+	public boolean needScrollBar() {
 		return false;
 	}
 
@@ -88,7 +77,7 @@ public class ButtonListWidget extends ListWithStaticHeaderWidget<ButtonListEntry
 	}
 
 	public void search(String string) {
-		this.setScrollAmount(0);
+		this.setListScrollAmount(0);
 
 		if (string.isEmpty()) {
 			this.searching = false;

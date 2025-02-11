@@ -10,12 +10,15 @@ import net.lopymine.mtd.extension.OptionExtension;
 import net.lopymine.mtd.yacl.custom.option.wrong.WrongOption;
 import org.jetbrains.annotations.NotNull;
 
+@Pseudo
 @ExtensionMethod(OptionExtension.class)
 @Mixin(HiddenNameListOptionEntry.class)
 public abstract class HiddenNameListOptionEntryImplMixin<T> implements WrongOption {
 
+	@Dynamic
 	@Shadow(remap = false) public abstract @NotNull Controller<T> controller();
 
+	@Dynamic
 	@Shadow(remap = false) @Final private ListOptionEntry<T> option;
 
 	@Override

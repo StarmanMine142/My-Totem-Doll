@@ -1,6 +1,8 @@
 package net.lopymine.mtd.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.*;
+//? if <=1.21.3 {
+
+/*import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import net.minecraft.client.texture.*;
 import org.slf4j.Logger;
 import org.spongepowered.asm.mixin.*;
@@ -86,3 +88,5 @@ public class PlayerSkinTextureMixin implements MTDPlayerSkinTexture {
 		this.cape = true;
 	}
 }
+
+*///?}

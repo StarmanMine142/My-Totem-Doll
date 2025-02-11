@@ -1,11 +1,12 @@
 package net.lopymine.mtd.extension;
 
-import net.minecraft.client.texture.PlayerSkinTexture;
-
-import net.lopymine.mtd.utils.mixin.MTDPlayerSkinTexture;
+//? <=1.21.3 {
+/*import net.lopymine.mtd.utils.mixin.MTDPlayerSkinTexture;
 import net.lopymine.mtd.utils.texture.*;
 
 import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.client.texture.PlayerSkinTexture;
 
 public class PlayerSkinTextureExtension {
 
@@ -21,3 +22,12 @@ public class PlayerSkinTextureExtension {
 		((MTDPlayerSkinTexture) playerSkinTexture).myTotemDoll$markAsCape();
 	}
 }
+
+*///?} else {
+
+
+public class PlayerSkinTextureExtension {
+
+}
+
+//?}

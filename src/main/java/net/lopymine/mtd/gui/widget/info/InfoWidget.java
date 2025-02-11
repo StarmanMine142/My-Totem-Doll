@@ -6,9 +6,14 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.*;
+//? if >=1.21 {
 import net.minecraft.item.tooltip.TooltipData;
+ //?} else {
+/*import net.minecraft.client.item.TooltipData;
+*///?}
 import net.minecraft.util.Identifier;
 
+import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 
 import java.util.List;
@@ -46,9 +51,9 @@ public class InfoWidget implements Drawable {
 			return;
 		}
 
-		this.hovered = context.scissorContains(mouseX, mouseY) && mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
+		this.hovered = /*? if >=1.21 {*/context.scissorContains(mouseX, mouseY) &&  /*?}*/ mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
-		context.drawTexture(this.texture, this.getX(), this.getY(), 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
+		DrawUtils.drawTexture(context, this.texture, this.getX(), this.getY(), 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
 
 		this.requestTooltip();
 	}
@@ -72,7 +77,7 @@ public class InfoWidget implements Drawable {
 
 		TooltipComponent component = TooltipComponent.of(this.tooltipData);
 		tooltipScreen.myTotemDoll$requestTooltip(((c, x, y, d) -> {
-			c.drawTooltip(textRenderer, List.of(component), x, y, HoveredTooltipPositioner.INSTANCE);
+			DrawUtils.drawTooltip(c, List.of(component), x, y);
 		}));
 	}
 

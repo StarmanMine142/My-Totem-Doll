@@ -1,10 +1,10 @@
 package net.lopymine.mtd.gui.tooltip.tags;
 
+//? if >=1.21 {
 import net.minecraft.item.tooltip.TooltipData;
-import net.minecraft.text.Text;
-
-import java.util.Optional;
-import org.jetbrains.annotations.Nullable;
+ //?} else {
+/*import net.minecraft.client.item.TooltipData;
+*///?}
 
 public record TagsTooltipData(String tags) implements TooltipData {
 

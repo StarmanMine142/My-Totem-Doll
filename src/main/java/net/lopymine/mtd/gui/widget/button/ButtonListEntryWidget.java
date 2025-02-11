@@ -31,9 +31,13 @@ public class ButtonListEntryWidget extends Entry<ButtonListEntryWidget> {
 	@Override
 	public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
 		this.widget.setWidth(entryWidth);
-		this.widget.setHeight(entryHeight);
 		this.widget.setX(x);
+		//? if >=1.21 {
+		this.widget.setHeight(entryHeight);
 		this.widget.setY(y);
+		//?} else {
+		/*this.widget.setY(y + ((entryHeight - 20) / 2));
+		*///?}
 
 		this.widget.render(context, mouseX, mouseY, tickDelta);
 	}

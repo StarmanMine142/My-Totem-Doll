@@ -5,27 +5,31 @@ import net.minecraft.client.font.*;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 
-
-import net.minecraft.text.Text;
+import net.minecraft.text.*;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper.Argb;
+import net.minecraft.util.math.ColorHelper;
+
 import net.lopymine.mtd.MyTotemDoll;
+import net.lopymine.mtd.utils.*;
 
 public class InfoTooltipComponent implements TooltipComponent {
 
 	public static final Identifier SEPARATOR = MyTotemDoll.id("textures/gui/icon/separator.png");
-	public static final int TITLE_COLOR = Argb.getArgb(89, 206, 255);
+	public static final int TITLE_COLOR = ColorUtils.getArgb(89, 206, 255);
 
-	private final Text title;
+	private final MutableText title;
 	private final MultilineText text;
 
 	public InfoTooltipComponent(String key) {
-		this.title = MyTotemDoll.text("%s.title".formatted(key)).withColor(TITLE_COLOR);
-		this.text  = MultilineText.create(MinecraftClient.getInstance().textRenderer, 140, MyTotemDoll.text("%s.text".formatted(key)));
+		this.title = MyTotemDoll.text("%s.title".formatted(key))/*? if >=1.21 {*/ .withColor(TITLE_COLOR)/*?}*/;
+		//? if <1.21 {
+		/*this.title.setStyle(this.title.getStyle().withColor(ColorUtils.getRgb(89, 206, 255)));
+		*///?}
+		this.text  = MultilineText.create(MinecraftClient.getInstance().textRenderer, MyTotemDoll.text("%s.text".formatted(key)), 140);
 	}
 
 	@Override
-	public int getHeight() {
+	public int getHeight(/*? >=1.21.2 {*/TextRenderer textRenderer/*?}*/) {
 		return (this.text.count() * 10) + 26 + 2 + 5 + 2 + 5;
 	}
 
@@ -35,11 +39,11 @@ public class InfoTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public void drawItems(TextRenderer textRenderer, int x, int y, DrawContext context) {
+	public void drawItems(TextRenderer textRenderer, int x, int y, /*? >=1.21.2 {*/int w, int h,/*?}*/ DrawContext context) {
 		int width = this.getWidth(textRenderer);
 		int titleWidth = textRenderer.getWidth(this.title);
 		context.drawText(textRenderer, this.title, x + (((width) / 2) - (titleWidth / 2)), y + 8, -1, false);
-		context.drawTexture(SEPARATOR, x, y + 24, 0, 0, 150, 5, 150, 5);
+		DrawUtils.drawTexture(context, SEPARATOR, x, y + 24, 0, 0, 150, 5, 150, 5);
 		this.text.draw(context, x + 5, y + 26 + 2 + 5 + 2, 10, -1);
 	}
 }

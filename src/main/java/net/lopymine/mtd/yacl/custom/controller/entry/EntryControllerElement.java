@@ -12,10 +12,9 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.*;
-import net.minecraft.util.math.ColorHelper.Argb;
-
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.extension.OptionExtension;
+import net.lopymine.mtd.utils.ColorUtils;
 import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 import net.lopymine.mtd.yacl.custom.option.entry.*;
 
@@ -25,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 @ExtensionMethod(OptionExtension.class)
 public class EntryControllerElement<K, V> extends ControllerWidget<EntryController<K, V>> implements ParentElement {
 
-	private static final int RED_COLOR = Argb.getArgb(255, 0, 0);
+	private static final int RED_COLOR = ColorUtils.getArgb(255, 0, 0);
 
 	private final AbstractWidget keyWidget;
 	private final AbstractWidget valueWidget;

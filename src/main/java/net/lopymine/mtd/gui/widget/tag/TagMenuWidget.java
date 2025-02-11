@@ -23,6 +23,7 @@ import net.lopymine.mtd.gui.widget.list.ListWithStaticHeaderWidget;
 import net.lopymine.mtd.gui.widget.tag.TagMenuWidget.TagRow;
 import net.lopymine.mtd.tag.Tag;
 import net.lopymine.mtd.tag.manager.TagsManager;
+import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 import java.util.*;
 
@@ -117,17 +118,13 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 	}
 
 	@Override
-	protected void drawHeaderAndFooterSeparators(DrawContext context) {
-	}
-
-	@Override
 	protected void drawMenuListBackground(DrawContext context) {
 //				if (this.getHoveredEntry() != null) {
 //			context.fill(this.getX(), this.getY(), this.getRight() + 5, this.getBottom(), Argb.getArgb(0, 255, 0));
 //		} else {
 //			context.fill(this.getX(), this.getY(), this.getRight() + 5, this.getBottom(), Argb.getArgb(255, 0, 0));
 //		}
-		context.drawTexture(BACKGROUND, this.getX(), this.getWidgetY(), 0, 0, 0, 50, 166, 50, 166);
+		DrawUtils.drawTexture(context, BACKGROUND, this.getX(), this.getWidgetY(), 0, 0, 50, 166, 50, 166);
 	}
 
 	@Override
@@ -135,16 +132,16 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+	public boolean mouseScrolled(double mouseX, double mouseY, /*? if >=1.21 {*/ double horizontalAmount, /*?}*/ double verticalAmount) {
 		TagRow entry = this.getEntryAtPosition(mouseX, mouseY);
-		if (entry != null && entry.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) {
+		if (entry != null && entry.mouseScrolled(mouseX, mouseY, /*? if >=1.21 {*/horizontalAmount, /*?}*/ verticalAmount)) {
 			return true;
 		}
-		return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
+		return super.mouseScrolled(mouseX, mouseY, /*? if >=1.21 {*/horizontalAmount, /*?}*/ verticalAmount);
 	}
 
 	@Override
-	protected boolean isScrollbarVisible() {
+	public boolean needScrollBar() {
 		return false;
 	}
 
@@ -224,6 +221,7 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 
 			for (TagButtonWidget widget : this.buttons) {
 				widget.setPosition(x + xOffset, y);
+				widget.setCanBeHovered(hovered);
 				widget.render(context, mouseX, mouseY, tickDelta);
 				xOffset += widget.getWidth() + 2;
 			}
@@ -247,7 +245,7 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 			TextRenderer textRenderer = client.textRenderer;
 
 			RenderSystem.enableBlend();
-			context.drawTexture(SEPARATOR, x - 1, y + (entryHeight / 2) - 3, 0, 0, 32, 7, 32, 7);
+			DrawUtils.drawTexture(context, SEPARATOR, x - 1, y + (entryHeight / 2) - 3, 0, 0, 32, 7, 32, 7);
 			RenderSystem.disableBlend();
 
 			if (hovered) {

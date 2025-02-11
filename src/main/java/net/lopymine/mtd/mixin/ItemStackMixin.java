@@ -7,7 +7,11 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.item.*;
+//? if >=1.21 {
 import net.minecraft.item.tooltip.TooltipData;
+ //?} else {
+/*import net.minecraft.client.item.TooltipData;
+*///?}
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.*;
@@ -54,11 +58,14 @@ public abstract class ItemStackMixin {
 
 	@ModifyReturnValue(at = @At("RETURN"), method = "getTooltipData")
 	private Optional<TooltipData> getTooltipData(Optional<TooltipData> original) {
-		if (!MyTotemDollClient.getConfig().isModEnabled() || !this.isOf(Items.TOTEM_OF_UNDYING)) {
+		ItemStack itemStack = (ItemStack) (Object) this;
+
+		boolean moddedModel = itemStack.hasModdedModel();
+		if (!MyTotemDollClient.getConfig().isModEnabled() || !this.isOf(Items.TOTEM_OF_UNDYING) || moddedModel) {
 			return original;
 		}
 
-		Text customName = ((ItemStack) (Object) this).getRealCustomName();
+		Text customName = itemStack.getRealCustomName();
 		if (customName == null) {
 			return original;
 		}
@@ -96,7 +103,7 @@ public abstract class ItemStackMixin {
 			return Optional.empty();
 		}
 		String tags = data[1];
-		if (tags == null || tags.isBlank() || tags.isEmpty() || TagsManager.getTagsStream(tags).noneMatch(TagsManager::hasTag)) {
+		if (tags == null || tags.isEmpty() || TagsManager.getTagsStream(tags).noneMatch(TagsManager::hasTag)) {
 			return Optional.empty();
 		}
 		return Optional.of(new CombinedTooltipData(

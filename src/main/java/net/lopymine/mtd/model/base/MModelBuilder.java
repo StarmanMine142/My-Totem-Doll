@@ -54,7 +54,7 @@ public class MModelBuilder {
 	}
 
 	public MModelBuilder withTransform(ModelTransform transform) {
-		this.transform = ModelTransform.of(transform.pivotX, transform.pivotY, transform.pivotZ, transform.pitch, transform.yaw, transform.roll);
+		this.transform = ModelTransform.of(transform.getPivotX(), transform.getPivotY(), transform.getPivotZ(), transform.getPitch(), transform.getYaw(), transform.getRoll());
 		return this;
 	}
 

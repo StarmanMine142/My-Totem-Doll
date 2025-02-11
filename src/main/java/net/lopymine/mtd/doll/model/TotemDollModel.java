@@ -44,7 +44,7 @@ public class TotemDollModel extends Model {
 	private Drawer drawer;
 
 	public TotemDollModel(MModel root, boolean slim) {
-		super(RenderLayer::getEntityTranslucent);
+		super(/*? >=1.21.2 {*/ root, /*?}*/RenderLayer::getEntityTranslucent);
 
 		this.head         = root.findModel("head").orElse(null);
 		this.body         = root.findModel("body").orElse(null);
@@ -108,10 +108,14 @@ public class TotemDollModel extends Model {
 		this.disableIfPresent(this.elytra);
 	}
 
-	@Override
-	public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, /*? if >=1.21 {*/int color/*?} else {*//*float red, float green, float blue, float alpha *//*?}*/) {
+	//? <=1.21.1 {
+
+	/*@Override
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, /^? if >=1.21 {^/ int color /^?} else {^/ /^float r, float g, float b, float a^//^?}^/) {
 		// NO-OP
 	}
+
+	*///?}
 
 	public void apply(TotemDollTextures textures) {
 		this.slim = textures.getArmsType().isSlim();
@@ -171,7 +175,7 @@ public class TotemDollModel extends Model {
 			this.model.enableIfPresent(leftArm);
 			this.model.enableIfPresent(rightArm);
 
-			this.model.getMain().draw(matrices, provider, this.layerFunction, mainTexture, this.textures, this.requestedParts, light, overlay, color);
+			this.model.getMain().draw(matrices, provider, this.layerFunction, mainTexture, this.textures, this.requestedParts, light, overlay, /*? if >=1.21 {*/color/*?} else {*/ /*red, green, blue, alpha*//*?}*/);
 
 			this.model.disableIfPresent(leftArm);
 			this.model.disableIfPresent(rightArm);

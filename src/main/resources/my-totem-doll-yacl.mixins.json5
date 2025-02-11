@@ -7,6 +7,15 @@
     "mixins": [
     ],
 	"client": [
+		//? =1.20.1 {
+		/*"category.TabButtonWidgetMixin",
+		"category.TabNavigationWidgetMixin",
+		*///?}
+
+		//? >=1.21.4 {
+		"category.ScrollableWidgetMixin",
+		//?}
+
 		"ScreenMixin",
 		"YACLScreenMixin",
 		"YetAnotherConfigLibImplBuilderMixin",
@@ -15,11 +24,6 @@
 		"category.HeldItemRendererMixin",
 		"category.EntryListWidgetMixin",
 		"category.ConfigCategoryImplBuilderImplMixin",
-
-	    //? =1.20.1 {
-	    /*"category.TabButtonWidgetMixin",
-	    "category.TabNavigationWidgetMixin",
-	    *///?}
 
 		"option.ListOptionEntryImplEntryControllerMixin",
 		"option.HiddenNameListOptionEntryImplMixin",

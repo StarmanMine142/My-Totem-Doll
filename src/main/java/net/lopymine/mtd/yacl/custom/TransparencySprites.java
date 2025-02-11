@@ -15,13 +15,6 @@ public class TransparencySprites {
 			MyTotemDoll.spriteId("transparency/tab/tab_highlighted") // disabled and hovered
 	);
 
-	public static final SpriteTextures WIDGET_SPRITES = new SpriteTextures(
-			MyTotemDoll.spriteId("transparency/widget/widget"), // enabled
-			MyTotemDoll.spriteId("transparency/widget/disabled_widget"), // disabled
-			MyTotemDoll.spriteId("transparency/widget/hovered_widget"), // enabled and hovered
-			MyTotemDoll.spriteId("transparency/widget/disabled_widget") // disabled and hovered
-	);
-
 	public static final Identifier SCROLLER_SPRITE = MyTotemDoll.spriteId("transparency/scroller/scroller");
 	public static final Identifier SCROLLER_BACKGROUND_SPRITE = MyTotemDoll.spriteId("transparency/scroller/scroller_background");
 

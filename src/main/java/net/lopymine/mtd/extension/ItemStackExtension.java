@@ -1,9 +1,10 @@
 package net.lopymine.mtd.extension;
 
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
+import net.minecraft.text.Text.Serializer;
 
 import net.lopymine.mtd.utils.mixin.*;
 
@@ -13,7 +14,25 @@ public class ItemStackExtension {
 
 	@Nullable
 	public static Text getRealCustomName(ItemStack itemStack) {
-		return /*? if >=1.20.5 {*/itemStack.get(DataComponentTypes.CUSTOM_NAME); /*?} else {*/ /*stack.hasCustomName() ? stack.getName() : null; *//*?}*/
+		//? if >=1.21 {
+		return itemStack.get(net.minecraft.component.DataComponentTypes.CUSTOM_NAME);
+		//?} else {
+		/*NbtCompound nbtCompound = itemStack.getSubNbt("display");
+		if (nbtCompound != null && nbtCompound.contains("Name", 8)) {
+			try {
+				Text text = Serializer.fromJson(nbtCompound.getString("Name"));
+				if (text != null) {
+					return text;
+				}
+
+				nbtCompound.remove("Name");
+			} catch (Exception var3) {
+				nbtCompound.remove("Name");
+			}
+		}
+
+		return null;
+		*///?}
 	}
 
 	public static void setModdedModel(ItemStack itemStack, boolean modded) {

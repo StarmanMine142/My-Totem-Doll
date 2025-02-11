@@ -11,6 +11,7 @@ import net.lopymine.mtd.yacl.custom.option.wrong.WrongOption;
 
 import org.jetbrains.annotations.NotNull;
 
+@Pseudo
 @ExtensionMethod(OptionExtension.class)
 @Mixin(ListOptionEntryImpl.class)
 public abstract class ListOptionEntryImplMixin<T> implements WrongOption {
@@ -20,6 +21,7 @@ public abstract class ListOptionEntryImplMixin<T> implements WrongOption {
 	@Unique
 	private Text reason;
 
+	@Dynamic
 	@Shadow(remap = false) public abstract @NotNull Controller<T> controller();
 
 	@Override

@@ -15,6 +15,7 @@ import net.minecraft.util.math.RotationAxis;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.yacl.custom.TransparencySprites;
 import net.lopymine.mtd.yacl.custom.screen.MyTotemDollYACLScreen;
 
@@ -100,32 +101,32 @@ public class RenderingCategoryTab implements TabExt {
 
 
 	@Override
-	public void renderBackground(DrawContext graphics) {
+	public void renderBackground(DrawContext context) {
 		RenderSystem.enableBlend();
 		RenderSystem.enableDepthTest();
 
 		// right pane darker db
-		graphics.drawTexture(TransparencySprites.getMenuListBackgroundTexture(), this.rightPaneDim.getLeft(), this.rightPaneDim.getTop(), this.rightPaneDim.getRight() + 2, this.rightPaneDim.getBottom() + 2, this.rightPaneDim.width() + 2, this.rightPaneDim.height() + 2, 32, 32);
+		DrawUtils.drawTexture(context, TransparencySprites.getMenuListBackgroundTexture(), this.rightPaneDim.getLeft(), this.rightPaneDim.getTop(), this.rightPaneDim.getRight() + 2, this.rightPaneDim.getBottom() + 2, this.rightPaneDim.width() + 2, this.rightPaneDim.height() + 2, 32, 32);
 
 		// top separator for right pane
-		graphics.getMatrices().push();
-		graphics.getMatrices().translate(0, 0, 10);
-		graphics.drawTexture(TransparencySprites.getMenuSeparatorTexture(), this.rightPaneDim.getLeft() - 1, this.rightPaneDim.getTop() - 2, 0.0F, 0.0F, this.rightPaneDim.width() + 1, 2, 32, 2);
-		graphics.getMatrices().pop();
+		context.getMatrices().push();
+		context.getMatrices().translate(0, 0, 10);
+		DrawUtils.drawTexture(context, TransparencySprites.getMenuSeparatorTexture(), this.rightPaneDim.getLeft() - 1, this.rightPaneDim.getTop() - 2, 0.0F, 0.0F, this.rightPaneDim.width() + 1, 2, 32, 2);
+		context.getMatrices().pop();
 
 		// down separator for bottom pane
-		graphics.getMatrices().push();
-		graphics.getMatrices().translate(this.rightPaneDim.getRight() + 1, this.rightPaneDim.getBottom() + 2, 0);
-		graphics.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180), 0, 0, 1);
-		graphics.drawTexture(TransparencySprites.getMenuSeparatorTexture(), 0, 0, 0.0F, 0.0F, this.rightPaneDim.width() + 2, 2, 32, 2);
-		graphics.getMatrices().pop();
+		context.getMatrices().push();
+		context.getMatrices().translate(this.rightPaneDim.getRight() + 1, this.rightPaneDim.getBottom() + 2, 0);
+		context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180), 0, 0, 1);
+		DrawUtils.drawTexture(context, TransparencySprites.getMenuSeparatorTexture(), 0, 0, 0.0F, 0.0F, this.rightPaneDim.width() + 2, 2, 32, 2);
+		context.getMatrices().pop();
 
 		// left separator for right pane
-		graphics.getMatrices().push();
-		graphics.getMatrices().translate(this.rightPaneDim.getLeft(), this.rightPaneDim.getTop() - 1, 0);
-		graphics.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90), 0, 0, 1);
-		graphics.drawTexture(TransparencySprites.getMenuSeparatorTexture(), 0, 0, 0f, 0f, this.rightPaneDim.height() + 2, 2, 32, 2);
-		graphics.getMatrices().pop();
+		context.getMatrices().push();
+		context.getMatrices().translate(this.rightPaneDim.getLeft(), this.rightPaneDim.getTop() - 1, 0);
+		context.getMatrices().multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90), 0, 0, 1);
+		DrawUtils.drawTexture(context, TransparencySprites.getMenuSeparatorTexture(), 0, 0, 0f, 0f, this.rightPaneDim.height() + 2, 2, 32, 2);
+		context.getMatrices().pop();
 
 		RenderSystem.disableBlend();
 		RenderSystem.disableDepthTest();

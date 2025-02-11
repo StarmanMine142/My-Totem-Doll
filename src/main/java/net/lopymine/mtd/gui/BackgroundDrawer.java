@@ -7,6 +7,7 @@ import net.minecraft.util.math.RotationAxis;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 public class BackgroundDrawer {
@@ -49,11 +50,11 @@ public class BackgroundDrawer {
 		RenderSystem.enableBlend();
 
 		// BACKGROUND
-		context.drawTexture(backgroundTexture, x + 2, y + 2, 0, 0, 0, width - 4, height - 4, 32, 32);
+		DrawUtils.drawTexture(context, backgroundTexture, x + 2, y + 2, 0, 0, width - 4, height - 4, 32, 32);
 
 		// UP
 		if (up) {
-			context.drawTexture(separatorTexture, x + 2, y,0, 0, width - 4, 2, 32, 2);
+			DrawUtils.drawTexture(context, separatorTexture, x + 2, y,0, 0, width - 4, 2, 32, 2);
 		}
 
 		// BOTTOM
@@ -61,7 +62,7 @@ public class BackgroundDrawer {
 			matrices.push();
 			matrices.translate(x + width - 2, y + height, 0);
 			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
-			context.drawTexture(separatorTexture, 0, 0, 0, 0, width - 4, 2, 32, 2);
+			DrawUtils.drawTexture(context, separatorTexture, 0, 0, 0, 0, width - 4, 2, 32, 2);
 			matrices.pop();
 		}
 
@@ -70,7 +71,7 @@ public class BackgroundDrawer {
 			matrices.push();
 			matrices.translate(x + width, y + 1, 0);
 			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(90));
-			context.drawTexture(separatorTexture, 0, 0, 0f, 0f, height - 2, 2, 32, 2);
+			DrawUtils.drawTexture(context, separatorTexture, 0, 0, 0f, 0f, height - 2, 2, 32, 2);
 			matrices.pop();
 		}
 
@@ -79,28 +80,28 @@ public class BackgroundDrawer {
 			matrices.push();
 			matrices.translate(x, y + height - 1, 0);
 			matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-90));
-			context.drawTexture(separatorTexture, 0, 0, 0f, 0f, height - 2, 2, 32, 2);
+			DrawUtils.drawTexture(context, separatorTexture, 0, 0, 0f, 0f, height - 2, 2, 32, 2);
 			matrices.pop();
 		}
 
 		// UP-LEFT CORNER
 		if (up && left) {
-			context.drawTexture(separatorTexture, x, y, 0, 0, 2, 1, 1, 0);
+			DrawUtils.drawTexture(context, separatorTexture, x, y, 0, 0, 2, 1, 1, 0);
 		}
 
 		// UP-RIGHT CORNER
 		if (up && right) {
-			context.drawTexture(separatorTexture, x + width - 2, y, 0, 0, 2, 1, 1, 0);
+			DrawUtils.drawTexture(context, separatorTexture, x + width - 2, y, 0, 0, 2, 1, 1, 0);
 		}
 
 		// BOTTOM-LEFT CORNER
 		if (bottom && left) {
-			context.drawTexture(separatorTexture, x, y + height - 1, 0, 0, 2, 1, 1, 0);
+			DrawUtils.drawTexture(context, separatorTexture, x, y + height - 1, 0, 0, 2, 1, 1, 0);
 		}
 
 		// BOTTOM-RIGHT CORNER
 		if (bottom && right) {
-			context.drawTexture(separatorTexture, x + width - 2, y + height - 1, 0, 0, 2, 1, 1, 0);
+			DrawUtils.drawTexture(context, separatorTexture, x + width - 2, y + height - 1, 0, 0, 2, 1, 1, 0);
 		}
 
 		RenderSystem.disableBlend();

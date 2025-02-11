@@ -87,7 +87,7 @@ public class TotemDollPreviewRenderer implements ImageRenderer {
 		int i = this.suggestionText.draw(context, x + 5, y + 5, 10, -1);
 		RenderSystem.enableBlend();
 		matrices.translate(0, 0, -5);
-		context.drawGuiTexture(TransparencySprites.WIDGET_SPRITES.get(true, true), x, y, width, i - y + 5);
+		BackgroundDrawer.drawTransparencyWidgetBackground(context, x, y, width, i - y + 5, true, true);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.disableBlend();
 

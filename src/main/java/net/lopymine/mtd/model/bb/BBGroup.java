@@ -9,6 +9,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.lopymine.mtd.config.other.vector.Vec3f;
+import net.lopymine.mtd.utils.CodecUtils;
 
 import java.util.*;
 
@@ -21,7 +22,7 @@ import static net.lopymine.mtd.utils.CodecUtils.optional;
 @AllArgsConstructor
 public class BBGroup {
 
-	public static final Codec<BBGroup> CODEC = Codec.recursive("BBGroup.Codec",
+	public static final Codec<BBGroup> CODEC = CodecUtils.recursive("BBGroup.Codec",
 			(codec) ->
 					RecordCodecBuilder.create(inst -> inst.group(
 							option("name", Codec.STRING, BBGroup::getName),
@@ -41,7 +42,6 @@ public class BBGroup {
 	private boolean visible;
 	private UUID uuid;
 	private List<Either<BBGroup, UUID>> children;
-
 
 	public ModelTransform getTransformation() {
 		return ModelTransform.of(this.origin.x(), this.origin.y(), this.origin.z(), (float) -Math.toRadians(this.rotation.x()), (float) -Math.toRadians(this.rotation.y()), (float) Math.toRadians(this.rotation.z()));

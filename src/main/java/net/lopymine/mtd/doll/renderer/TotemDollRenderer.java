@@ -1,7 +1,6 @@
 package net.lopymine.mtd.doll.renderer;
 
 import lombok.experimental.ExtensionMethod;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -22,20 +21,29 @@ import net.lopymine.mtd.doll.model.TotemDollModel.Drawer;
 import net.lopymine.mtd.extension.ItemStackExtension;
 import net.lopymine.mtd.doll.manager.*;
 import net.lopymine.mtd.tag.manager.TagsManager;
-
-//? if >=1.20.5 {
-import net.minecraft.util.*;
+import net.lopymine.mtd.utils.ProfilerUtils;
 import net.minecraft.util.math.*;
 import net.minecraft.util.profiler.Profiler;
-
+import net.minecraft.util.*;
 import org.jetbrains.annotations.Nullable;
-//?}
+
 
 @ExtensionMethod(ItemStackExtension.class)
 public class TotemDollRenderer {
 
+	public static boolean rendered(MatrixStack matrices, ItemStack stack, ModelTransformationMode modelTransformationMode, boolean leftHanded, VertexConsumerProvider vertexConsumers, int light, int uv) {
+		if (canRender(stack)) {
+			return TotemDollRenderer.renderDoll(matrices, stack, modelTransformationMode, leftHanded, vertexConsumers, light, uv);
+		}
+		return false;
+	}
+
+	public static boolean canRender(@Nullable ItemStack stack) {
+		return MyTotemDollClient.getConfig().isModEnabled() && stack != null && stack.isOf(Items.TOTEM_OF_UNDYING) && !stack.hasModdedModel();
+	}
+
 	public static boolean renderFloatingDoll(MatrixStack matrices, ItemStack stack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		Profiler profiler = MinecraftClient.getInstance().getProfiler();
+		Profiler profiler = ProfilerUtils.getProfiler();
 
 		profiler.swap(MyTotemDoll.MOD_ID);
 
@@ -57,7 +65,7 @@ public class TotemDollRenderer {
 	}
 
 	public static boolean renderDoll(MatrixStack matrices, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		Profiler profiler = MinecraftClient.getInstance().getProfiler();
+		Profiler profiler = ProfilerUtils.getProfiler();
 		profiler.swap(MyTotemDoll.MOD_ID);
 
 		TotemDollData totemDollData = TotemDollRenderer.parseTotemDollData(stack);
@@ -112,77 +120,6 @@ public class TotemDollRenderer {
 		matrices.pop();
 	}
 
-	public static void renderOnGround(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, TotemDollData totemDollData) {
-//		matrices.push();
-//
-//		matrices.translate(0.5F, 0.5F, 0.5F);
-//		matrices.scale(0.38F, 0.38F, 0.38F);
-//		matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(90));
-//		matrices.translate(-0.5F, -0.5F, -0.5F);
-
-		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
-//
-//		matrices.pop();
-	}
-
-	public static void renderFixed(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, TotemDollData totemDollData) {
-//		matrices.push();
-//
-//		matrices.translate(0.5F, 0.5F, 0.5F);
-//		matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(90));
-//		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
-//		matrices.translate(-0.5F, -0.5F, -0.5F);
-//		TotemDollModel model = totemDollData.getModel();
-//		matrices.translate(0.0F, 0.8F, totemDollData.getTextures().getCapeTexture() == null || !model.getCape().visible ? -0.3F : -0.18F);
-//		model.getCape().pitch = 0.2F;
-
-		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
-
-//		matrices.pop();
-	}
-
-	public static void renderInHead(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, TotemDollData totemDollData) {
-//		matrices.push();
-//		matrices.translate(0.0F, 0.0F, -0.2F);
-		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
-//		matrices.pop();
-	}
-
-	public static void renderInGui(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, TotemDollData totemDollData) {
-//		matrices.push();
-//
-//		float yOffset = totemDollData.getTextures().getCapeTexture() != null ? 0.37F : 0.3F;
-//		float xOffset = 0.25F;
-//		String nickname = totemDollData.getNickname();
-//		if (nickname != null && nickname.equals("deadmau5")) {
-//			yOffset = 0.2F;
-//			xOffset = 0.3F;
-//		}
-//		matrices.translate(xOffset, yOffset, 0.25F);
-//		matrices.multiply(RotationAxis.NEGATIVE_X.rotationDegrees(20));
-//		matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(10));
-//		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(20));
-//		matrices.scale(0.5F, 0.5F, 0.5F);
-//		matrices.translate(-0.1F, -yOffset, -0.25F);
-
-		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
-
-//		matrices.pop();
-	}
-
-	public static void renderAsFloating(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, TotemDollData totemDollData) {
-		//matrices.push();
-
-//		matrices.translate(0.5F, 0.5F, 0.5F);
-//		matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180F));
-//		matrices.translate(-0.5F, -0.5F, -0.5F);
-//		matrices.scale(0.8F, 0.8F, 0.8F);
-//		matrices.translate(0.1F, 0.0F, 0.0F);
-		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
-
-		//matrices.pop();
-	}
-
 	public static void render(MatrixStack matrices, VertexConsumerProvider provider, int light, int overlay, TotemDollData totemDollData) {
 		TotemDollTextures textures = totemDollData.getRenderTextures();
 		Identifier capeTexture = textures.getCapeTexture();
@@ -232,7 +169,7 @@ public class TotemDollRenderer {
 
 	public static void renderPreview(DrawContext context, int x, int y, float size, @Nullable TotemDollData data) {
 		MatrixStack matrices = context.getMatrices();
-		Immediate consumers = context.getVertexConsumers();
+		Immediate consumers = context.vertexConsumers;
 
 		float i = (size / 2F);
 		long currentTime = Util.getMeasuringTimeMs();
@@ -298,7 +235,7 @@ public class TotemDollRenderer {
 	private static void prepareStandardDollForRendering(ItemStack stack, TotemDollData totemDollData) {
 		AbstractClientPlayerEntity playerEntity = stack.getPlayerEntity();
 		if (playerEntity != null && MyTotemDollClient.getConfig().getStandardTotemDollSkinType() == TotemDollSkinType.HOLDING_PLAYER) {
-			totemDollData.setCurrentTempTextures(TotemDollTextures.of(playerEntity.getSkinTextures()));
+			totemDollData.setCurrentTempTextures(TotemDollTextures.of(playerEntity));
 			totemDollData.getModel().apply(totemDollData.getRenderTextures());
 		} else {
 			totemDollData.getModel().apply(totemDollData.getRenderTextures());

@@ -25,7 +25,7 @@ public class TotemDollModelFinder {
 					return;
 				}
 
-				String packId = pack.getId().replace("file/", "");
+				String packId = pack./*? if >=1.21 {*/getId/*?} else {*//*getName*//*?}*/().replace("file/", "");
 
 				Set<Identifier> set = FOUNDED_TOTEM_MODELS.getOrDefault(packId, new LinkedHashSet<>());
 				set.add(id);

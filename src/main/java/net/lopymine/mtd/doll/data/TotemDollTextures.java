@@ -2,8 +2,8 @@ package net.lopymine.mtd.doll.data;
 
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.texture.TextureManager;
-import net.minecraft.client.util.SkinTextures;
 import net.minecraft.util.Identifier;
 
 import net.lopymine.mtd.config.totem.TotemDollArmsType;
@@ -39,8 +39,14 @@ public class TotemDollTextures {
 		return new TotemDollTextures(null, null, null, TotemDollArmsType.WIDE);
 	}
 
-	public static TotemDollTextures of(SkinTextures skinTextures) {
+	public static TotemDollTextures of(AbstractClientPlayerEntity player) {
+		//? if >=1.21 {
+		net.minecraft.client.util.SkinTextures skinTextures = player.getSkinTextures();
 		TotemDollTextures totemDollTextures = new TotemDollTextures(skinTextures.texture(), skinTextures.capeTexture(), skinTextures.elytraTexture(), TotemDollArmsType.of(skinTextures.model().getName()));
+		//?} else {
+		/*TotemDollTextures totemDollTextures = new TotemDollTextures(player.getSkinTexture(), player.getCapeTexture(), player.getElytraTexture(), TotemDollArmsType.of(player.getModel()));
+		*///?}
+
 		totemDollTextures.setState(LoadingState.DOWNLOADED);
 		return totemDollTextures;
 	}

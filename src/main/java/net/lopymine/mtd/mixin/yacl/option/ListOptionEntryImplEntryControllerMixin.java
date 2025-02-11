@@ -6,9 +6,11 @@ import org.spongepowered.asm.mixin.*;
 
 import net.lopymine.mtd.yacl.custom.controller.WrongController;
 
+@Pseudo
 @Mixin(ListOptionEntryImpl.EntryController.class)
 public abstract class ListOptionEntryImplEntryControllerMixin<T> implements WrongController<T> {
 
+	@Dynamic
 	@Shadow(remap = false) public abstract Controller<T> controller();
 
 	@Override

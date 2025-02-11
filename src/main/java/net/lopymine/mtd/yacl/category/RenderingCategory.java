@@ -38,31 +38,31 @@ public class RenderingCategory {
 
 		return SimpleGroup.startBuilder(handGroup.getGroupId()).options(
 				SimpleOption.<Double>startBuilder("scale")
-						.withController(0.0D, 2.0D, 0.05D)
+						.withController(0.0D, 2.0D, 0.01D)
 						.withBinding(defHandConfig.getScale(), handConfig::getScale, handConfig::setScale, true)
 						.build(),
 				SimpleOption.<Double>startBuilder("rotation_x")
-						.withController(-180D, 180D, 0.05D)
+						.withController(-180D, 180D, 0.01D)
 						.withBinding(defHandConfig.getRotationX(), handConfig::getRotationX, handConfig::setRotationX, true)
 						.build(),
 				SimpleOption.<Double>startBuilder("rotation_y")
-						.withController(-180D, 180D, 0.05D)
+						.withController(-180D, 180D, 0.01D)
 						.withBinding(defHandConfig.getRotationY(), handConfig::getRotationY, handConfig::setRotationY, true)
 						.build(),
 				SimpleOption.<Double>startBuilder("rotation_z")
-						.withController(-180D, 180D, 0.05D)
+						.withController(-180D, 180D, 0.01D)
 						.withBinding(defHandConfig.getRotationZ(), handConfig::getRotationZ, handConfig::setRotationZ, true)
 						.build(),
 				SimpleOption.<Double>startBuilder("offset_x")
-						.withController(-1000.0D, 1000.0D, 0.05D)
+						.withController(-500.0D, 500.0D, 0.01D)
 						.withBinding(defHandConfig.getOffsetX(), handConfig::getOffsetX, handConfig::setOffsetX, true)
 						.build(),
 				SimpleOption.<Double>startBuilder("offset_y")
-						.withController(-1000.0D, 1000.0D, 0.05D)
+						.withController(-500.0D, 500.0D, 0.01D)
 						.withBinding(defHandConfig.getOffsetY(), handConfig::getOffsetY, handConfig::setOffsetY, true)
 						.build(),
 				SimpleOption.<Double>startBuilder("offset_z")
-						.withController(-1000.0D, 1000.0D, 0.05D)
+						.withController(-500.0D, 500.0D, 0.01D)
 						.withBinding(defHandConfig.getOffsetZ(), handConfig::getOffsetZ, handConfig::setOffsetZ, true)
 						.build(),
 				SimpleOption.startButtonBuilder(

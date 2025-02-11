@@ -28,7 +28,7 @@ public class DraggingTagButtonWidget extends TagButtonWidget {
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (!this.clicked(mouseX, mouseY)) {
+		if (!this.over(mouseX, mouseY)) {
 			return false;
 		}
 		if (this.isResetPosButton(button)) {
@@ -43,10 +43,10 @@ public class DraggingTagButtonWidget extends TagButtonWidget {
 	}
 
 	@Override
-	public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+	public void /*? if >=1.21 {*/ renderWidget /*?} else {*//*renderButton *//*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
 		int x = this.isDragging() ? mouseX - (this.getWidth() / 2) : this.getX();
 		int y = this.isDragging() ? mouseY - (this.getHeight() / 2): this.getY();
-		this.renderButton(context, x, y);
+		super.renderButton(context, x, y);
 		if (!this.isDragging()) {
 			this.requestTooltip();
 		}
