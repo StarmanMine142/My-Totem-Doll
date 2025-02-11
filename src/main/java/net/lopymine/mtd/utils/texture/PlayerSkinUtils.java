@@ -58,7 +58,7 @@ public class PlayerSkinUtils {
 			download.close();
 			download = nativeImage;
 		} else {
-			PlayerSkinTextureDownloader.remapTexture(download, uri);
+			download = PlayerSkinTextureDownloader.remapTexture(download, uri);
 		}
 		return new NativeImageBackedTexture(download);
 		//?} else {

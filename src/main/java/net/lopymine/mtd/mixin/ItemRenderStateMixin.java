@@ -32,7 +32,7 @@ public class ItemRenderStateMixin implements ItemRenderStateWithStack {
 		if (this.stack != null && TotemDollRenderer.rendered(matrices, this.stack, this.modelTransformationMode, this.leftHand, vertexConsumers, light, overlay)) {
 			ci.cancel();
 		}
-		if (this.stack.hasModdedModel()) {
+		if (this.stack != null && this.stack.hasModdedModel()) {
 			this.stack.setModdedModel(false);
 		}
 		this.stack = null;
