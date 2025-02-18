@@ -120,5 +120,8 @@ public class BBCube {
 		private float toU;
 		private float toV;
 
+		public boolean isDummy() {
+			return this.fromU == this.toU && this.fromV == this.toV;
+		}
 	}
 }

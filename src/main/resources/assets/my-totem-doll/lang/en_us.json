@@ -1,5 +1,5 @@
 {
-	"modmenu.descriptionTranslation.my-totem-doll": "Simple Fabric mod which replaces all totems with player dolls.",
+	"modmenu.descriptionTranslation.my-totem-doll": "Simple Fabric mod which replaces all totems with player dolls. Just rename your totem to player's nickname in anvil to use it's skin!",
 	"my-totem-doll.modmenu.title": "&lMy Totem Doll",
 	"my-totem-doll.modmenu.no_config_library_screen.message": "You need to install &6&lYet Another Config Lib [YACL]&f to open My Totem Doll Configuration Screen\n\n&a&lOpen &6&lYACL &a&lModrinth page?",
 	"my-totem-doll.modmenu.old_config_library_screen.message": "Your &6&lYet Another Config Lib [YACL]&f with version %s is outdated for configuration My Totem Doll. Please update &6&lYACL&f with version %s or higher.\n\n&a&lOpen &6&lYACL &a&lModrinth page?",
@@ -16,7 +16,7 @@
 	"my-totem-doll.modmenu.group.threads.name": "&lThreads",
 	"my-totem-doll.modmenu.group.threads.description": "Threads settings which may affect performance!",
 	"my-totem-doll.modmenu.option.executor_threads_count.name": "Executor Threads Count",
-	"my-totem-doll.modmenu.option.executor_threads_count.description": "Sets how many threads will be allocated for mod tasks, such as downloading skins.",
+	"my-totem-doll.modmenu.option.executor_threads_count.description": "Sets how many threads will be allocated for mod tasks, such as downloading skins. Mainly used for downloading skins.",
 
 	"my-totem-doll.modmenu.category.rendering.name": "&lRendering",
 	"my-totem-doll.modmenu.group.right_hand.name": "&lRight Hand",
@@ -34,7 +34,6 @@
 	"my-totem-doll.modmenu.category.standard_doll.name": "&lStandard Totem Doll",
 
 	"my-totem-doll.modmenu.group.standard_doll_model.name": "&lStandard Model",
-	"my-totem-doll.modmenu.group.custom_model_ids.name": "&lCustom Model Ids",
 	"my-totem-doll.modmenu.group.standard_doll_skin.name": "&lStandard Skin",
 
 	"my-totem-doll.modmenu.group.standard_doll_model.description": "",
@@ -70,11 +69,6 @@
 	"my-totem-doll.modmenu.option.standard_doll_model_arms_type.wide": "Wide",
 	"my-totem-doll.modmenu.option.standard_doll_model_arms_type.slim": "Slim",
 
-	"my-totem-doll.modmenu.wrong_reasons.duplicate_char": "&cThis character already taken!",
-
-	"my-totem-doll.modmenu.save_button.cannot_save": "&cCannot Save!",
-	"my-totem-doll.modmenu.save_button.cannot_save.tooltip": "&cSome options have incorrect values!",
-
 	"my-totem-doll.modmenu.formatter.enabled_or_disabled.true": "Enabled",
 	"my-totem-doll.modmenu.formatter.enabled_or_disabled.false": "Disabled",
 
@@ -83,15 +77,18 @@
 	"my-totem-doll.tags.info.title": "&lWhat is this?",
 	"my-totem-doll.tags.info.text": "This is the &eDoll Tags Menu&f. In this menu you can find list of &ebuttons&f. By clicking on the buttons, you can &echange appearance&f of your totem. For example: &eDisable/enable certain parts&f, &echange the texture of the model&f, etc.",
 
+	"my-totem-doll.tags.tips.title": "&e&lTips",
+	"my-totem-doll.tags.tips.text": "&e1. &rHold &7[Shift]&r while hovering over a totem to see its status. Always enabled in anvil by default.\n&e2. &rUse /my-totem-doll refresh [...] command to refresh doll skins.",
+
 	"my-totem-doll.tags.title": "&7Doll Tags:",
-	"my-totem-doll.tags.s": "Set Alex arms",
-	"my-totem-doll.tags.w": "Set Steve arms",
-	"my-totem-doll.tags.c": "Disable cape",
-	"my-totem-doll.tags.e": "Enable elytra",
-	"my-totem-doll.tags.s.applied": "&9Alex arms",
-	"my-totem-doll.tags.w.applied": "&9Steve arms",
-	"my-totem-doll.tags.c.applied": "&9Disabled cape",
-	"my-totem-doll.tags.e.applied": "&9Enabled elytra",
+	"my-totem-doll.tags.0": "Set Alex arms",
+	"my-totem-doll.tags.1": "Set Steve arms",
+	"my-totem-doll.tags.2": "Disable cape",
+	"my-totem-doll.tags.3": "Enable elytra",
+	"my-totem-doll.tags.0.applied": "&9Alex arms",
+	"my-totem-doll.tags.1.applied": "&9Steve arms",
+	"my-totem-doll.tags.2.applied": "&9Disabled cape",
+	"my-totem-doll.tags.3.applied": "&9Enabled elytra",
 
 	"my-totem-doll.command.id": "[&lMy Totem Doll&r]",
 
@@ -121,8 +118,5 @@
 	"my-totem-doll.text.loading.3": "Loading...",
 
 	"my-totem-doll.tag_menu.title": "Tags",
-	"my-totem-doll.tag_menu.custom_models.title": "Custom Models\n \n&7[Shift]&r + &7[Scroll]&r to change\ntooltip size\n&7[Ctrl]&r + &7[Scroll]&r to change\nmodel size in tooltip",
-	"my-totem-doll.tag_menu.incompatible_tags.tooltip": "&c&lThis tag is\nincompatible\nwith tags: ",
-	"my-totem-doll.tag_menu.requires_tags.tooltip": "&c&lThis tag requires\nenabled tags: ",
-	"my-totem-doll.tag_menu.custom_model.inactive_tooltip": "&cYou already selected\ncustom model for\nyour item!"
+	"my-totem-doll.tag_menu.custom_models.title": "Custom Models\n \n&7[Shift]&r + &7[Scroll]&r to change\ntooltip size\n&7[Ctrl]&r + &7[Scroll]&r to change\nmodel size in tooltip"
 }

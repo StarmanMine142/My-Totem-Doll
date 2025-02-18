@@ -14,17 +14,14 @@ import net.lopymine.mtd.utils.*;
 
 public class InfoTooltipComponent implements TooltipComponent {
 
-	public static final Identifier SEPARATOR = MyTotemDoll.id("textures/gui/icon/separator.png");
-	public static final int TITLE_COLOR = ColorUtils.getArgb(89, 206, 255);
+	public static final Identifier SEPARATOR = MyTotemDoll.id("textures/gui/info/separator.png");
 
 	private final MutableText title;
 	private final MultilineText text;
 
-	public InfoTooltipComponent(String key) {
-		this.title = MyTotemDoll.text("%s.title".formatted(key))/*? if >=1.21 {*/ .withColor(TITLE_COLOR)/*?}*/;
-		//? if <1.21 {
-		/*this.title.setStyle(this.title.getStyle().withColor(ColorUtils.getRgb(89, 206, 255)));
-		*///?}
+	public InfoTooltipComponent(String key, int color) {
+		this.title = MyTotemDoll.text("%s.title".formatted(key));
+		this.title.setStyle(this.title.getStyle().withColor(color));
 		this.text  = MultilineText.create(MinecraftClient.getInstance().textRenderer, MyTotemDoll.text("%s.text".formatted(key)), 140);
 	}
 

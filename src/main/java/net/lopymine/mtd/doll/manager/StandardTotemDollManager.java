@@ -73,7 +73,7 @@ public class StandardTotemDollManager {
 		textures.setState(LoadingState.DOWNLOADING);
 
 		CompletableFuture.runAsync(() -> {
-			Identifier id = MyTotemDoll.getDollId("file/%s".formatted(Math.abs(data.hashCode())));
+			Identifier id = MyTotemDoll.getDollTextureId("file/%s".formatted(Math.abs(data.hashCode())));
 			TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
 
 			try (InputStream inputStream = Files.newInputStream(Path.of(data))) {
@@ -100,7 +100,7 @@ public class StandardTotemDollManager {
 		textures.setState(LoadingState.DOWNLOADING);
 
 		CompletableFuture.runAsync(() -> {
-			Identifier id = MyTotemDoll.getDollId("url/%s".formatted(Math.abs(data.hashCode())));
+			Identifier id = MyTotemDoll.getDollTextureId("url/%s".formatted(Math.abs(data.hashCode())));
 
 			FailedAction onFailed = (reason, throwable, objects) -> {
 				textures.setState(LoadingState.CRITICAL_ERROR);

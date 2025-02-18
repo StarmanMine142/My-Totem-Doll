@@ -4,15 +4,15 @@ import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
 
 import net.lopymine.mtd.MyTotemDoll;
 
-public class Badabums {
+public class TotemDollPlugin {
 
-	public static boolean badabumbsss(String stick) {
+	public static boolean work(String stick) {
 		return stick.equals("Кузьмичёв");
 	}
 
 	public static void register() {
 		ModelLoadingPlugin.register(context -> {
-			context.addModels(MyTotemDoll.id("item/something_mtd"));
+			context.addModels(MyTotemDoll.id("item/icon"));
 		});
 	}
 

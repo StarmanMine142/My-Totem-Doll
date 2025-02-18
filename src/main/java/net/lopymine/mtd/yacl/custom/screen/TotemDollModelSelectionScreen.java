@@ -18,8 +18,8 @@ import net.lopymine.mtd.gui.widget.button.*;
 import net.lopymine.mtd.pack.TotemDollModelFinder;
 import net.lopymine.mtd.gui.BackgroundDrawer;
 
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import org.jetbrains.annotations.*;
 
 public class TotemDollModelSelectionScreen extends Screen {
@@ -85,16 +85,15 @@ public class TotemDollModelSelectionScreen extends Screen {
 
 		Identifier standardModelId = MyTotemDollClient.getConfig().getStandardTotemDollModelValue();
 
-		for (Entry<String, Set<Identifier>> entry : TotemDollModelFinder.getFoundedTotemModels().entrySet()) {
-			for (Identifier id : entry.getValue()) {
-				String path = id.getPath();
-				int i = path.lastIndexOf('/');
-				if (i != o) {
-					path = path.substring(i + 1);
-				}
-				String modelName = path;
+		Set<Entry<String, Set<Identifier>>> entries = new HashSet<>(TotemDollModelFinder.getFoundedTotemModels().entrySet());
+		entries.add(Map.entry(MyTotemDoll.MOD_ID, TotemDollModelFinder.getBuiltinTotemModels()));
 
-				PressAction pressAction = (b) -> this.setSelectedModel(id, entry.getKey(), modelName);
+		for (Entry<String, Set<Identifier>> entry : entries) {
+			for (Identifier id : entry.getValue()) {
+				String pack = entry.getKey();
+				String modelName = getModelName(id.getPath());
+
+				PressAction pressAction = (widget) -> this.setSelectedModel(id, pack, modelName);
 
 				ButtonListEntryWidget button = new ButtonListEntryWidget(Text.of(modelName), pressAction);
 
@@ -105,6 +104,14 @@ public class TotemDollModelSelectionScreen extends Screen {
 				listWidget.addEntry(button);
 			}
 		}
+	}
+
+	private static @NotNull String getModelName(String path) {
+		int i = path.lastIndexOf('/');
+		if (i != -1) {
+			return path.substring(i + 1);
+		}
+		return path;
 	}
 
 	private void close(boolean applyCurrent) {
@@ -178,11 +185,11 @@ public class TotemDollModelSelectionScreen extends Screen {
 		context.disableScissor();
 	}
 
-	private void setSelectedModel(Identifier id, String pack, String modelName) {
-		this.selectedModel     = MyTotemDoll.text("text.nice_id", pack, id.getPath());
-		this.selectedModelId   = id;
+	private void setSelectedModel(Identifier modelId, String pack, String modelName) {
+		this.selectedModel     = MyTotemDoll.text("text.nice_id", pack, modelId.getPath());
+		this.selectedModelId   = modelId;
 		this.selectedModelName = Text.of(modelName);
-		this.totemDollModelPreviewWidget.updateModel(id);
+		this.totemDollModelPreviewWidget.updateModel(modelId);
 	}
 
 	private MutableDimension<Integer> getTextFieldDimension(MutableDimension<Integer> listPanelDimension, int o, int h) {

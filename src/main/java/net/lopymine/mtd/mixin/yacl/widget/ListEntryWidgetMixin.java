@@ -8,19 +8,16 @@ import dev.isxander.yacl3.api.ListOptionEntry;
 import dev.isxander.yacl3.api.utils.Dimension;
 import dev.isxander.yacl3.gui.*;
 import dev.isxander.yacl3.gui.controllers.*;
-import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.gui.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
 import net.lopymine.mtd.config.other.simple.SimpleEntry;
-import net.lopymine.mtd.extension.OptionExtension;
 
 import java.util.List;
 
 @Pseudo
-@ExtensionMethod(OptionExtension.class)
 @Mixin(ListEntryWidget.class)
 public class ListEntryWidgetMixin {
 

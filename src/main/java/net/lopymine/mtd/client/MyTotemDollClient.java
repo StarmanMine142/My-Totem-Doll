@@ -9,9 +9,9 @@ import net.lopymine.mtd.client.event.MyTotemDollEvents;
 
 
 import net.lopymine.mtd.config.MyTotemDollConfig;
-import net.lopymine.mtd.pack.MyTotemDollReloadListener;
+import net.lopymine.mtd.pack.*;
 import net.lopymine.mtd.tag.manager.*;
-import net.lopymine.mtd.utils.abc.Badabums;
+import net.lopymine.mtd.utils.abc.TotemDollPlugin;
 
 public class MyTotemDollClient implements ClientModInitializer {
 
@@ -30,6 +30,7 @@ public class MyTotemDollClient implements ClientModInitializer {
 		MyTotemDollCommandManager.register();
 		MyTotemDollEvents.register();
 		MyTotemDollReloadListener.register();
-		Badabums.register();
+		TotemDollPlugin.register();
+		TotemDollModelFinder.registerBuiltinModels();
 	}
 }

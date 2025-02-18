@@ -19,6 +19,7 @@ import net.lopymine.mtd.doll.manager.StandardTotemDollManager;
 import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.gui.tooltip.preview.TotemDollPreviewTooltipData;
 import net.lopymine.mtd.tag.Tag;
+import net.lopymine.mtd.tag.manager.TagsManager;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -33,12 +34,12 @@ public class CustomModelTagButtonWidget extends TagButtonWidget {
 
 	public CustomModelTagButtonWidget(Tag tag, int x, int y, TagPressAction pressAction) {
 		super(tag, x, y, pressAction);
-		this.model = MyTotemDollClient.getConfig().getCustomModelIds().get(String.valueOf(tag.getTag()));
+		this.model = TagsManager.getCustomModelIdsTags().get(tag.getTag()).getModelId();
 		this.data = this.model == null ? null : StandardTotemDollManager.getStandardDoll().copy();
 	}
 
 	public void updateData(TotemDollData data) {
-		if (this.model == null) {
+		if (this.model == null || this.data == data) {
 			return;
 		}
 		this.data = data.copy();
@@ -63,11 +64,10 @@ public class CustomModelTagButtonWidget extends TagButtonWidget {
 		}
 	}
 
+
+
 	@Override
-	public @Nullable TooltipComponent getCurrentTooltipComponent() {
-		if (!this.active && this.getInactiveTooltipComponentSuppler() != null) {
-			return this.getInactiveTooltipComponentSuppler().get();
-		}
+	public @Nullable TooltipComponent getTooltipComponent() {
 		if (this.data != null && this.model != null) {
 			return TooltipComponent.of(new TotemDollPreviewTooltipData(this.data, this.model));
 		}

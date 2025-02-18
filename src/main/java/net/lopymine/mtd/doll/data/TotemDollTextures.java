@@ -7,6 +7,7 @@ import net.minecraft.client.texture.TextureManager;
 import net.minecraft.util.Identifier;
 
 import net.lopymine.mtd.config.totem.TotemDollArmsType;
+import net.lopymine.mtd.utils.texture.PlayerSkinUtils;
 
 import org.jetbrains.annotations.*;
 
@@ -42,9 +43,11 @@ public class TotemDollTextures {
 	public static TotemDollTextures of(AbstractClientPlayerEntity player) {
 		//? if >=1.21 {
 		net.minecraft.client.util.SkinTextures skinTextures = player.getSkinTextures();
-		TotemDollTextures totemDollTextures = new TotemDollTextures(skinTextures.texture(), skinTextures.capeTexture(), skinTextures.elytraTexture(), TotemDollArmsType.of(skinTextures.model().getName()));
+		Identifier capeTexture = PlayerSkinUtils.remapTextureIfRequired(skinTextures.capeTexture());
+		TotemDollTextures totemDollTextures = new TotemDollTextures(skinTextures.texture(), capeTexture, skinTextures.elytraTexture(), TotemDollArmsType.of(skinTextures.model().getName()));
 		//?} else {
-		/*TotemDollTextures totemDollTextures = new TotemDollTextures(player.getSkinTexture(), player.getCapeTexture(), player.getElytraTexture(), TotemDollArmsType.of(player.getModel()));
+		/*Identifier capeTexture = PlayerSkinUtils.remapTextureIfRequired(player.getCapeTexture());
+		TotemDollTextures totemDollTextures = new TotemDollTextures(player.getSkinTexture(), capeTexture, player.getElytraTexture(), TotemDollArmsType.of(player.getModel()));
 		*///?}
 
 		totemDollTextures.setState(LoadingState.DOWNLOADED);

@@ -9,17 +9,25 @@ import java.util.*;
 
 public class TotemDollModelFinder {
 
+	private static final Set<Identifier> BUILTIN_TOTEM_MODELS = new LinkedHashSet<>();
 	private static final Map<String, Set<Identifier>> FOUNDED_TOTEM_MODELS = new LinkedHashMap<>();
 
 	public static Map<String, Set<Identifier>> getFoundedTotemModels() {
 		return FOUNDED_TOTEM_MODELS;
 	}
 
-	public static void find(ResourceManager resourceManager) {
+	public static Set<Identifier> getBuiltinTotemModels() {
+		return BUILTIN_TOTEM_MODELS;
+	}
+
+	public static void reload(ResourceManager resourceManager) {
 		List<ResourcePack> list = resourceManager.streamResourcePacks().filter(resourcePack -> resourcePack.getNamespaces(ResourceType.CLIENT_RESOURCES).contains(MyTotemDoll.MOD_ID)).toList();
 
 		FOUNDED_TOTEM_MODELS.clear();
 		for (ResourcePack pack : list) {
+			if (pack.getId().equals(MyTotemDoll.MOD_ID)) {
+				continue;
+			}
 			pack.findResources(ResourceType.CLIENT_RESOURCES, MyTotemDoll.MOD_ID, "dolls", (id, input) -> {
 				if (!isModelPath(id)) {
 					return;
@@ -35,6 +43,16 @@ public class TotemDollModelFinder {
 				}
 			});
 		}
+	}
+
+	public static void registerBuiltinModels() {
+	    registerBuiltinModel("2d_doll");
+	    registerBuiltinModel("3d_doll");
+	    registerBuiltinModel("3d_funko");
+	}
+
+	private static void registerBuiltinModel(String name) {
+		BUILTIN_TOTEM_MODELS.add(MyTotemDoll.getDollModelId(name));
 	}
 
 	private static boolean isModelPath(Identifier id) {

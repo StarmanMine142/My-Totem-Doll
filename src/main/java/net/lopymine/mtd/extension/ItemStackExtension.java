@@ -2,10 +2,12 @@ package net.lopymine.mtd.extension;
 
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.Text.Serializer;
 
+import net.lopymine.mtd.doll.data.*;
+import net.lopymine.mtd.doll.manager.*;
+import net.lopymine.mtd.doll.model.TotemDollModel;
+import net.lopymine.mtd.tag.manager.TagsManager;
 import net.lopymine.mtd.utils.mixin.*;
 
 import org.jetbrains.annotations.Nullable;
@@ -33,6 +35,28 @@ public class ItemStackExtension {
 
 		return null;
 		*///?}
+	}
+
+	public static TotemDollData getTotemDollData(ItemStack stack) {
+		Text customName = getRealCustomName(stack);
+
+		if (customName != null) {
+			String o = TagsManager.getNicknameOrSkinProviderFromName(customName.getString());
+			TotemDollData data = TotemDollManager.getDoll(o);
+			TotemDollTextures textures = data.getTextures();
+			TotemDollModel model = data.getModel();
+
+			model.apply(textures);
+
+			String tags = TagsManager.getTagsFromName(customName.getString());
+			if (tags != null) {
+				TagsManager.processTags(tags, data);
+			}
+
+			return data;
+		}
+
+		return StandardTotemDollManager.getStandardDoll();
 	}
 
 	public static void setModdedModel(ItemStack itemStack, boolean modded) {

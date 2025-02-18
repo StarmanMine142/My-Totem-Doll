@@ -1,11 +1,11 @@
 package net.lopymine.mtd.doll.renderer;
 
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
-import net.minecraft.client.render.model.json.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.*;
 import net.minecraft.text.Text;
@@ -38,16 +38,10 @@ public class TotemDollRenderer {
 		return false;
 	}
 
-	public static boolean canRender(@Nullable ItemStack stack) {
-		return MyTotemDollClient.getConfig().isModEnabled() && stack != null && stack.isOf(Items.TOTEM_OF_UNDYING) && !stack.hasModdedModel();
-	}
-
 	public static boolean renderFloatingDoll(MatrixStack matrices, ItemStack stack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		Profiler profiler = ProfilerUtils.getProfiler();
+		beforeDollRendered(null, stack);
 
-		profiler.swap(MyTotemDoll.MOD_ID);
-
-		TotemDollData totemDollData = TotemDollRenderer.parseTotemDollData(stack);
+		TotemDollData totemDollData = stack.getTotemDollData();
 
 		if (StandardTotemDollManager.getStandardDoll().equals(totemDollData)) {
 			if (MyTotemDollClient.getConfig().isUseVanillaTotemModel()) {
@@ -61,14 +55,16 @@ public class TotemDollRenderer {
 		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
 		matrices.pop();
 
+		afterDollRendered(totemDollData);
 		return true;
 	}
 
 	public static boolean renderDoll(MatrixStack matrices, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		Profiler profiler = ProfilerUtils.getProfiler();
-		profiler.swap(MyTotemDoll.MOD_ID);
+		ModelTransformationMode mode = renderMode == ModelTransformationMode.NONE ? ModelTransformationMode.GUI : renderMode;
 
-		TotemDollData totemDollData = TotemDollRenderer.parseTotemDollData(stack);
+		beforeDollRendered(mode, stack);
+
+		TotemDollData totemDollData = stack.getTotemDollData();
 
 		if (StandardTotemDollManager.getStandardDoll().equals(totemDollData)) {
 			if (MyTotemDollClient.getConfig().isUseVanillaTotemModel()) {
@@ -79,10 +75,10 @@ public class TotemDollRenderer {
 		}
 
 		matrices.push();
-		totemDollData.getModel().getMain().getTransformation().getTransformation(renderMode).apply(leftHanded, matrices);
+		totemDollData.getModel().getMain().getTransformation().getTransformation(mode).apply(leftHanded, matrices);
 		matrices.translate(-0.5F, -1.0F, -0.5F);
 
-		switch (renderMode) {
+		switch (mode) {
 			case FIRST_PERSON_LEFT_HAND,
 			     FIRST_PERSON_RIGHT_HAND -> TotemDollRenderer.renderInHand(leftHanded, true, matrices, vertexConsumers, light, overlay, totemDollData);
 			case THIRD_PERSON_LEFT_HAND,
@@ -92,7 +88,52 @@ public class TotemDollRenderer {
 
 		matrices.pop();
 
+		afterDollRendered(totemDollData);
 		return true;
+	}
+
+	public static void renderPreview(DrawContext context, int x, int y, float size, @Nullable TotemDollData data) {
+		MatrixStack matrices = context.getMatrices();
+		Immediate consumers = context.vertexConsumers;
+
+		float i = (size / 2F);
+		long currentTime = Util.getMeasuringTimeMs();
+		float rotationSpeed = 0.05f;
+
+		float rotation = (currentTime * rotationSpeed) % 360;
+
+		if (data != null) {
+			context.draw();
+			DiffuseLighting.disableGuiDepthLighting();
+
+			matrices.push();
+			matrices.translate(x + i, y + (i * 2), 300F);
+			matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(180F));
+			matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(rotation));
+			matrices.scale(-i, i, i);
+
+			matrices.translate(-0.5F, -0.5F, -0.5F);
+
+			TotemDollRenderer.render(matrices, consumers, 15728880, OverlayTexture.DEFAULT_UV, data);
+
+			context.draw();
+
+			DiffuseLighting.enableGuiDepthLighting();
+
+			matrices.pop();
+		} else {
+			float v = i / 16;
+			float d = i / 2;
+			matrices.push();
+			matrices.translate(x + d, y + d, 0);
+			matrices.translate(d, d, 400F);
+			matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(rotation));
+			matrices.translate(-d, -d, 0);
+			matrices.scale(v, v, v);
+			matrices.translate(0, 0, -150F); // I hate this
+			context.drawItemWithoutEntity(Items.TOTEM_OF_UNDYING.getDefaultStack(), 0, 0);
+			matrices.pop();
+		}
 	}
 
 	public static void renderInHand(boolean leftHanded, boolean firstPerson, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, TotemDollData totemDollData) {
@@ -162,83 +203,32 @@ public class TotemDollRenderer {
 //		}
 
 		matrices.pop();
-
-		totemDollData.clearCurrentTempModel();
-		totemDollData.clearCurrentTempTextures();
-	}
-
-	public static void renderPreview(DrawContext context, int x, int y, float size, @Nullable TotemDollData data) {
-		MatrixStack matrices = context.getMatrices();
-		Immediate consumers = context.vertexConsumers;
-
-		float i = (size / 2F);
-		long currentTime = Util.getMeasuringTimeMs();
-		float rotationSpeed = 0.05f;
-
-		float rotation = (currentTime * rotationSpeed) % 360;
-
-		if (data != null) {
-			DiffuseLighting.disableGuiDepthLighting();
-
-			matrices.push();
-			matrices.translate(x + i, y + (i * 2), 300F);
-			matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(180F));
-			matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(rotation));
-			matrices.scale(-i, i, i);
-
-			matrices.translate(-0.5F, -0.5F, -0.5F);
-
-			TotemDollRenderer.render(matrices, consumers, 15728880, OverlayTexture.DEFAULT_UV, data);
-
-			context.draw();
-
-			DiffuseLighting.enableGuiDepthLighting();
-
-			matrices.pop();
-		} else {
-			float v = i / 16;
-			float d = i / 2;
-			matrices.push();
-			matrices.translate(x + d, y + d, 0);
-			matrices.translate(d, d, 400F);
-			matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(rotation));
-			matrices.translate(-d, -d, 0);
-			matrices.scale(v, v, v);
-			matrices.translate(0, 0, -150F); // f**k this line please
-			context.drawItemWithoutEntity(Items.TOTEM_OF_UNDYING.getDefaultStack(), 0, 0);
-			matrices.pop();
-		}
-	}
-
-	public static TotemDollData parseTotemDollData(ItemStack stack) {
-		Text customName = stack.getRealCustomName();
-
-		if (customName != null) {
-			String o = TagsManager.getNicknameOrSkinProviderFromName(customName.getString());
-			TotemDollData data = TotemDollManager.getDoll(o);
-			TotemDollTextures textures = data.getTextures();
-			TotemDollModel model = data.getModel();
-
-			model.apply(textures);
-
-			String tags = TagsManager.getTagsFromName(customName.getString());
-			if (tags != null) {
-				TagsManager.processTags(tags, data);
-			}
-
-			return data;
-		}
-
-		return StandardTotemDollManager.getStandardDoll();
 	}
 
 	private static void prepareStandardDollForRendering(ItemStack stack, TotemDollData totemDollData) {
 		AbstractClientPlayerEntity playerEntity = stack.getPlayerEntity();
-		if (playerEntity != null && MyTotemDollClient.getConfig().getStandardTotemDollSkinType() == TotemDollSkinType.HOLDING_PLAYER) {
+		if ((playerEntity != null) && MyTotemDollClient.getConfig().getStandardTotemDollSkinType() == TotemDollSkinType.HOLDING_PLAYER) {
 			totemDollData.setCurrentTempTextures(TotemDollTextures.of(playerEntity));
 			totemDollData.getModel().apply(totemDollData.getRenderTextures());
 		} else {
 			totemDollData.getModel().apply(totemDollData.getRenderTextures());
 		}
+	}
+
+	private static void beforeDollRendered(@Nullable ModelTransformationMode modelTransformationMode, ItemStack stack) {
+		Profiler profiler = ProfilerUtils.getProfiler();
+		profiler.swap(MyTotemDoll.MOD_ID);
+		if (modelTransformationMode == ModelTransformationMode.GUI) {
+			stack.setPlayerEntity(MinecraftClient.getInstance().player);
+		}
+	}
+
+	private static void afterDollRendered(TotemDollData totemDollData) {
+		totemDollData.clearCurrentTempModel();
+		totemDollData.clearCurrentTempTextures();
+	}
+
+	public static boolean canRender(@Nullable ItemStack stack) {
+		return MyTotemDollClient.getConfig().isModEnabled() && stack != null && stack.isOf(Items.TOTEM_OF_UNDYING) && !stack.hasModdedModel();
 	}
 }

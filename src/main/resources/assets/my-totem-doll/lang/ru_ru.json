@@ -1,5 +1,5 @@
 {
-	"modmenu.descriptionTranslation.my-totem-doll": "Fabric мод заменяющий тотемы на куклы игроков! Переименуйте вашу куклу в никнейм игрока, чтобы применить его скин.",
+	"modmenu.descriptionTranslation.my-totem-doll": "Fabric мод заменяющий тотемы на куклы игроков! Переименуйте вашу куклу в никнейм игрока в наковальне, чтобы применить его скин.",
 	"my-totem-doll.modmenu.title": "&lMy Totem Doll",
 	"my-totem-doll.modmenu.no_config_library_screen.message": "Вам нужно установить &6&lYet Another Config Lib [YACL]&f, чтобы открыть экран настроек My Totem Doll\n\n&a&lОткрыть страницу &6&lYACL &a&lна Modrinth?",
 	"my-totem-doll.modmenu.old_config_library_screen.message": "Ваш &6&lYet Another Config Lib [YACL]&f версии %s устарел для конфигурации My Totem Doll. Пожалуйста обновите &6&lYACL&f до версии %s или выше.\n\n&a&lОткрыть страницу &6&lYACL &a&lна Modrinth?",
@@ -33,7 +33,6 @@
 	"my-totem-doll.modmenu.category.standard_doll.name": "&lСтандартная кукла",
 
 	"my-totem-doll.modmenu.group.standard_doll_model.name": "&lСтандартная модель",
-	"my-totem-doll.modmenu.group.custom_model_ids.name": "&lСобственные модели",
 	"my-totem-doll.modmenu.group.standard_doll_skin.name": "&lСтандартный скин",
 
 	"my-totem-doll.modmenu.group.standard_doll_model.description": "",
@@ -49,7 +48,7 @@
 	"my-totem-doll.modmenu.option.standard_doll_skin_type.file_skin": "Файл скина",
 
 	"my-totem-doll.modmenu.option.standard_doll_skin_type.player.suggestion": "Введите имя игрока в поле \"Значение\", чтобы применить его скин на стандартную куклу.",
-	"my-totem-doll.modmenu.option.standard_doll_skin_type.holding_player.suggestion": "Каждая стандартная кукла будет иметь скин того игрока, который в данный момент держит её. Если же никто не держит, будет использован Стив.",
+	"my-totem-doll.modmenu.option.standard_doll_skin_type.holding_player.suggestion": "Каждая стандартная кукла будет иметь скин того игрока, который в данный момент держит её. Если же никто не держит куклу, будет использован Стив.",
 	"my-totem-doll.modmenu.option.standard_doll_skin_type.url_skin.suggestion": "Введите ссылку на ваш скин в поле \"Значение\", чтобы применить его скин на стандартную куклу.",
 	"my-totem-doll.modmenu.option.standard_doll_skin_type.file_skin.suggestion": "Введите путь к вашему скину в поле \"Значение\", чтобы применить его скин на стандартную куклу.",
 
@@ -62,35 +61,32 @@
 	"my-totem-doll.modmenu.option.standard_doll_skin_type.result.downloading": "&6Загружается",
 	"my-totem-doll.modmenu.option.standard_doll_skin_type.result.registering": "&6Регистрируется",
 	"my-totem-doll.modmenu.option.standard_doll_skin_type.result.downloaded": "&aЗагружен",
-	"my-totem-doll.modmenu.option.standard_doll_skin_data.name": "Значение",
+	"my-totem-doll.modmenu.option.standard_doll_skin_data.name": "Значение для скина",
 
 	"my-totem-doll.modmenu.option.standard_doll_model_path.name": "Путь к модели",
 	"my-totem-doll.modmenu.option.standard_doll_model_arms_type.name": "Тип рук",
 	"my-totem-doll.modmenu.option.standard_doll_model_arms_type.wide": "Широкие",
 	"my-totem-doll.modmenu.option.standard_doll_model_arms_type.slim": "Тонкие",
 
-	"my-totem-doll.modmenu.wrong_reasons.duplicate_char": "&cДанный символ уже занят!",
-
-	"my-totem-doll.modmenu.save_button.cannot_save": "&cНевозможно сохранить!",
-	"my-totem-doll.modmenu.save_button.cannot_save.tooltip": "&cНекоторые опции имеют неверные значения!",
-
 	"my-totem-doll.modmenu.formatter.enabled_or_disabled.true": "Включено",
 	"my-totem-doll.modmenu.formatter.enabled_or_disabled.false": "Выключено",
 
 	"my-totem-doll.standard_model_selection_screen.title": "Меню выбора стандартной модели",
 
+	"my-totem-doll.tags.tips.title": "&e&lПодсказки",
+	"my-totem-doll.tags.tips.text": "&e&l1.&r Зажмите &7[Shift]&r при наведении на тотем, чтобы увидеть его статус. Всегда включено в наковальне.\n&e2. &rИспользуйте /my-totem-doll refresh [...] команду, чтобы обновить скины кукол.",
 	"my-totem-doll.tags.info.title": "&lЧто это такое?",
-	"my-totem-doll.tags.info.text": "Это меню &eкукольных тегов&f. В этом меню вы можете найти список of &eкнопок&f. Нажимая на эти кнопки, вы можете &eизменить&f внешний вид вашей куклы. К примеру: &eВыключить/отключить части модели&f, &eизменить текстуру&f, и так далее.",
+	"my-totem-doll.tags.info.text": "Это меню &eкукольных тегов&f. В этом меню вы можете найти список &eкнопок&f. Нажимая на эти кнопки, вы можете &eизменить&f внешний вид вашей куклы. К примеру: &eВыключить/отключить части модели&f, &eизменить текстуру&f, и так далее.",
 
 	"my-totem-doll.tags.title": "&7Теги куклы:",
-	"my-totem-doll.tags.s": "Установить тонкие руки",
-	"my-totem-doll.tags.w": "Установить широкие руки",
-	"my-totem-doll.tags.c": "Выключить плащ",
-	"my-totem-doll.tags.e": "Включить элитры",
-	"my-totem-doll.tags.s.applied": "&9Тонкие руки",
-	"my-totem-doll.tags.w.applied": "&9Широкие руки",
-	"my-totem-doll.tags.c.applied": "&9Отключён плащ",
-	"my-totem-doll.tags.e.applied": "&9Включена элитра",
+	"my-totem-doll.tags.0": "Установить тонкие руки",
+	"my-totem-doll.tags.1": "Установить широкие руки",
+	"my-totem-doll.tags.2": "Выключить плащ",
+	"my-totem-doll.tags.3": "Включить элитры",
+	"my-totem-doll.tags.0.applied": "&9Тонкие руки",
+	"my-totem-doll.tags.1.applied": "&9Широкие руки",
+	"my-totem-doll.tags.2.applied": "&9Отключён плащ",
+	"my-totem-doll.tags.3.applied": "&9Включена элитра",
 
 	"my-totem-doll.command.id": "[&lMy Totem Doll&r]",
 
@@ -120,8 +116,5 @@
 	"my-totem-doll.text.loading.3": "Загрузка...",
 
 	"my-totem-doll.tag_menu.title": "Теги",
-	"my-totem-doll.tag_menu.custom_models.title": "Собственные модели\n \n&7[Shift]&r + &7[Scroll]&r чтобы изменить размер\nпредпросмотра.\n&7[Ctrl]&r + &7[Scroll]&r чтобы изменить\nразмер модели в режиме\nпредпросмотра",
-	"my-totem-doll.tag_menu.incompatible_tags.tooltip": "&c&lЭтот тег\nнесовместим\nс тегами: ",
-	"my-totem-doll.tag_menu.requires_tags.tooltip": "&c&lЭтот тег требует\nвключённых тегов: ",
-	"my-totem-doll.tag_menu.custom_model.inactive_tooltip": "&cВы уже выбрали\nсобственную модель\nдля вашей куклы!\nОдна модель на один предмет."
+	"my-totem-doll.tag_menu.custom_models.title": "Собственные модели\n \n&7[Shift]&r + &7[Scroll]&r чтобы изменить размер\nпредпросмотра.\n&7[Ctrl]&r + &7[Scroll]&r чтобы изменить размер\nмодели в режиме предпросмотра.",
 }

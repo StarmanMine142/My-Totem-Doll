@@ -6,6 +6,6 @@ import net.minecraft.item.tooltip.TooltipData;
 /*import net.minecraft.client.item.TooltipData;
 *///?}
 
-public record InfoTooltipData(String key) implements TooltipData {
+public record InfoTooltipData(String key, int color) implements TooltipData {
 
 }

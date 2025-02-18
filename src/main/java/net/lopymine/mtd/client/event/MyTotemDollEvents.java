@@ -27,7 +27,7 @@ public class MyTotemDollEvents {
 				return new TagsTooltipComponent(tooltipData.tags());
 			}
 			if (data instanceof InfoTooltipData tooltipData) {
-				return new InfoTooltipComponent(tooltipData.key());
+				return new InfoTooltipComponent(tooltipData.key(), tooltipData.color());
 			}
 			if (data instanceof LoadingStateTooltipData tooltipData) {
 				return TooltipComponent.of(MyTotemDoll.text("text.status").append(tooltipData.state().getText()).asOrderedText());

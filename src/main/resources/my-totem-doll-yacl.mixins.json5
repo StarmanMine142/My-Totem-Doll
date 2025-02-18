@@ -25,9 +25,6 @@
 		"category.EntryListWidgetMixin",
 		"category.ConfigCategoryImplBuilderImplMixin",
 
-		"option.ListOptionEntryImplEntryControllerMixin",
-		"option.HiddenNameListOptionEntryImplMixin",
-		"option.ListOptionEntryImplMixin",
 		"widget.ListEntryWidgetMixin",
 	    "widget.PressableWidgetMixin",
 	    "widget.AbstractWidgetMixin",

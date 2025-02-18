@@ -7,7 +7,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.*;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.*;
 import net.minecraft.screen.*;
@@ -20,14 +19,12 @@ import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.config.MyTotemDollConfig;
 import net.lopymine.mtd.config.other.vector.Vec2i;
 import net.lopymine.mtd.extension.ItemStackExtension;
-import net.lopymine.mtd.gui.tooltip.info.InfoTooltipData;
-import net.lopymine.mtd.gui.widget.info.SmallInfoWidget;
+import net.lopymine.mtd.gui.widget.info.*;
 import net.lopymine.mtd.gui.widget.tag.*;
 import net.lopymine.mtd.gui.widget.tag.TagMenuWidget.NameApplier;
 import net.lopymine.mtd.tag.Tag;
 import net.lopymine.mtd.utils.mixin.MTDAnvilScreen;
 
-import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
 @Mixin(AnvilScreen.class)
@@ -45,6 +42,9 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 	@Unique
 	@Nullable
 	private SmallInfoWidget infoWidget = null;
+	@Unique
+	@Nullable
+	private TipsWidget tipsWidget = null;
 	@Unique
 	private boolean menuVisible = false;
 	public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory playerInventory, Text title, Identifier texture) {
@@ -87,14 +87,18 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
 		//
 
-		this.infoWidget         = new SmallInfoWidget(0, 0, new InfoTooltipData("tags.info"));
+		this.infoWidget         = new SmallInfoWidget(0, 0);
 		this.infoWidget.visible = this.tagMenuWidget.visible;
 		this.addDrawable(this.infoWidget);
+
+		this.tipsWidget         = new TipsWidget(0, 0);
+		this.tipsWidget.visible = this.tagMenuWidget.visible;
+		this.addDrawable(this.tipsWidget);
 
 		//
 
 		Vec2i tagButtonPos = new MyTotemDollConfig().getTagButtonPos();
-		this.tagButtonWidget = new DraggingTagButtonWidget(Tag.simple('t'), this.x, this.y,  this.x + tagButtonPos.getX(), this.y + tagButtonPos.getY(), 0, 0, (b) -> {
+		this.tagButtonWidget = new DraggingTagButtonWidget(Tag.simple('4'), this.x, this.y,  this.x + tagButtonPos.getX(), this.y + tagButtonPos.getY(), 0, 0, (b) -> {
 			this.menuVisible = !b.isEnabled();
 			this.resize(this.client, this.width, this.height);
 		});
@@ -117,24 +121,30 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 	@Unique
 	private void updateWidgetsPositions() {
 		MyTotemDollConfig config = MyTotemDollClient.getConfig();
-		if (!config.isModEnabled() || this.tagButtonWidget == null || this.tagMenuWidget == null || this.infoWidget == null) {
+		if (!config.isModEnabled() || this.tagButtonWidget == null || this.tagMenuWidget == null || this.infoWidget == null || this.tipsWidget == null) {
+			return;
+		}
+
+		ItemStack stackOne = this.handler.getSlot(0).getStack();
+		ItemStack stackTwo = this.handler.getSlot(2).getStack();
+		ItemStack result = stackTwo.isEmpty() ? stackOne : stackTwo;
+
+		if (!result.isOf(Items.TOTEM_OF_UNDYING)) {
+			// TODO
 			return;
 		}
 
 		int tagMenuX = this.x + 176 + 1;
 		int tagMenuY = this.y;
+
 		this.tagMenuWidget.setPosition(tagMenuX, tagMenuY);
-
-		ItemStack stack = this.handler.getSlot(0).getStack();
-		ItemStack result = this.handler.getSlot(2).getStack();
-		ItemStack itemStack = result.isEmpty() ? stack : result;
-
-		this.tagMenuWidget.updateButtonsWithCustomModels(itemStack);
-		this.tagMenuWidget.updateButtonsAvailable(itemStack);
+		this.tagMenuWidget.updateButtons(result);
+		this.tagMenuWidget.updateCustomModelTagButtons(result);
 
 		int infoWidgetX = this.tagMenuWidget.getX() + this.tagMenuWidget.getWidth() + 2;
 		int infoWidgetY = this.tagMenuWidget.getWidgetY() + 2;
 		this.infoWidget.setPosition(infoWidgetX, infoWidgetY);
+		this.tipsWidget.setPosition(infoWidgetX, infoWidgetY + this.infoWidget.getHeight() + 4);
 
 		Vec2i pos = config.getTagButtonPos();
 		this.tagButtonWidget.setPosition(pos.getX() + this.x, pos.getY() + this.y);
@@ -179,7 +189,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
 	@Inject(at = @At("HEAD"), method = "onSlotUpdate")
 	private void checkTotem(ScreenHandler handler, int slotId, ItemStack stack, CallbackInfo ci) {
-		if (!MyTotemDollClient.getConfig().isModEnabled() || this.tagButtonWidget == null || this.tagMenuWidget == null || this.infoWidget == null) {
+		if (!MyTotemDollClient.getConfig().isModEnabled() || this.tagButtonWidget == null || this.tagMenuWidget == null || this.infoWidget == null || this.tipsWidget == null) {
 			return;
 		}
 		if (slotId == 0) {

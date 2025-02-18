@@ -234,6 +234,10 @@ public class BlockBenchModelManager {
 			BBCubeFace face = map.get(direction);
 			UV uv = face.getUv();
 
+			if (uv.isDummy()) {
+				continue;
+			}
+
 			if (value == Direction.UP || value == Direction.DOWN) {
 				cubeBuilder.withSide(uv.getToU(), uv.getToV(), uv.getFromU(), uv.getFromV(), value, face.getRotation());
 			} else {
@@ -246,7 +250,7 @@ public class BlockBenchModelManager {
 				.withTransform(cube.getTransformation());
 	}
 
-	public static void clear() {
+	public static void reload() {
 		LOADED_MODELS.clear();
 		for (TotemDollData data : TotemDollManager.getAllLoadedDolls()) {
 			data.clearAllTempModels();

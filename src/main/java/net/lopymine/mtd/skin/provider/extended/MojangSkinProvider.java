@@ -54,7 +54,7 @@ public class MojangSkinProvider extends StandardSkinProvider {
 
 	@Override
 	protected Identifier getId(String value, String type) {
-		return MyTotemDoll.getDollId("mojang_api/%s/%s".formatted(type, value.toLowerCase()));
+		return MyTotemDoll.getDollTextureId("mojang_api/%s/%s".formatted(type, value.toLowerCase()));
 	}
 
 	@Override

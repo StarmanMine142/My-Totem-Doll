@@ -4,7 +4,9 @@ import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.*;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 
+import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.extension.PlayerSkinTextureExtension;
 
@@ -42,7 +44,7 @@ public class PlayerSkinUtils {
 				//?}
 			});
 		} catch (Exception e) {
-			MyTotemDollClient.LOGGER.error("Failed to download skin texture with id \"%s\": ".formatted(textureId), e);
+			MyTotemDollClient.LOGGER.error("Failed to download skin texture with id \"%s\": ".formatted(textureId), e.getMessage());
 			if (onFailedRegistration != null) {
 				onFailedRegistration.onFailed(e.getMessage(), e);
 			}
@@ -53,10 +55,7 @@ public class PlayerSkinUtils {
 		//? >=1.21.4 {
 		NativeImage download = PlayerSkinTextureDownloader.download(path, uri);
 		if (cape) {
-			NativeImage nativeImage = new NativeImage(64, 64, true);
-			nativeImage.copyFrom(download);
-			download.close();
-			download = nativeImage;
+			download = remapTextureToStandardSize(download, true);
 		} else {
 			download = PlayerSkinTextureDownloader.remapTexture(download, uri);
 		}
@@ -81,5 +80,36 @@ public class PlayerSkinUtils {
 		*///?}
 	}
 
+	@Nullable
+	public static Identifier remapTextureIfRequired(@Nullable Identifier id) {
+		if (id == null) {
+			return null;
+		}
+		TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
+		Identifier identifier = MyTotemDoll.id("remapped_textures/%s.png".formatted(MathHelper.abs(id.toString().hashCode())));
+		AbstractTexture remappedTexture = textureManager.getTexture(identifier);
+		if (remappedTexture instanceof NativeImageBackedTexture) {
+			return identifier;
+		}
+		AbstractTexture texture = textureManager.getTexture(id);
+		if (!(texture instanceof NativeImageBackedTexture backedTexture)) {
+			return id;
+		}
+		NativeImage image = backedTexture.getImage();
+		if (image == null || (image.getWidth() == 64 && image.getHeight() == 64)) {
+			return id;
+		}
+		NativeImage remapped = remapTextureToStandardSize(image, false);
+		textureManager.registerTexture(identifier, new NativeImageBackedTexture(remapped));
+		return identifier;
+	}
 
+	public static @NotNull NativeImage remapTextureToStandardSize(NativeImage image, boolean close) {
+		NativeImage nativeImage = new NativeImage(64, 64, true);
+		nativeImage.copyFrom(image);
+		if (close) {
+			image.close();
+		}
+		return nativeImage;
+	}
 }

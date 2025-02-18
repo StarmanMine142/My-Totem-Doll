@@ -1,22 +1,21 @@
 package net.lopymine.mtd.tag.manager;
 
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.*;
 
 import net.lopymine.mtd.MyTotemDoll;
-import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.doll.data.TotemDollData;
 import net.lopymine.mtd.model.base.MModel;
+import net.lopymine.mtd.pack.TotemDollModelFinder;
 import net.lopymine.mtd.tag.*;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.*;
 import org.jetbrains.annotations.*;
 
 public class TagsManager {
 
-	private static final Map<Character, Tag> CUSTOM_MODEL_IDS_TAGS = new LinkedHashMap<>();
+	private static final Map<Character, CustomModelTag> CUSTOM_MODEL_IDS_TAGS = new LinkedHashMap<>();
 	private static final Map<Character, Tag> PREPROCESSOR_TAGS = new LinkedHashMap<>();
 	private static final Map<Character, Tag> POSTPROCESSOR_TAGS = new LinkedHashMap<>();
 
@@ -26,30 +25,27 @@ public class TagsManager {
 		return tags;
 	}
 
-	public static Map<Character, Tag> getCustomModelIdsTags() {
+	public static Map<Character, CustomModelTag> getCustomModelIdsTags() {
 		return CUSTOM_MODEL_IDS_TAGS;
 	}
 
 	public static void register() {
 		// We need pre- and post-tags to avoid unnecessary overriding values in a model
 
-
 		registerPreprocessorTag(
-				Tag.startBuilder('s')
+				Tag.startBuilder('0')
 						.setAction((data) -> data.getModel().setSlim(true))
-						.setCompatibilityTest(TagCompatibilityTest.noneTags('w'))
 						.build()
 		);
 
 		registerPreprocessorTag(
-				Tag.startBuilder('w')
+				Tag.startBuilder('1')
 						.setAction((data) -> data.getModel().setSlim(false))
-						.setCompatibilityTest(TagCompatibilityTest.noneTags('s'))
 						.build()
 		);
 
 		registerPostprocessorTag(
-				Tag.startBuilder('c')
+				Tag.startBuilder('2')
 						.setAction((data) -> {
 							MModel part = data.getModel().getCape();
 							if (part == null) {
@@ -61,7 +57,7 @@ public class TagsManager {
 		);
 
 		registerPostprocessorTag(
-				Tag.startBuilder('e')
+				Tag.startBuilder('3')
 						.setAction((model) -> {
 							MModel part = model.getModel().getElytra();
 							if (part == null) {
@@ -69,31 +65,56 @@ public class TagsManager {
 							}
 							part.visible = true;
 						})
-						.setCompatibilityTest(TagCompatibilityTest.onlyWithAll('c'))
 						.build()
 		);
 
-		loadCustomModelIdsTags(MyTotemDollClient.getConfig().getCustomModelIds());
 	}
 
-	public static void loadCustomModelIdsTags(Map<String, Identifier> customModelIds) {
+	public static void reloadCustomModelIdsTags() {
+		Collection<Set<Identifier>> values = TotemDollModelFinder.getFoundedTotemModels().values();
+		Set<Character> characters = getTags().keySet();
+		TagsGenerator generator = new TagsGenerator();
+
 		CUSTOM_MODEL_IDS_TAGS.clear();
+		registerBuiltinCustomModels();
+		for (Set<Identifier> value : values) {
+			for (Identifier id : value) {
 
-		Map<Character, Identifier> collect = customModelIds.entrySet()
-				.stream()
-				.filter((entry) -> entry != null && !entry.getKey().isEmpty())
-				.collect(Collectors.toMap(e -> e.getKey().charAt(0), Entry::getValue));
+				Character next = null;
+				while (generator.hasNext()) {
+					Character character = generator.next();
+					if (characters.contains(character)) {
+						continue;
+					}
+					next = character;
+					break;
+				}
 
-		char[] tags = collect.keySet().stream().map(Object::toString).collect(Collectors.joining()).toCharArray();
+				if (next == null) {
+					return;
+				}
 
-		for (Entry<Character, Identifier> entry : collect.entrySet()) {
-			CUSTOM_MODEL_IDS_TAGS.put(entry.getKey(),
-					Tag.startBuilder(entry.getKey())
-						.setAction((data) -> data.setTempModel(entry.getValue()))
-							.setCompatibilityTest(TagCompatibilityTest.noneTags(tags))
-						.build()
-			);
+				CUSTOM_MODEL_IDS_TAGS.put(next,
+						CustomModelTag.startBuilder(next, id)
+								.setAction((data) -> data.setTempModel(id))
+								.build()
+				);
+			}
 		}
+	}
+
+	private static void registerBuiltinCustomModels() {
+		registerBuiltinCustomModel('j', "2d_doll");
+		registerBuiltinCustomModel('k', "3d_doll");
+		registerBuiltinCustomModel('l', "3d_funko");
+	}
+
+	private static void registerBuiltinCustomModel(char ch, String modelName) {
+		Identifier modelId = MyTotemDoll.getDollModelId(modelName);
+		CustomModelTag tag = CustomModelTag.startBuilder(ch, modelId)
+				.setAction((data) -> data.setTempModel(modelId))
+				.build();
+		CUSTOM_MODEL_IDS_TAGS.put(ch, tag);
 	}
 
 	public static void registerPostprocessorTag(Tag tag) {
@@ -145,15 +166,13 @@ public class TagsManager {
 		processTags(tags, data, POSTPROCESSOR_TAGS);
 	}
 
-	public static void processTags(String tags, @NotNull TotemDollData data, Map<Character, Tag> map) {
+	public static <E extends Tag> void processTags(String tags, @NotNull TotemDollData data, Map<Character, E> map) {
 		getTagsStream(tags).forEach((character) -> {
 			Tag tag = map.get(character);
 			if (tag == null) {
 				return;
 			}
-			if (tag.compatibilityTest(tags)) {
-				tag.process(data);
-			}
+			tag.process(data);
 		});
 	}
 
@@ -197,7 +216,7 @@ public class TagsManager {
 
 	public static Identifier getTagIcon(Character character) {
 		if (hasTag(CUSTOM_MODEL_IDS_TAGS, character)) {
-			return MyTotemDoll.id("textures/gui/tags/custom.png");
+			return MyTotemDoll.id("textures/gui/tags/unknown.png");
 		}
 		return MyTotemDoll.id("textures/gui/tags/%s.png".formatted(character));
 	}
@@ -214,7 +233,8 @@ public class TagsManager {
 		return hasTag(getTags(), character);
 	}
 
-	public static boolean hasTag(Map<Character, Tag> tags, Character character) {
+	public static <E extends Tag> boolean hasTag(Map<Character, E> tags, Character character) {
 		return tags.containsKey(character);
 	}
+
 }

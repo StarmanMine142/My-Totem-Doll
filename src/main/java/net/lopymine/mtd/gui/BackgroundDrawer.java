@@ -21,6 +21,13 @@ public class BackgroundDrawer {
 		}
 	}
 
+	public static void drawTransparencyWidgetBackground(DrawContext context, int x, int y, int width, int height, boolean enabled, int borderColor) {
+		Identifier menuBackgroundTexture = enabled ? TransparencySprites.getMenuListBackgroundTexture() : TransparencySprites.DARKER_MENU_BACKGROUND_TEXTURE;
+		Identifier menuSeparatorTexture = TransparencySprites.getMenuSeparatorTexture();
+		drawTransparencyBackground(context, x, y, width, height, menuBackgroundTexture, menuSeparatorTexture, true, true, true, true);
+		context.drawBorder(x, y, width, height, borderColor);
+	}
+
 	public static void drawTransparencyBackground(DrawContext context, int x, int y, int width, int height, boolean list) {
 		drawTransparencyBackground(context, x, y, width, height, list, true, true, true, true);
 	}

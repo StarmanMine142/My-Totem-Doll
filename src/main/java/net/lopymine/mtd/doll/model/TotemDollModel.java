@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 @Setter
 public class TotemDollModel extends Model {
 
-	public static final Identifier STANDARD_DOLL_ID = MyTotemDoll.id("dolls/standard_doll.bbmodel");
+	public static final Identifier STANDARD_DOLL_ID = MyTotemDoll.id("dolls/3d_doll.bbmodel");
 
 	private final MModel main;
 
@@ -72,7 +72,11 @@ public class TotemDollModel extends Model {
 
 	public static MModel createDollModel() {
 		MModel model = BlockBenchModelManager.getModel(MyTotemDollClient.getConfig().getStandardTotemDollModelValue());
-		return model == null ? BlockBenchModelManager.getModel(STANDARD_DOLL_ID) : model;
+		MModel mmodel = model == null ? BlockBenchModelManager.getModel(STANDARD_DOLL_ID) : model;
+		if (mmodel == null) {
+			throw new IllegalArgumentException("Failed to find standard doll model! [TotemDollModel.class]");
+		}
+		return mmodel;
 	}
 
 	public void enableIfPresent(@Nullable MModel model) {

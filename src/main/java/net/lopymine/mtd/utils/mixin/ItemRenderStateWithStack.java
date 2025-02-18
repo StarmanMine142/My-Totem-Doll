@@ -1,4 +1,4 @@
-package net.lopymine.mtd.utils;
+package net.lopymine.mtd.utils.mixin;
 
 import net.minecraft.item.ItemStack;
 

@@ -38,22 +38,26 @@ public class TagButtonWidget extends ButtonWidget {
 			MyTotemDoll.id("textures/gui/tag_menu/button_disabled_hovered.png")
 	);
 
-	private final Tag tag;
-	private final String text;
-	private final Identifier icon;
+	private Tag tag;
+	private String text;
+	private Identifier icon;
 
 	private boolean enabled;
 	@Nullable
 	private Text tooltipText;
-	@Nullable
-	private Supplier<TooltipComponent> inactiveTooltipComponentSuppler;
 	private boolean pressed;
 	private boolean canBeHovered = true;
 
 	public TagButtonWidget(Tag tag, int x, int y, TagPressAction pressAction) {
 		super(x, y, 14, 14, Text.of(""), (widget) -> pressAction.onPress((TagButtonWidget) widget), ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
 		this.tag          = tag;
-		this.text         = String.valueOf(tag.getTag()).toLowerCase();
+		this.text         = String.valueOf(tag.getTag());
+		this.icon         = TagsManager.getTagIcon(this.text.charAt(0));
+	}
+
+	protected void updateTag(Tag tag) {
+		this.tag          = tag;
+		this.text         = String.valueOf(tag.getTag());
 		this.icon         = TagsManager.getTagIcon(this.text.charAt(0));
 	}
 
@@ -103,7 +107,7 @@ public class TagButtonWidget extends ButtonWidget {
 		MinecraftClient client = MinecraftClient.getInstance();
 		Screen screen = client.currentScreen;
 
-		TooltipComponent component = this.getCurrentTooltipComponent();
+		TooltipComponent component = this.getTooltipComponent();
 		if (component == null) {
 			return;
 		}
@@ -121,23 +125,11 @@ public class TagButtonWidget extends ButtonWidget {
 		}));
 	}
 
-	@Nullable
-	public TooltipComponent getCurrentTooltipComponent() {
-		if (!this.active && this.inactiveTooltipComponentSuppler != null) {
-			return this.inactiveTooltipComponentSuppler.get();
-		}
-		return this.getTooltipComponent();
-	}
-
-	private @Nullable TooltipComponent getTooltipComponent() {
+	protected @Nullable TooltipComponent getTooltipComponent() {
 		if (this.tooltipText == null) {
 			return null;
 		}
 		return TooltipComponent.of(this.tooltipText.asOrderedText());
-	}
-
-	public void setActive(boolean bl) {
-		this.active = bl;
 	}
 
 	public boolean over(double mouseX, double mouseY) {

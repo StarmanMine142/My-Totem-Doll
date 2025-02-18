@@ -9,23 +9,22 @@ import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.*;
-import net.minecraft.util.Identifier;
+import net.minecraft.util.*;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.lopymine.mtd.MyTotemDoll;
-import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.extension.ItemStackExtension;
-import net.lopymine.mtd.gui.tooltip.combined.*;
-import net.lopymine.mtd.gui.tooltip.tags.TagsTooltipData;
 import net.lopymine.mtd.gui.tooltip.wrapped.WrappedTextTooltipData;
 import net.lopymine.mtd.gui.widget.list.ListWithStaticHeaderWidget;
 import net.lopymine.mtd.gui.widget.tag.TagMenuWidget.TagRow;
-import net.lopymine.mtd.tag.Tag;
+import net.lopymine.mtd.tag.*;
 import net.lopymine.mtd.tag.manager.TagsManager;
 import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 import java.util.*;
+import java.util.stream.*;
+import org.jetbrains.annotations.*;
 
 @ExtensionMethod(ItemStackExtension.class)
 public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
@@ -36,63 +35,32 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 		super(x, y, 50, 156, 16, 35);
 
 		List<Tag> list = TagsManager.getTags().values().stream().toList();
-
 		for (int i = 0; i < list.size(); i += 2) {
-
-			List<Tag> tags = new ArrayList<>();
-			tags.add(list.get(i));
-			if (i + 1 < list.size()) {
-				tags.add(list.get(i + 1));
+			List<Tag> tags = getRangeOfList(list, i);
+			List<TagButtonWidget> widgets = new ArrayList<>();
+			for (Tag tag : tags) {
+				TagButtonWidget tagButtonWidget = createTagButtonWidget(nameApplier, tag);
+				widgets.add(tagButtonWidget);
 			}
-
-			List<TagButtonWidget> widgets = tags.stream()
-					.map((tag) -> {
-						char c = tag.getTag();
-						TagButtonWidget tagButtonWidget = new TagButtonWidget(tag, 0, 0, (b) -> {
-							String name = !b.isEnabled() ? TagsManager.addTag(nameApplier.getName(), c) : TagsManager.removeTag(nameApplier.getName(), c);
-							nameApplier.setName(name);
-						});
-						tagButtonWidget.setTooltip(TagsManager.getTagDescription(c));
-						tagButtonWidget.setInactiveTooltipComponentSuppler(() -> TooltipComponent.of(
-								new CombinedTooltipData(
-										new WrappedTextTooltipData(tag.getText()),
-										new TagsTooltipData(tag.getIncompatibilityTags())
-								)
-						));
-						return tagButtonWidget;
-					})
-					.toList();
-
 			this.addEntry(new TagRow(widgets));
 		}
 
-		List<Tag> customModelIds = TagsManager.getCustomModelIdsTags().values().stream().toList();
-
+		List<CustomModelTag> customModelIds = TagsManager.getCustomModelIdsTags().values().stream().toList();
 		if (!customModelIds.isEmpty()) {
 			this.addEntry(new SeparatorRow(MyTotemDoll.text("tag_menu.custom_models.title")));
 		}
 
+		List<TagButtonWidget> allCustomModelWidgets = new ArrayList<>();
 		for (int i = 0; i < customModelIds.size(); i += 2) {
+			List<CustomModelTag> tags = getRangeOfList(customModelIds, i);
+			List<TagButtonWidget> tagRowWidget = new ArrayList<>();
+			for (CustomModelTag tag : tags) {
+				CustomModelTagButtonWidget tagButtonWidget = createCustomModelTagButtonWidget(nameApplier, tag, allCustomModelWidgets);
 
-			List<Tag> characters = new ArrayList<>();
-			characters.add(customModelIds.get(i));
-			if (i + 1 < customModelIds.size()) {
-				characters.add(customModelIds.get(i + 1));
+				tagRowWidget.add(tagButtonWidget);
+				allCustomModelWidgets.add(tagButtonWidget);
 			}
-
-			List<TagButtonWidget> widgets = characters.stream()
-					.map((tag) -> {
-						char c = tag.getTag();
-						CustomModelTagButtonWidget tagButtonWidget = new CustomModelTagButtonWidget(tag, 0, 0, (b) -> {
-							String name = !b.isEnabled() ? TagsManager.addTag(nameApplier.getName(), c) : TagsManager.removeTag(nameApplier.getName(), c);
-							nameApplier.setName(name);
-						});
-						tagButtonWidget.setInactiveTooltipComponentSuppler(() -> TooltipComponent.of(new WrappedTextTooltipData(MyTotemDoll.text("tag_menu.custom_model.inactive_tooltip"))));
-						return (TagButtonWidget) tagButtonWidget;
-					})
-					.toList();
-
-			this.addEntry(new TagRow(widgets));
+			this.addEntry(new TagRow(tagRowWidget));
 		}
 	}
 
@@ -146,48 +114,102 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 	}
 
 	public void updateButtons(ItemStack stack) {
+		String tags = getTags(stack);
+
+		for (TagButtonWidget widget : this.getAllTagButtons()) {
+			if (tags != null) {
+				if (tags.contains(widget.getText())) {
+					widget.setEnabled(true);
+				}
+			} else {
+				widget.setEnabled(false);
+			}
+		}
+	}
+
+	public void updateCustomModelTagButtons(ItemStack stack) {
+		this.updateCustomModelTagButtonsData(stack);
+	}
+
+	private void updateCustomModelTagButtonsData(ItemStack stack) {
+		for (CustomModelTagButtonWidget widget : this.getCustomModelTagButtons()) {
+			widget.updateData(stack.getTotemDollData());
+		}
+	}
+
+	private List<TagButtonWidget> getAllTagButtons() {
+		return this.children()
+				.stream()
+				.map(TagRow::children)
+				.flatMap(Collection::stream)
+				.collect(Collectors.toList());
+	}
+
+	private List<CustomModelTagButtonWidget> getCustomModelTagButtons() {
+		return this.children()
+				.stream()
+				.map(TagRow::children)
+				.flatMap(Collection::stream)
+				.flatMap((widget) -> {
+					if (widget instanceof CustomModelTagButtonWidget tagButtonWidget) {
+						return Stream.of(tagButtonWidget);
+					}
+					return Stream.empty();
+				})
+				.collect(Collectors.toList());
+	}
+
+	private static @NotNull TagButtonWidget createTagButtonWidget(NameApplier nameApplier, Tag tag) {
+		char character = tag.getTag();
+
+		TagButtonWidget tagButtonWidget = new TagButtonWidget(tag, 0, 0, (widget) -> {
+			updateItemStackName(nameApplier, widget, character);
+		});
+
+		tagButtonWidget.setTooltip(TagsManager.getTagDescription(character));
+		return tagButtonWidget;
+	}
+
+	private static @NotNull CustomModelTagButtonWidget createCustomModelTagButtonWidget(NameApplier nameApplier, CustomModelTag tag, List<TagButtonWidget> allCustomModelWidgets) {
+		char character = tag.getTag();
+
+		return new CustomModelTagButtonWidget(tag, 0, 0, (tagButtonWidget) -> {
+			updateItemStackName(nameApplier, tagButtonWidget, character);
+
+			for (TagButtonWidget widget : allCustomModelWidgets) {
+				widget.setEnabled(false);
+				if (widget == tagButtonWidget) {
+					continue;
+				}
+				widget.setEnabled(true);
+			}
+		});
+	}
+
+	private static @NotNull <E> List<E> getRangeOfList(List<E> list, int startIndex) {
+		List<E> tags = new ArrayList<>();
+		tags.add(list.get(startIndex));
+		if (startIndex + 1 < list.size()) {
+			tags.add(list.get(startIndex + 1));
+		}
+		return tags;
+	}
+
+	private static void updateItemStackName(NameApplier nameApplier, TagButtonWidget b, char c) {
+		String name = !b.isEnabled() ? TagsManager.addTag(nameApplier.getName(), c) : TagsManager.removeTag(nameApplier.getName(), c);
+		nameApplier.setName(name);
+	}
+
+	@Nullable
+	private static String getTags(ItemStack stack) {
 		Text text = stack.getRealCustomName();
 		if (text == null) {
-			return;
+			return null;
 		}
 		String customName = text.getString();
-
-		String tags = TagsManager.getTagsFromName(customName);
-		if (tags == null) {
-			return;
-		}
-
-		for (TagRow row : this.children()) {
-			for (TagButtonWidget button : row.buttons) {
-				if (tags.contains(button.getText())) {
-					button.setEnabled(true);
-				}
-			}
-		}
+		return TagsManager.getTagsFromName(customName);
 	}
 
-	public void updateButtonsAvailable(ItemStack stack) {
-		Text text = stack.getRealCustomName();
-
-		String a = text == null ? "" : TagsManager.getTagsFromName(text.getString());
-		String tags = a == null ? "" : a;
-
-		for (TagRow row : this.children()) {
-			for (TagButtonWidget button : row.buttons) {
-				button.setActive(button.getTag().compatibilityTest(tags));
-			}
-		}
-	}
-
-	public void updateButtonsWithCustomModels(ItemStack stack) {
-		for (TagRow row : this.children()) {
-			for (TagButtonWidget button : row.buttons) {
-				if (button instanceof CustomModelTagButtonWidget widget) {
-					widget.updateData(TotemDollRenderer.parseTotemDollData(stack));
-				}
-			}
-		}
-	}
 
 	public interface NameApplier {
 

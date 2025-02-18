@@ -38,7 +38,6 @@ public class MyTotemDollConfig {
 			optional("standard_doll_model_data", TotemDollModel.STANDARD_DOLL_ID, Identifier.CODEC, MyTotemDollConfig::getStandardTotemDollModelValue),
 			optional("standard_doll_model_arms_type", TotemDollArmsType.WIDE, TotemDollArmsType.CODEC, MyTotemDollConfig::getStandardTotemDollArmsType),
 			optional("tag_button_pos", new Vec2i(155, 48), Vec2i.CODEC, MyTotemDollConfig::getTagButtonPos),
-			optional("custom_model_ids", new HashMap<>(), Codec.unboundedMap(Codec.STRING, Identifier.CODEC), MyTotemDollConfig::getCustomModelIds),
 			optional("use_vanilla_totem_model", false, Codec.BOOL, MyTotemDollConfig::isUseVanillaTotemModel),
 			optional("tag_menu_tooltip_size", TooltipSize.X1, TooltipSize.CODEC, MyTotemDollConfig::getTagMenuTooltipSize),
 			optional("tag_menu_tooltip_model_scale", 1.0F, Codec.FLOAT, MyTotemDollConfig::getTagMenuTooltipModelScale),
@@ -57,7 +56,6 @@ public class MyTotemDollConfig {
 	private Identifier standardTotemDollModelValue;
 	private TotemDollArmsType standardTotemDollArmsType;
 	private Vec2i tagButtonPos;
-	private Map<String, Identifier> customModelIds;
 	private boolean useVanillaTotemModel;
 	private TooltipSize tagMenuTooltipSize;
 	private float tagMenuTooltipModelScale;
@@ -72,11 +70,10 @@ public class MyTotemDollConfig {
 		this.standardTotemDollModelValue = TotemDollModel.STANDARD_DOLL_ID;
 		this.standardTotemDollArmsType   = TotemDollArmsType.WIDE;
 		this.tagButtonPos                = new Vec2i(155, 48);
-		this.customModelIds              = new HashMap<>();
-		this.useVanillaTotemModel = false;
-		this.tagMenuTooltipSize   = TooltipSize.X1;
-		this.tagMenuTooltipModelScale = 1.0F;
-		this.executorThreadsCount = 8;
+		this.useVanillaTotemModel        = false;
+		this.tagMenuTooltipSize          = TooltipSize.X1;
+		this.tagMenuTooltipModelScale    = 1.0F;
+		this.executorThreadsCount        = 6;
 	}
 
 	public static MyTotemDollConfig getInstance() {

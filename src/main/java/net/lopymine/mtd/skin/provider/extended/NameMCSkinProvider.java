@@ -34,7 +34,7 @@ public class NameMCSkinProvider extends StandardSkinProvider {
 
 	@Override
 	protected Identifier getId(String value, String type) {
-		return MyTotemDoll.getDollId("name_mc/%s/%s".formatted(type, value.toLowerCase()));
+		return MyTotemDoll.getDollTextureId("name_mc/%s/%s".formatted(type, value.toLowerCase()));
 	}
 
 	@Override

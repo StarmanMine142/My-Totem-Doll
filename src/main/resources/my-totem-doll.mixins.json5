@@ -9,6 +9,7 @@
 	    //? if <=1.21.3 {
 	    /*"PlayerSkinTextureMixin",
 	    "ItemRendererMixin",
+	    "HeldItemRendererMixin",
 	    *///?}
 
 	    //? if >=1.21.4 {
@@ -26,8 +27,7 @@
 	    "ItemStackWithModdedBakedModelMixin",
 	    "ItemStackWithPlayerEntityMixin",
 	    "ItemStackMixin",
-	    "HandledScreenMixin",
-	    "HeldItemRendererMixin"
+	    "HandledScreenMixin"
     ],
     "injectors": {
         "defaultRequire": 1

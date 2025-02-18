@@ -23,7 +23,7 @@ import net.minecraft.client.render.model.BakedModel;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
-import net.lopymine.mtd.utils.abc.Badabums;
+import net.lopymine.mtd.utils.abc.TotemDollPlugin;
 
 @ExtensionMethod(ItemStackExtension.class)
 @Mixin(ItemRenderer.class)
@@ -45,7 +45,7 @@ public class ItemRendererMixin {
 		}
 
 		String string = stack.getName().getString();
-		if (Badabums.badabumbsss(string)) {
+		if (TotemDollPlugin.badabumbsss(string)) {
 			BakedModel model = this.models/^? <=1.21.1 {^/ /^.getModelManager() ^//^?}^/.getModel(MyTotemDoll.id("item/something_mtd"));
 			stack.setModdedModel(true);
 			cir.setReturnValue(model);

@@ -21,6 +21,7 @@ import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.doll.data.TotemDollData;
 import net.lopymine.mtd.doll.manager.TotemDollManager;
+import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.extension.ItemStackExtension;
 import net.lopymine.mtd.gui.tooltip.combined.CombinedTooltipData;
 import net.lopymine.mtd.gui.tooltip.state.LoadingStateTooltipData;
@@ -50,7 +51,7 @@ public abstract class ItemStackMixin {
 		String[] data = TagsManager.getDataFromString(string);
 		String name = data[0];
 		String tags = data[1];
-		if (tags == null) {
+		if (tags == null || name == null) {
 			return original;
 		}
 		return Text.literal(name).setStyle(original.getStyle());
@@ -60,8 +61,7 @@ public abstract class ItemStackMixin {
 	private Optional<TooltipData> getTooltipData(Optional<TooltipData> original) {
 		ItemStack itemStack = (ItemStack) (Object) this;
 
-		boolean moddedModel = itemStack.hasModdedModel();
-		if (!MyTotemDollClient.getConfig().isModEnabled() || !this.isOf(Items.TOTEM_OF_UNDYING) || moddedModel) {
+		if (!TotemDollRenderer.canRender(itemStack)) {
 			return original;
 		}
 

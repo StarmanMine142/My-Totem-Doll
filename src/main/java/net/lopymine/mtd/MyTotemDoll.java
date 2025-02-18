@@ -17,8 +17,12 @@ public class MyTotemDoll implements ModInitializer {
 		return Identifier.of(MOD_ID, path);
 	}
 
-	public static Identifier getDollId(String path) {
+	public static Identifier getDollTextureId(String path) {
 		return id("doll/textures/" + path);
+	}
+
+	public static Identifier getDollModelId(String path) {
+		return id("dolls/%s.bbmodel".formatted(path));
 	}
 
 	public static MutableText text(String path, Object... args) {

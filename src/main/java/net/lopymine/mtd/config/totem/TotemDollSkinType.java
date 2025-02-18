@@ -21,7 +21,6 @@ public enum TotemDollSkinType implements StringIdentifiable, EnumWithText {
 	public static final Codec<TotemDollSkinType> CODEC = StringIdentifiable.createCodec(TotemDollSkinType::values);
 
 	private final boolean needData;
-	private Text suggestionText;
 
 	TotemDollSkinType(boolean needData) {
 		this.needData = needData;

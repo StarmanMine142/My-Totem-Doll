@@ -7,15 +7,13 @@ import net.lopymine.mtd.doll.data.TotemDollData;
 
 import org.jetbrains.annotations.Nullable;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag {
 
 	@Getter
 	private final char tag;
 	@Nullable
 	private TagAction action;
-	@Nullable
-	private TagCompatibilityTest compatibilityTest;
 
 	private Tag(char tag) {
 		this.tag = tag;
@@ -29,14 +27,6 @@ public class Tag {
 		return new Tag(c);
 	}
 
-	public boolean compatibilityTest(String tags) {
-		if (this.compatibilityTest == null) {
-			return true;
-		}
-
-		return this.compatibilityTest.test(tags.replace(String.valueOf(this.tag), ""));
-	}
-
 	public void process(TotemDollData data) {
 		if (this.action == null) {
 			return;
@@ -44,25 +34,10 @@ public class Tag {
 		this.action.process(data);
 	}
 
-	public String getIncompatibilityTags() {
-		if (this.compatibilityTest == null) {
-			return "";
-		}
-		return this.compatibilityTest.getTags();
-	}
-
-	public Text getText() {
-		if (this.compatibilityTest == null) {
-			return Text.of("");
-		}
-		return this.compatibilityTest.getText();
-	}
-
 	public static class Builder {
 
 		private final char tag;
 		private TagAction action;
-		private TagCompatibilityTest compatibilityTest;
 
 		public Builder(char tag) {
 			this.tag = tag;
@@ -73,13 +48,8 @@ public class Tag {
 			return this;
 		}
 
-		public Builder setCompatibilityTest(TagCompatibilityTest compatibilityTest) {
-			this.compatibilityTest = compatibilityTest;
-			return this;
-		}
-
 		public Tag build() {
-			return new Tag(this.tag, this.action, this.compatibilityTest);
+			return new Tag(this.tag, this.action);
 		}
 	}
 }

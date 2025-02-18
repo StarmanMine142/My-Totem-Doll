@@ -2,6 +2,7 @@ package net.lopymine.mtd.mixin;
 
 //? if >=1.21.4 {
 import lombok.experimental.ExtensionMethod;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderState;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.extension.ItemStackExtension;
-import net.lopymine.mtd.utils.ItemRenderStateWithStack;
+import net.lopymine.mtd.utils.mixin.ItemRenderStateWithStack;
 
 import org.jetbrains.annotations.Nullable;
 

@@ -6,10 +6,6 @@ import net.minecraft.client.font.*;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.Items;
-import net.minecraft.text.Text;
-
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
@@ -19,14 +15,14 @@ import net.lopymine.mtd.doll.data.TotemDollData;
 import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.doll.manager.StandardTotemDollManager;
 import net.lopymine.mtd.gui.BackgroundDrawer;
-import net.lopymine.mtd.yacl.custom.TransparencySprites;
+import net.lopymine.mtd.utils.ColorUtils;
 
 import org.jetbrains.annotations.Nullable;
 
 public class TotemDollPreviewRenderer implements ImageRenderer {
 
-	private static final float[] STANDARD_SUGGESTION_TEXT_COLORS = new float[]{1.0F, 0.31F, 0.25F, 1.0F};
-	private static final float[] HOLDING_PLAYER_COLORS = new float[]{0.83F, 0.47F, 0.11F, 1.0F};
+	private static final int STANDARD_SUGGESTION_TEXT_COLOR = ColorUtils.getArgb(255, 79, 64);
+	private static final int HOLDING_PLAYER_COLOR = ColorUtils.getArgb(212, 120, 28);
 
 	private TotemDollData data;
 	@Nullable
@@ -61,7 +57,7 @@ public class TotemDollPreviewRenderer implements ImageRenderer {
 
 		TotemDollSkinType type = this.suggestionSkinType;
 
-		if ((!skinType.isNeedData() && skinValue.isEmpty()) && skinType != TotemDollSkinType.STEVE) {
+		if ((skinType.isNeedData() && skinValue.isEmpty()) && skinType != TotemDollSkinType.STEVE || skinType == TotemDollSkinType.HOLDING_PLAYER) {
 			this.suggestionSkinType = skinType;
 		} else {
 			this.suggestionSkinType = null;
@@ -74,33 +70,30 @@ public class TotemDollPreviewRenderer implements ImageRenderer {
 	}
 
 	private int renderSuggestionText(DrawContext context, int x, int y, int width) {
-		float[] suggestionColors = this.getSuggestionColors();
+		int suggestionColor = this.getSuggestionColors();
 
 		if (this.suggestionText == null) {
 			return y;
 		}
 
 		MatrixStack matrices = context.getMatrices();
+
 		matrices.push();
 		matrices.translate(0, 0, 10);
-		RenderSystem.setShaderColor(suggestionColors[0], suggestionColors[1], suggestionColors[2], suggestionColors[3]);
-		int i = this.suggestionText.draw(context, x + 5, y + 5, 10, -1);
-		RenderSystem.enableBlend();
+		int i = this.suggestionText.draw(context, x + 5, y + 5, 10, suggestionColor);
 		matrices.translate(0, 0, -5);
-		BackgroundDrawer.drawTransparencyWidgetBackground(context, x, y, width, i - y + 5, true, true);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.disableBlend();
+		BackgroundDrawer.drawTransparencyWidgetBackground(context, x, y, width, i - y + 5, true, suggestionColor);
 
 		matrices.pop();
 
 		return i + 5 + 10;
 	}
 
-	private float[] getSuggestionColors() {
+	private int getSuggestionColors() {
 		if (this.suggestionSkinType == TotemDollSkinType.HOLDING_PLAYER) {
-			return HOLDING_PLAYER_COLORS;
+			return HOLDING_PLAYER_COLOR;
 		}
-		return STANDARD_SUGGESTION_TEXT_COLORS;
+		return STANDARD_SUGGESTION_TEXT_COLOR;
 	}
 
 	private void renderDollStatus(DrawContext context, int x, int y, int width) {

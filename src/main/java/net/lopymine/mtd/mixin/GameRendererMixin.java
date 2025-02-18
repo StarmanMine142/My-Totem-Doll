@@ -4,15 +4,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.*;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-import net.lopymine.mtd.client.MyTotemDollClient;
+
 import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
-import net.lopymine.mtd.utils.abc.Badabums;
 
 import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
