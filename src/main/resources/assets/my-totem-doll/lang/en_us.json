@@ -75,10 +75,10 @@
 	"my-totem-doll.standard_model_selection_screen.title": "Standard Model Selection Screen",
 
 	"my-totem-doll.tags.info.title": "&lWhat is this?",
-	"my-totem-doll.tags.info.text": "This is the &eDoll Tags Menu&f. In this menu you can find list of &ebuttons&f. By clicking on the buttons, you can &echange appearance&f of your totem. For example: &eDisable/enable certain parts&f, &echange the texture of the model&f, etc.",
+	"my-totem-doll.tags.info.text": "This is the &eDoll Tags Menu&f.\nIn this menu you can find list of &ebuttons&f.\nBy clicking on the buttons, you can &echange appearance&f of your totem. For example: &eDisable/enable certain parts&f, &eselect custom model&f, etc.",
 
-	"my-totem-doll.tags.tips.title": "&e&lTips",
-	"my-totem-doll.tags.tips.text": "&e1. &rHold &7[Shift]&r while hovering over a totem to see its status. Always enabled in anvil by default.\n&e2. &rUse /my-totem-doll refresh [...] command to refresh doll skins.",
+	"my-totem-doll.tags.tips.title": "&e&lTips!",
+	"my-totem-doll.tags.tips.text": "  &e&l1. &rHold &7[Shift]&r while hovering over a totem to see its status. Always enabled in anvil by default.\n\n &e&l2. &rUse command &7/my-totem-doll refresh [...]&r to refresh doll skins.",
 
 	"my-totem-doll.tags.title": "&7Doll Tags:",
 	"my-totem-doll.tags.0": "Set Alex arms",
@@ -98,6 +98,11 @@
 	"my-totem-doll.command.refresh.player.start": "&6Start refreshing skin textures for player &f%s&6",
 	"my-totem-doll.command.refresh.player.end": "&aRefreshed skin textures for &f%s&a in &f%s&a seconds",
 
+	"my-totem-doll.welcome_screen.title": "Welcome screen",
+	"my-totem-doll.welcome_screen.text": "&lWelcome Screen&r\n\nIt looks like you're launching the game with the &lMy Totem Doll mod&r for the first time!\nWhich standard model would you like to use for your totems?",
+	"my-totem-doll.welcome_screen.option.3d": "&l3D Doll",
+	"my-totem-doll.welcome_screen.option.2d": "&l2D Totem",
+
 	"my-totem-doll.placeholder.search": "Search...",
 	"my-totem-doll.button.select_current": "&aSelect Current",
 	"my-totem-doll.button.close": "&cClose",
@@ -116,6 +121,7 @@
 	"my-totem-doll.text.loading.1": "Loading.",
 	"my-totem-doll.text.loading.2": "Loading..",
 	"my-totem-doll.text.loading.3": "Loading...",
+	"my-totem-doll.text.loading.failed": "&c&lFailed Loading!",
 
 	"my-totem-doll.tag_menu.title": "Tags",
 	"my-totem-doll.tag_menu.custom_models.title": "Custom Models\n \n&7[Shift]&r + &7[Scroll]&r to change\ntooltip size\n&7[Ctrl]&r + &7[Scroll]&r to change\nmodel size in tooltip"

@@ -10,7 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
-public class BackgroundDrawer {
+public class BackgroundRenderer {
 
 	public static void drawTransparencyWidgetBackground(DrawContext context, int x, int y, int width, int height, boolean enabled, boolean hovered) {
 		Identifier menuBackgroundTexture = enabled ? TransparencySprites.getMenuListBackgroundTexture() : TransparencySprites.DARKER_MENU_BACKGROUND_TEXTURE;

@@ -8,7 +8,7 @@ import net.minecraft.util.Identifier;
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.doll.data.TotemDollTextures;
-import net.lopymine.mtd.model.base.MModel;
+import net.lopymine.mtd.model.base.*;
 import net.lopymine.mtd.model.bb.manager.BlockBenchModelManager;
 import java.util.*;
 import java.util.function.*;
@@ -18,12 +18,12 @@ import org.jetbrains.annotations.Nullable;
 @Setter
 public class TotemDollModel extends Model {
 
-	public static final Identifier STANDARD_DOLL_ID = MyTotemDoll.id("dolls/3d_doll.bbmodel");
+	public static final Identifier TWO_D_MODEL_ID = MyTotemDoll.id("dolls/2d_doll.bbmodel");
+	public static final Identifier THREE_D_MODEL_id = MyTotemDoll.id("dolls/3d_doll.bbmodel");
 
 	private final MModel main;
 
-	@Nullable
-	private final MModel
+	private final MModelCollection
 			head,
 			body,
 			leftArmSlim,
@@ -33,8 +33,7 @@ public class TotemDollModel extends Model {
 			leftLeg,
 			rightLeg;
 
-	@Nullable
-	private final MModel
+	private final MModelCollection
 			cape,
 			elytra,
 			ears;
@@ -46,70 +45,62 @@ public class TotemDollModel extends Model {
 	public TotemDollModel(MModel root, boolean slim) {
 		super(/*? >=1.21.2 {*/ root, /*?}*/RenderLayer::getEntityTranslucent);
 
-		this.head         = root.findModel("head").orElse(null);
-		this.body         = root.findModel("body").orElse(null);
-		this.leftArmSlim  = root.findModel("left_arm_slim").orElse(null);
-		this.rightArmSlim = root.findModel("right_arm_slim").orElse(null);
-		this.leftArmWide  = root.findModel("left_arm_wide").orElse(null);
-		this.rightArmWide = root.findModel("right_arm_wide").orElse(null);
-		this.leftLeg      = root.findModel("left_leg").orElse(null);
-		this.rightLeg     = root.findModel("right_leg").orElse(null);
+		this.head         = root.findModels("head");
+		this.body         = root.findModels("body");
+		this.leftArmSlim  = root.findModels("left_arm_slim");
+		this.rightArmSlim = root.findModels("right_arm_slim");
+		this.leftArmWide  = root.findModels("left_arm_wide");
+		this.rightArmWide = root.findModels("right_arm_wide");
+		this.leftLeg      = root.findModels("left_leg");
+		this.rightLeg     = root.findModels("right_leg");
 
-		this.cape   = root.findModel("cape").orElse(null);
-		this.elytra = root.findModel("elytra").orElse(null);
-		this.ears   = Optional.ofNullable(this.head).flatMap((model) -> model.findModel("ears")).orElse(null);
+		this.cape   = root.findModels("cape");
+		this.elytra = root.findModels("elytra");
+		this.ears   = root.findModels("ears");
 
 		this.main = root;
 		this.slim = slim;
 
-		this.disableIfPresent(this.leftArmSlim);
-		this.disableIfPresent(this.rightArmSlim);
-		this.disableIfPresent(this.leftArmWide);
-		this.disableIfPresent(this.rightArmWide);
+		disableIfPresent(this.leftArmSlim);
+		disableIfPresent(this.rightArmSlim);
+		disableIfPresent(this.leftArmWide);
+		disableIfPresent(this.rightArmWide);
 
 		this.resetPartsVisibility();
 	}
 
 	public static MModel createDollModel() {
 		MModel model = BlockBenchModelManager.getModel(MyTotemDollClient.getConfig().getStandardTotemDollModelValue());
-		MModel mmodel = model == null ? BlockBenchModelManager.getModel(STANDARD_DOLL_ID) : model;
+		MModel mmodel = model == null ? BlockBenchModelManager.getModel(THREE_D_MODEL_id) : model;
 		if (mmodel == null) {
 			throw new IllegalArgumentException("Failed to find standard doll model! [TotemDollModel.class]");
 		}
 		return mmodel;
 	}
 
-	public void enableIfPresent(@Nullable MModel model) {
-		if (model != null) {
-			model.visible = true;
-		}
+	public static void enableIfPresent(MModelCollection collection) {
+		collection.setVisible(true);
 	}
 
-	public void disableIfPresent(@Nullable MModel model) {
-		if (model != null) {
-			model.visible = false;
-		}
+	public static void disableIfPresent(MModelCollection collection) {
+		collection.setVisible(false);
 	}
 
-	public void enableSkipRenderingIfPresent(@Nullable MModel model) {
-		if (model != null) {
-			model.setSkipRendering(true);
-		}
+	public static void enableSkipRenderingIfPresent(MModelCollection collection) {
+		collection.setSkipRendering(true);
 	}
 
-	public void disableSkipRenderingIfPresent(@Nullable MModel model) {
-		if (model != null) {
-			model.setSkipRendering(false);
-		}
+	public static void disableSkipRenderingIfPresent(MModelCollection collection) {
+		collection.setSkipRendering(false);
 	}
 
 	public void resetPartsVisibility() {
-		this.enableSkipRenderingIfPresent(this.cape);
-		this.enableIfPresent(this.cape);
-		this.enableSkipRenderingIfPresent(this.ears);
-		this.enableIfPresent(this.ears);
-		this.enableSkipRenderingIfPresent(this.elytra);
-		this.disableIfPresent(this.elytra);
+		enableSkipRenderingIfPresent(this.cape);
+		enableIfPresent(this.cape);
+		enableSkipRenderingIfPresent(this.ears);
+		enableIfPresent(this.ears);
+		enableSkipRenderingIfPresent(this.elytra);
+		disableIfPresent(this.elytra);
 	}
 
 	//? <=1.21.1 {
@@ -126,13 +117,11 @@ public class TotemDollModel extends Model {
 		this.resetPartsVisibility();
 	}
 
-	@Nullable
-	public MModel getLeftArm() {
+	public MModelCollection getLeftArm() {
 		return this.slim ? this.leftArmSlim : this.leftArmWide;
 	}
 
-	@Nullable
-	public MModel getRightArm() {
+	public MModelCollection getRightArm() {
 		return this.slim ? this.rightArmSlim : this.rightArmWide;
 	}
 
@@ -173,16 +162,16 @@ public class TotemDollModel extends Model {
 		}
 
 		public void draw(MatrixStack matrices, VertexConsumerProvider provider, Identifier mainTexture, int light, int overlay, /*? if >=1.21 {*/int color/*?} else {*//*float red, float green, float blue, float alpha *//*?}*/) {
-			MModel leftArm = this.model.getLeftArm();
-			MModel rightArm = this.model.getRightArm();
+			MModelCollection leftArm = this.model.getLeftArm();
+			MModelCollection rightArm = this.model.getRightArm();
 
-			this.model.enableIfPresent(leftArm);
-			this.model.enableIfPresent(rightArm);
+			enableIfPresent(leftArm);
+			enableIfPresent(rightArm);
 
 			this.model.getMain().draw(matrices, provider, this.layerFunction, mainTexture, this.textures, this.requestedParts, light, overlay, /*? if >=1.21 {*/color/*?} else {*/ /*red, green, blue, alpha*//*?}*/);
 
-			this.model.disableIfPresent(leftArm);
-			this.model.disableIfPresent(rightArm);
+			disableIfPresent(leftArm);
+			disableIfPresent(rightArm);
 
 			this.textures.clear();
 		}

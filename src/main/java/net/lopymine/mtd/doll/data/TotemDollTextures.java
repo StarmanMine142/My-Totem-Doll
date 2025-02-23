@@ -3,6 +3,7 @@ package net.lopymine.mtd.doll.data;
 import lombok.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
+import net.minecraft.client.render.entity.model.EntityModels;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.util.Identifier;
 
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.*;
 public class TotemDollTextures {
 
 	public static final Identifier STEVE_SKIN = Identifier.of("minecraft", "textures/entity/player/wide/steve.png");
+	public static final Identifier ELYTRA_TEXTURE = Identifier.of("textures/entity/equipment/wings/elytra.png");
 
 	@NotNull
 	private LoadingState state = LoadingState.NOT_DOWNLOADED;
@@ -56,6 +58,19 @@ public class TotemDollTextures {
 
 	public @NotNull Identifier getSkinTexture() {
 		return this.skinTexture == null || this.state != LoadingState.DOWNLOADED ? STEVE_SKIN : this.skinTexture;
+	}
+
+	public @NotNull Identifier getElytraTexture() {
+		Identifier capeTexture = this.getCapeTexture();
+		if (capeTexture != null) {
+			return capeTexture;
+		}
+		Identifier elytraTexture = this.elytraTexture;
+		if (elytraTexture != null) {
+			return elytraTexture;
+		}
+		Identifier identifier = PlayerSkinUtils.remapTextureIfRequired(ELYTRA_TEXTURE);
+		return identifier == null ? ELYTRA_TEXTURE : identifier;
 	}
 
 	public void destroy() {

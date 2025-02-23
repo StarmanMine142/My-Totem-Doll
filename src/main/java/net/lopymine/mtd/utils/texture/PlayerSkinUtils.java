@@ -3,6 +3,7 @@ package net.lopymine.mtd.utils.texture;
 import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.texture.*;
+import net.minecraft.resource.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 
@@ -12,6 +13,7 @@ import net.lopymine.mtd.extension.PlayerSkinTextureExtension;
 
 import java.io.*;
 import java.nio.file.*;
+import java.util.Optional;
 import org.jetbrains.annotations.*;
 
 //? <=1.21.3 {
@@ -92,10 +94,20 @@ public class PlayerSkinUtils {
 			return identifier;
 		}
 		AbstractTexture texture = textureManager.getTexture(id);
-		if (!(texture instanceof NativeImageBackedTexture backedTexture)) {
-			return id;
+		NativeImage image = null;
+		if (texture instanceof NativeImageBackedTexture backedTexture) {
+			image = backedTexture.getImage();
 		}
-		NativeImage image = backedTexture.getImage();
+		if (texture instanceof ResourceTexture resourceTexture) {
+			ResourceManager resourceManager = MinecraftClient.getInstance().getResourceManager();
+			try {
+				InputStream open = resourceManager.open(resourceTexture.getId());
+				image = NativeImage.read(open);
+			} catch (Exception e) {
+				MyTotemDollClient.LOGGER.error("Failed to read resource texture with id \"%s\"".formatted(id.toString()), e);
+				return id;
+			}
+		}
 		if (image == null || (image.getWidth() == 64 && image.getHeight() == 64)) {
 			return id;
 		}

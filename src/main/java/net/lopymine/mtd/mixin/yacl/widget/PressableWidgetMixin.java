@@ -8,11 +8,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.lopymine.mtd.gui.BackgroundDrawer;
+import net.lopymine.mtd.gui.BackgroundRenderer;
 import net.lopymine.mtd.yacl.YACLConfigurationScreen;
-import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 import java.util.function.Function;
 
@@ -34,7 +32,7 @@ public abstract class PressableWidgetMixin extends ClickableWidget implements Dr
 			original.call(instance, function, identifier, x, y, width, height, color);
 			return;
 		}
-		BackgroundDrawer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.active, this.isSelected());
+		BackgroundRenderer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.active, this.isSelected());
 	}
 
 	//?} elif >=1.20.2 {
@@ -45,7 +43,7 @@ public abstract class PressableWidgetMixin extends ClickableWidget implements Dr
 			original.call(instance, identifier, x, y, width, height);
 			return;
 		}
-		BackgroundDrawer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.active, this.isSelected());
+		BackgroundRenderer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.active, this.isSelected());
 	}
 
 	*///?} else {
@@ -55,7 +53,7 @@ public abstract class PressableWidgetMixin extends ClickableWidget implements Dr
 			original.call(context, identifier, x, y, w, h, a, b, c, d, e, i);
 			return;
 		}
-		BackgroundDrawer.drawTransparencyWidgetBackground(context, x, y, w, h, this.active, this.isSelected());
+		BackgroundRenderer.drawTransparencyWidgetBackground(context, x, y, w, h, this.active, this.isSelected());
 	}
 	*///?}
 }

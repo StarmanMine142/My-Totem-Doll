@@ -47,6 +47,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 	private TipsWidget tipsWidget = null;
 	@Unique
 	private boolean menuVisible = false;
+
 	public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory playerInventory, Text title, Identifier texture) {
 		super(handler, playerInventory, title, texture);
 	}
@@ -99,10 +100,10 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
 		Vec2i tagButtonPos = new MyTotemDollConfig().getTagButtonPos();
 		this.tagButtonWidget = new DraggingTagButtonWidget(Tag.simple('4'), this.x, this.y,  this.x + tagButtonPos.getX(), this.y + tagButtonPos.getY(), 0, 0, (b) -> {
-			this.menuVisible = !b.isEnabled();
+			this.menuVisible = b.isPressed();
 			this.resize(this.client, this.width, this.height);
 		});
-		this.tagButtonWidget.setEnabled(this.tagMenuWidget.visible);
+		this.tagButtonWidget.setPressed(this.tagMenuWidget.visible);
 		this.tagButtonWidget.visible = bl;
 		this.addDrawableChild(this.tagButtonWidget);
 
@@ -125,21 +126,18 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 			return;
 		}
 
-		ItemStack stackOne = this.handler.getSlot(0).getStack();
-		ItemStack stackTwo = this.handler.getSlot(2).getStack();
-		ItemStack result = stackTwo.isEmpty() ? stackOne : stackTwo;
-
-		if (!result.isOf(Items.TOTEM_OF_UNDYING)) {
-			// TODO
-			return;
-		}
-
 		int tagMenuX = this.x + 176 + 1;
 		int tagMenuY = this.y;
 
 		this.tagMenuWidget.setPosition(tagMenuX, tagMenuY);
-		this.tagMenuWidget.updateButtons(result);
-		this.tagMenuWidget.updateCustomModelTagButtons(result);
+
+		ItemStack stackOne = this.handler.getSlot(0).getStack();
+		ItemStack stackTwo = this.handler.getSlot(2).getStack();
+		ItemStack result = stackTwo.isEmpty() ? stackOne : stackTwo;
+		if (result.isOf(Items.TOTEM_OF_UNDYING)) {
+			this.tagMenuWidget.updateButtons(result);
+			this.tagMenuWidget.updateCustomModelTagButtons(result);
+		}
 
 		int infoWidgetX = this.tagMenuWidget.getX() + this.tagMenuWidget.getWidth() + 2;
 		int infoWidgetY = this.tagMenuWidget.getWidgetY() + 2;
@@ -195,7 +193,7 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 		if (slotId == 0) {
 			this.tagButtonWidget.visible = stack.isOf(Items.TOTEM_OF_UNDYING);
 			if (!this.tagButtonWidget.visible && this.tagMenuWidget.visible) {
-				this.tagButtonWidget.setEnabled(true, true);
+				this.tagButtonWidget.setPressed(false, true);
 			}
 		}
 	}

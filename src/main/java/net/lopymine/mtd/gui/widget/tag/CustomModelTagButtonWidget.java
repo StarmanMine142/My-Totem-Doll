@@ -18,9 +18,10 @@ import net.lopymine.mtd.doll.data.TotemDollData;
 import net.lopymine.mtd.doll.manager.StandardTotemDollManager;
 import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.gui.tooltip.preview.TotemDollPreviewTooltipData;
-import net.lopymine.mtd.tag.Tag;
+import net.lopymine.mtd.tag.*;
 import net.lopymine.mtd.tag.manager.TagsManager;
 
+import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 
 @Setter
@@ -29,17 +30,16 @@ public class CustomModelTagButtonWidget extends TagButtonWidget {
 
 	@Nullable
 	private final Identifier model;
-	@Nullable
 	private TotemDollData data;
 
 	public CustomModelTagButtonWidget(Tag tag, int x, int y, TagPressAction pressAction) {
 		super(tag, x, y, pressAction);
-		this.model = TagsManager.getCustomModelIdsTags().get(tag.getTag()).getModelId();
-		this.data = this.model == null ? null : StandardTotemDollManager.getStandardDoll().copy();
+		this.model = Optional.ofNullable(TagsManager.getCustomModelIdsTags().get(tag.getTag())).map(CustomModelTag::getModelId).orElse(null);
+		this.data = StandardTotemDollManager.getStandardDoll().copy();
 	}
 
 	public void updateData(TotemDollData data) {
-		if (this.model == null || this.data == data) {
+		if (this.model == null || this.data == data || data == null) {
 			return;
 		}
 		this.data = data.copy();
@@ -47,31 +47,20 @@ public class CustomModelTagButtonWidget extends TagButtonWidget {
 
 	@Override
 	protected void renderIcon(DrawContext context, int x, int y) {
-		if (this.data == null || this.model == null) {
-			TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-			String text = "?";
-			int width = textRenderer.getWidth(text);
-			context.drawText(textRenderer, text, x + (this.getWidth() / 2) - (width / 2), y + (this.getHeight() / 2) - (textRenderer.fontHeight / 2), -1, true);
-		} else {
+		if (this.model != null) {
 			this.data.setTempModel(this.model);
-			context.enableScissor(this.getX() + 1, this.getY() + 1, this.getX() + this.getWidth() - 1, this.getY() + this.getHeight() - 1);
-			MatrixStack matrices = context.getMatrices();
-			matrices.push();
-			matrices.translate(0, -2, 0);
-			TotemDollRenderer.renderPreview(context, x, y, Math.min(this.getWidth(), this.getHeight()), this.data);
-			matrices.pop();
-			context.disableScissor();
 		}
+		context.enableScissor(this.getX() + 1, this.getY() + 1, this.getX() + this.getWidth() - 1, this.getY() + this.getHeight() - 1);
+		TotemDollRenderer.renderPreview(context, x, y, this.getWidth(), this.getHeight(),  Math.min(this.getWidth(), this.getHeight()), this.data);
+		context.disableScissor();
 	}
-
-
 
 	@Override
 	public @Nullable TooltipComponent getTooltipComponent() {
-		if (this.data != null && this.model != null) {
-			return TooltipComponent.of(new TotemDollPreviewTooltipData(this.data, this.model));
+		if (this.model == null) {
+			return TooltipComponent.of(Text.of("Unknown Model").asOrderedText());
 		}
-		return TooltipComponent.of(Text.of("Unknown Model").asOrderedText());
+		return TooltipComponent.of(new TotemDollPreviewTooltipData(this.data, this.model));
 	}
 
 	@Override

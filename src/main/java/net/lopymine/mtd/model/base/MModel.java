@@ -7,11 +7,8 @@ import net.minecraft.client.render.*;
 import net.minecraft.client.render.model.json.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.util.math.*;
 import org.slf4j.Logger;
-
-import com.mojang.serialization.DataResult;
 
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.extension.*;
@@ -88,19 +85,23 @@ public class MModel extends ModelPart {
 		// NO-OP
 	}
 
-	public Optional<MModel> findModel(String name) {
-		MModel model = this.mChildren.get(name);
-		if (model != null && model.state == ModelState.GROUP) {
-			return Optional.of(model);
+	public MModelCollection findModels(String suffix) {
+		ArrayList<MModel> list = new ArrayList<>();
+
+		for (Entry<String, MModel> entry : this.mChildren.entrySet()) {
+			String key = entry.getKey();
+			MModel model = entry.getValue();
+			if (!key.endsWith(suffix) || model == null || model.getState() != ModelState.GROUP) {
+				continue;
+			}
+			list.add(model);
 		}
 
 		for (MModel value : this.mChildren.values()) {
-			Optional<MModel> o = value.findModel(name);
-			if (o.isPresent()) {
-				return o;
-			}
+			list.addAll(value.findModels(suffix).getModels());
 		}
-		return Optional.empty();
+
+		return new MModelCollection(list);
 	}
 
 	public ModelPart asModelPart() {

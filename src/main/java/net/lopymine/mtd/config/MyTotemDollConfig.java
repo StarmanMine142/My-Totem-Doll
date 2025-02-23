@@ -17,7 +17,6 @@ import net.lopymine.mtd.config.other.vector.Vec2i;
 import net.lopymine.mtd.doll.model.TotemDollModel;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,13 +34,14 @@ public class MyTotemDollConfig {
 			option("rendering_config", RenderingConfig.CODEC, MyTotemDollConfig::getRenderingConfig),
 			optional("standard_doll_skin_data", "", Codec.STRING, MyTotemDollConfig::getStandardTotemDollSkinValue),
 			optional("standard_doll_skin_type", TotemDollSkinType.STEVE, TotemDollSkinType.CODEC, MyTotemDollConfig::getStandardTotemDollSkinType),
-			optional("standard_doll_model_data", TotemDollModel.STANDARD_DOLL_ID, Identifier.CODEC, MyTotemDollConfig::getStandardTotemDollModelValue),
+			optional("standard_doll_model_data", TotemDollModel.TWO_D_MODEL_ID, Identifier.CODEC, MyTotemDollConfig::getStandardTotemDollModelValue),
 			optional("standard_doll_model_arms_type", TotemDollArmsType.WIDE, TotemDollArmsType.CODEC, MyTotemDollConfig::getStandardTotemDollArmsType),
 			optional("tag_button_pos", new Vec2i(155, 48), Vec2i.CODEC, MyTotemDollConfig::getTagButtonPos),
 			optional("use_vanilla_totem_model", false, Codec.BOOL, MyTotemDollConfig::isUseVanillaTotemModel),
 			optional("tag_menu_tooltip_size", TooltipSize.X1, TooltipSize.CODEC, MyTotemDollConfig::getTagMenuTooltipSize),
 			optional("tag_menu_tooltip_model_scale", 1.0F, Codec.FLOAT, MyTotemDollConfig::getTagMenuTooltipModelScale),
-			optional("executor_threads_count", 6, Codec.INT, MyTotemDollConfig::getExecutorThreadsCount)
+			optional("executor_threads_count", 6, Codec.INT, MyTotemDollConfig::getExecutorThreadsCount),
+			optional("first_run", true, Codec.BOOL, MyTotemDollConfig::isFirstRun)
 	).apply(instance, MyTotemDollConfig::new));
 
 	private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve(MyTotemDoll.MOD_ID + ".json5").toFile();
@@ -60,6 +60,7 @@ public class MyTotemDollConfig {
 	private TooltipSize tagMenuTooltipSize;
 	private float tagMenuTooltipModelScale;
 	private int executorThreadsCount;
+	private boolean firstRun;
 
 	public MyTotemDollConfig() {
 		this.modEnabled                  = true;
@@ -67,13 +68,14 @@ public class MyTotemDollConfig {
 		this.renderingConfig             = RenderingConfig.getDefault();
 		this.standardTotemDollSkinValue  = "";
 		this.standardTotemDollSkinType   = TotemDollSkinType.STEVE;
-		this.standardTotemDollModelValue = TotemDollModel.STANDARD_DOLL_ID;
+		this.standardTotemDollModelValue = TotemDollModel.TWO_D_MODEL_ID;
 		this.standardTotemDollArmsType   = TotemDollArmsType.WIDE;
 		this.tagButtonPos                = new Vec2i(155, 48);
 		this.useVanillaTotemModel        = false;
 		this.tagMenuTooltipSize          = TooltipSize.X1;
 		this.tagMenuTooltipModelScale    = 1.0F;
 		this.executorThreadsCount        = 6;
+		this.firstRun                    = true;
 	}
 
 	public static MyTotemDollConfig getInstance() {

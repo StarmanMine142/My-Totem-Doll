@@ -73,10 +73,10 @@
 
 	"my-totem-doll.standard_model_selection_screen.title": "Меню выбора стандартной модели",
 
-	"my-totem-doll.tags.tips.title": "&e&lПодсказки",
-	"my-totem-doll.tags.tips.text": "&e&l1.&r Зажмите &7[Shift]&r при наведении на тотем, чтобы увидеть его статус. Всегда включено в наковальне.\n&e2. &rИспользуйте /my-totem-doll refresh [...] команду, чтобы обновить скины кукол.",
+	"my-totem-doll.tags.tips.title": "&e&lПодсказки!",
+	"my-totem-doll.tags.tips.text": " &e&l1.&r Зажмите &7[Shift]&r при наведении на тотем, чтобы увидеть его статус. Всегда включено в наковальне.\n\n &e&l2. &rИспользуйте команду &7/my-totem-doll refresh [...]&r, чтобы обновить скины тотемов.",
 	"my-totem-doll.tags.info.title": "&lЧто это такое?",
-	"my-totem-doll.tags.info.text": "Это меню &eкукольных тегов&f. В этом меню вы можете найти список &eкнопок&f. Нажимая на эти кнопки, вы можете &eизменить&f внешний вид вашей куклы. К примеру: &eВыключить/отключить части модели&f, &eизменить текстуру&f, и так далее.",
+	"my-totem-doll.tags.info.text": "Это меню &eкукольных тегов&f.\nВ этом меню вы можете найти список &eкнопок&f.\nНажимая на эти кнопки, вы можете &eизменить&f внешний вид вашей куклы. К примеру: &eВыключить/отключить части модели&f, &eвыбрать особую модель&f, и так далее.",
 
 	"my-totem-doll.tags.title": "&7Теги куклы:",
 	"my-totem-doll.tags.0": "Установить тонкие руки",
@@ -96,6 +96,11 @@
 	"my-totem-doll.command.refresh.player.start": "&6Началась перезагрузка скина для игрока &f%s&6",
 	"my-totem-doll.command.refresh.player.end": "&aБыл перезагружен скин игрока &f%s&a за &f%s&a секунд(у)",
 
+	"my-totem-doll.welcome_screen.title": "Экран приветствия",
+	"my-totem-doll.welcome_screen.text": "&lЭкран приветствия&r\n\nПохоже, что вы впервые запустили игру с модом &lMy Totem Doll&r !\nКакую стандартную модель вы бы хотели использовать для своих тотемов?",
+	"my-totem-doll.welcome_screen.option.3d": "&l3D Кукла",
+	"my-totem-doll.welcome_screen.option.2d": "&l2D Тотем",
+
 	"my-totem-doll.placeholder.search": "Поиск...",
 	"my-totem-doll.button.select_current": "&aВыбрать текущий",
 	"my-totem-doll.button.close": "&cЗакрыть",
@@ -114,7 +119,8 @@
 	"my-totem-doll.text.loading.1": "Загрузка.",
 	"my-totem-doll.text.loading.2": "Загрузка..",
 	"my-totem-doll.text.loading.3": "Загрузка...",
+	"my-totem-doll.text.loading.failed": "&c&lНеудачная загрузка!",
 
 	"my-totem-doll.tag_menu.title": "Теги",
-	"my-totem-doll.tag_menu.custom_models.title": "Собственные модели\n \n&7[Shift]&r + &7[Scroll]&r чтобы изменить размер\nпредпросмотра.\n&7[Ctrl]&r + &7[Scroll]&r чтобы изменить размер\nмодели в режиме предпросмотра.",
+	"my-totem-doll.tag_menu.custom_models.title": "Собственные модели\n \n&7[Shift]&r + &7[Scroll]&r чтобы изменить размер\nпредпросмотра.\n&7[Ctrl]&r + &7[Scroll]&r чтобы изменить размер\nмодели в режиме предпросмотра."
 }

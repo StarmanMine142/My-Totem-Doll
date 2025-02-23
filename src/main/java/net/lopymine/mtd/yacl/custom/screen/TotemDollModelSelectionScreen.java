@@ -13,10 +13,10 @@ import net.minecraft.util.*;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
+import net.lopymine.mtd.gui.BackgroundRenderer;
 import net.lopymine.mtd.gui.widget.TotemDollModelPreviewWidget;
 import net.lopymine.mtd.gui.widget.button.*;
 import net.lopymine.mtd.pack.TotemDollModelFinder;
-import net.lopymine.mtd.gui.BackgroundDrawer;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -131,10 +131,10 @@ public class TotemDollModelSelectionScreen extends Screen {
 	public void renderBackground(DrawContext context /*? if >=1.21 {*/ ,int mouseX, int mouseY, float delta/*?}*/) {
 		super.renderBackground(context/*? if >=1.21 {*/ , mouseX, mouseY, delta /*?}*/);
 
-		BackgroundDrawer.drawTransparencyBackground(context, this.modelPanelDimension.x(), this.modelPanelDimension.y(), this.modelPanelDimension.width(), this.modelPanelDimension.height(), true);
-		BackgroundDrawer.drawTransparencyBackground(context, this.listPanelDimension.x(), this.listPanelDimension.y(), this.listPanelDimension.width(), this.listPanelDimension.height(), true);
-		BackgroundDrawer.drawTransparencyBackground(context, this.modelPathDimension.x(), this.modelPathDimension.y(), this.modelPathDimension.width(), this.modelPathDimension.height(), true);
-		BackgroundDrawer.drawTransparencyBackground(context, this.titleDimension.x(), this.titleDimension.y(), this.titleDimension.width(), this.titleDimension.height(), true);
+		BackgroundRenderer.drawTransparencyBackground(context, this.modelPanelDimension.x(), this.modelPanelDimension.y(), this.modelPanelDimension.width(), this.modelPanelDimension.height(), true);
+		BackgroundRenderer.drawTransparencyBackground(context, this.listPanelDimension.x(), this.listPanelDimension.y(), this.listPanelDimension.width(), this.listPanelDimension.height(), true);
+		BackgroundRenderer.drawTransparencyBackground(context, this.modelPathDimension.x(), this.modelPathDimension.y(), this.modelPathDimension.width(), this.modelPathDimension.height(), true);
+		BackgroundRenderer.drawTransparencyBackground(context, this.titleDimension.x(), this.titleDimension.y(), this.titleDimension.width(), this.titleDimension.height(), true);
 
 	}
 
@@ -178,11 +178,10 @@ public class TotemDollModelSelectionScreen extends Screen {
 
 		// Underline for this text
 		context.fill(this.modelPanelDimension.x() + offset, this.modelPanelDimension.y() + offset + textRenderer.fontHeight + 3, this.modelPanelDimension.x() + offset + Math.min((textRenderer.getWidth(selectedModelNameText) + 5), this.modelPanelDimension.width() - (offset * 2)), this.modelPanelDimension.y() + offset + textRenderer.fontHeight + 4, -1);
+		context.disableScissor();
 
 		// Model Preview
 		this.totemDollModelPreviewWidget.render(context, mouseX, mouseY, delta);
-
-		context.disableScissor();
 	}
 
 	private void setSelectedModel(Identifier modelId, String pack, String modelName) {

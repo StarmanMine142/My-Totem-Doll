@@ -16,7 +16,6 @@ import net.lopymine.mtd.utils.DrawUtils;
 import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 
 import java.util.List;
-import java.util.function.*;
 import org.jetbrains.annotations.Nullable;
 
 //? if >=1.21 {
@@ -32,20 +31,19 @@ public class TagButtonWidget extends ButtonWidget {
 	public static final Identifier INACTIVE_TEXTURE = MyTotemDoll.id("textures/gui/tag_menu/button_inactive.png");
 
 	public static final ButtonTextures TEXTURES = new ButtonTextures(
-			MyTotemDoll.id("textures/gui/tag_menu/button_enabled.png"),
-			MyTotemDoll.id("textures/gui/tag_menu/button_disabled.png"),
-			MyTotemDoll.id("textures/gui/tag_menu/button_enabled_hovered.png"),
-			MyTotemDoll.id("textures/gui/tag_menu/button_disabled_hovered.png")
+			MyTotemDoll.id("textures/gui/tag_menu/button_pressed.png"),
+			MyTotemDoll.id("textures/gui/tag_menu/button_unpressed.png"),
+			MyTotemDoll.id("textures/gui/tag_menu/button_pressed_hovered.png"),
+			MyTotemDoll.id("textures/gui/tag_menu/button_unpressed_hovered.png")
 	);
 
 	private Tag tag;
 	private String text;
 	private Identifier icon;
 
-	private boolean enabled;
+	private boolean pressed;
 	@Nullable
 	private Text tooltipText;
-	private boolean pressed;
 	private boolean canBeHovered = true;
 
 	public TagButtonWidget(Tag tag, int x, int y, TagPressAction pressAction) {
@@ -55,24 +53,18 @@ public class TagButtonWidget extends ButtonWidget {
 		this.icon         = TagsManager.getTagIcon(this.text.charAt(0));
 	}
 
-	protected void updateTag(Tag tag) {
-		this.tag          = tag;
-		this.text         = String.valueOf(tag.getTag());
-		this.icon         = TagsManager.getTagIcon(this.text.charAt(0));
-	}
-
 	@Override
 	public void onPress() {
+		this.pressed = !this.pressed;
 		super.onPress();
-		this.enabled = !this.enabled;
 	}
 
-	public void setEnabled(boolean enabled) {
-		this.setEnabled(enabled, false);
+	public void setPressed(boolean pressed) {
+		this.setPressed(pressed, false);
 	}
 
-	public void setEnabled(boolean enabled, boolean callback) {
-		this.enabled = enabled;
+	public void setPressed(boolean enabled, boolean callback) {
+		this.pressed = enabled;
 		if (callback) {
 			this.onPress.onPress(this);
 		}
@@ -99,7 +91,7 @@ public class TagButtonWidget extends ButtonWidget {
 	}
 
 	protected void renderBackground(DrawContext context, int x, int y) {
-		Identifier texture = !this.active ? INACTIVE_TEXTURE : TEXTURES.get(this.isEnabled(), this.isHovered());
+		Identifier texture = !this.active ? INACTIVE_TEXTURE : TEXTURES.get(this.isPressed(), this.isHovered());
 		DrawUtils.drawTexture(context, texture, x, y, 0, 0, this.width, this.height, this.width, this.height);
 	}
 

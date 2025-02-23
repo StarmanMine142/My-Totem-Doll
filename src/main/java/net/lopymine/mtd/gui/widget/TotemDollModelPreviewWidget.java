@@ -1,8 +1,11 @@
 package net.lopymine.mtd.gui.widget;
 
+import lombok.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 
@@ -14,17 +17,10 @@ import net.lopymine.mtd.doll.manager.StandardTotemDollManager;
 import net.lopymine.mtd.model.base.MModel;
 import net.lopymine.mtd.model.bb.manager.BlockBenchModelManager;
 
-public class TotemDollModelPreviewWidget implements Drawable {
+@Getter
+@Setter
+public class TotemDollModelPreviewWidget extends ClickableWidget {
 
-	private static final Text[] TEXTS = new Text[]{
-			MyTotemDoll.text("text.loading.0"),
-			MyTotemDoll.text("text.loading.1"),
-			MyTotemDoll.text("text.loading.2"),
-			MyTotemDoll.text("text.loading.3"),
-	};
-
-	private final int x;
-	private final int y;
 	private final float size;
 
 	private final TotemDollData data;
@@ -33,21 +29,30 @@ public class TotemDollModelPreviewWidget implements Drawable {
 	private boolean failedLoading;
 
 	public TotemDollModelPreviewWidget(int x, int y, float size) {
-		this.x    = x;
-		this.y    = y;
+		super(x, y, (int) size, (int) size, Text.of(""));
 		this.size = size;
 		this.data = StandardTotemDollManager.getStandardDoll().copy();
 	}
 
 	@Override
-	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+	protected void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
+		context.enableScissor(this.getX(), this.getY(), (this.getX() + this.getWidth()), (int) (this.getY() + this.getHeight()));
 		if (this.loading) {
-			int halfOfSize = (int) this.size / 2;
-			TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
-			context.drawCenteredTextWithShadow(textRenderer, this.getLoadingDots(Util.getMeasuringTimeMs()), this.x + halfOfSize, this.y + halfOfSize - (textRenderer.fontHeight / 2), -1);
+			this.renderLoadingText(context);
 		} else {
-			TotemDollRenderer.renderPreview(context, this.x, this.y, this.size, this.data);
+			this.renderPreview(context);
 		}
+		context.disableScissor();
+	}
+
+	protected void renderLoadingText(DrawContext context) {
+		int halfOfSize = (int) this.size / 2;
+		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+		context.drawCenteredTextWithShadow(textRenderer, this.getLoadingText(Util.getMeasuringTimeMs()), this.getX() + halfOfSize, this.getY() + halfOfSize - (textRenderer.fontHeight / 2), -1);
+	}
+
+	protected void renderPreview(DrawContext context) {
+		TotemDollRenderer.renderPreview(context, this.getX(), this.getY(), (int) this.getSize(), (int) this.getSize(), this.getSize(), this.getData());
 	}
 
 	public void updateModel(Identifier id) {
@@ -70,8 +75,18 @@ public class TotemDollModelPreviewWidget implements Drawable {
 		this.data.setCustomModel(model);
 	}
 
-	private Text getLoadingDots(long tick) {
-		int i = (int) (tick / 300L % (long) TEXTS.length);
-		return TEXTS[i];
+	private Text getLoadingText(long tick) {
+		if (this.failedLoading) {
+			return MyTotemDoll.text("text.loading.failed");
+		}
+
+		int i = (int) (tick / 300L % 4L);
+		System.out.println(i);
+		return MyTotemDoll.text("text.loading.%s".formatted(i));
+	}
+
+	@Override
+	protected void appendClickableNarrations(NarrationMessageBuilder builder) {
+
 	}
 }

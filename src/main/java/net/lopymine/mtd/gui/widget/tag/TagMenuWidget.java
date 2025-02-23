@@ -5,7 +5,6 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.*;
@@ -15,7 +14,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.extension.ItemStackExtension;
-import net.lopymine.mtd.gui.tooltip.wrapped.WrappedTextTooltipData;
 import net.lopymine.mtd.gui.widget.list.ListWithStaticHeaderWidget;
 import net.lopymine.mtd.gui.widget.tag.TagMenuWidget.TagRow;
 import net.lopymine.mtd.tag.*;
@@ -118,11 +116,9 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 
 		for (TagButtonWidget widget : this.getAllTagButtons()) {
 			if (tags != null) {
-				if (tags.contains(widget.getText())) {
-					widget.setEnabled(true);
-				}
+				widget.setPressed(tags.contains(widget.getText()));
 			} else {
-				widget.setEnabled(false);
+				widget.setPressed(false);
 			}
 		}
 	}
@@ -177,11 +173,10 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 			updateItemStackName(nameApplier, tagButtonWidget, character);
 
 			for (TagButtonWidget widget : allCustomModelWidgets) {
-				widget.setEnabled(false);
-				if (widget == tagButtonWidget) {
-					continue;
+				if (!widget.equals(tagButtonWidget)) {
+					widget.setPressed(false);
+					updateItemStackName(nameApplier, widget, widget.getTag().getTag());
 				}
-				widget.setEnabled(true);
 			}
 		});
 	}
@@ -196,7 +191,7 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 	}
 
 	private static void updateItemStackName(NameApplier nameApplier, TagButtonWidget b, char c) {
-		String name = !b.isEnabled() ? TagsManager.addTag(nameApplier.getName(), c) : TagsManager.removeTag(nameApplier.getName(), c);
+		String name = b.isPressed() ? TagsManager.addTag(nameApplier.getName(), c) : TagsManager.removeTag(nameApplier.getName(), c);
 		nameApplier.setName(name);
 	}
 

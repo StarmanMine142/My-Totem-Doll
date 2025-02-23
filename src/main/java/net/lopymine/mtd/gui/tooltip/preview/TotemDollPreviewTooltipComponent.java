@@ -43,14 +43,14 @@ public class TotemDollPreviewTooltipComponent implements TooltipComponent {
 		float size = (sizeOriginal / 1.25F) * config.getTagMenuTooltipModelScale();
 		Text text = Text.of(this.model.getFileName());
 		int textWidth = textRenderer.getWidth(text);
-		int offset = (int) (sizeOriginal - size) / 2;
 
-		context.enableScissor(x, y + 10 + 4, x + width, y + this.getHeight(/*? >=1.21.2 {*/textRenderer/*?}*/));
+		int height = this.getHeight(/*? >=1.21.2 {*/textRenderer/*?}*/);
+		context.enableScissor(x, y + 10 + 4, x + width, y + height);
 		this.data.setTempModel(this.model);
-		TotemDollRenderer.renderPreview(context, x + offset, y + 10 + offset, size, this.data);
+		TotemDollRenderer.renderPreview(context, x, y + 10, width, height - 10, size, this.data);
 		context.disableScissor();
 
-		context.enableScissor(x, y, x + width, y + this.getHeight(/*? >=1.21.2 {*/textRenderer/*?}*/));
+		context.enableScissor(x, y, x + width, y + height);
 		if (textWidth > width) {
 			ClickableWidget.drawScrollableText(context, textRenderer, text, x, y, x + width, y + 10, -1);
 		} else {

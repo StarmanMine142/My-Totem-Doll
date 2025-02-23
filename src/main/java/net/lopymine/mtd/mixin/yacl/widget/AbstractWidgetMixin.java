@@ -6,11 +6,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.lopymine.mtd.gui.BackgroundDrawer;
+import net.lopymine.mtd.gui.BackgroundRenderer;
 import net.lopymine.mtd.yacl.YACLConfigurationScreen;
-import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 @Pseudo
 @Mixin(AbstractWidget.class)
@@ -25,7 +23,7 @@ public class AbstractWidgetMixin {
 			original.call(drawContext, x, y, width, height, enabled, hovered);
 			return;
 		}
-		BackgroundDrawer.drawTransparencyWidgetBackground(drawContext, x, y, width, height, enabled, hovered);
+		BackgroundRenderer.drawTransparencyWidgetBackground(drawContext, x, y, width, height, enabled, hovered);
 	}
 	//?} else {
 	/*@Dynamic

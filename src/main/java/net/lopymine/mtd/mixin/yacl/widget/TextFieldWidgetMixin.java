@@ -1,7 +1,6 @@
 package net.lopymine.mtd.mixin.yacl.widget;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.*;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.widget.*;
@@ -9,7 +8,7 @@ import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.lopymine.mtd.gui.BackgroundDrawer;
+import net.lopymine.mtd.gui.BackgroundRenderer;
 import net.lopymine.mtd.yacl.YACLConfigurationScreen;
 
 //? if >=1.21 {
@@ -38,7 +37,7 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget implements Dr
 			original.call(instance, function, identifier, x, y, width, height);
 			return;
 		}
-		BackgroundDrawer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.isEditable() && this.active, this.isSelected());
+		BackgroundRenderer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.isEditable() && this.active, this.isSelected());
 	}
 
 	//?} elif >=1.20.2 {
@@ -49,7 +48,7 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget implements Dr
 			original.call(instance, identifier, x, y, width, height);
 			return;
 		}
-		BackgroundDrawer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.isEditable() && this.active, this.isSelected());
+		BackgroundRenderer.drawTransparencyWidgetBackground(instance, x, y, width, height, this.isEditable() && this.active, this.isSelected());
 	}
 
 	*///?} else {
@@ -59,7 +58,7 @@ public abstract class TextFieldWidgetMixin extends ClickableWidget implements Dr
 		if (YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen)) {
 			return original.call(instance);
 		}
-		BackgroundDrawer.drawTransparencyWidgetBackground(context, this.getX(), this.getY(), this.getWidth(), this.getHeight(), this.isEditable() && this.active, this.isSelected());
+		BackgroundRenderer.drawTransparencyWidgetBackground(context, this.getX(), this.getY(), this.getWidth(), this.getHeight(), this.isEditable() && this.active, this.isSelected());
 		return false;
 	}
 	*///?}

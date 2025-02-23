@@ -8,6 +8,7 @@ import net.lopymine.mtd.tag.manager.TagsSkinProviders;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import org.jetbrains.annotations.Nullable;
 
 public class TotemDollManager {
 
@@ -42,7 +43,7 @@ public class TotemDollManager {
 		return loaded;
 	}
 
-	public static void reload(Consumer<Float> action) {
+	public static CompletableFuture<Float> reload(Consumer<Float> action) {
 		List<SkinProvider> providers = new ArrayList<>(TagsSkinProviders.getSkinProvidersIds().values());
 		providers.add(MojangSkinProvider.getInstance());
 
@@ -53,13 +54,14 @@ public class TotemDollManager {
 			list.add(provider.reloadAll());
 		}
 
-		CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).thenApply((__) -> {
+		return CompletableFuture.allOf(list.toArray(new CompletableFuture[0])).thenApply((__) -> {
 			action.accept((System.currentTimeMillis() - startMs) / 1000F);
 			return null;
 		});
 	}
 
-	public static void reload(String value, Consumer<Float> action) {
+	@Nullable
+	public static CompletableFuture<Float> reload(String value, Consumer<Float> action) {
 		long startMs = System.currentTimeMillis();
 
 		SkinProvider skinProvider = TagsSkinProviders.getProviderFor(value);
@@ -72,10 +74,10 @@ public class TotemDollManager {
 						skinProvider.reload(value);
 
 		if (completableFuture == null) {
-			return;
+			return null;
 		}
 
-		completableFuture.thenApply((__) -> {
+		return completableFuture.thenApply((__) -> {
 			action.accept((System.currentTimeMillis() - startMs) / 1000F);
 			return null;
 		});

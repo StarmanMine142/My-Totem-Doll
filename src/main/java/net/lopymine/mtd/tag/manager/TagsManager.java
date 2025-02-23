@@ -5,6 +5,7 @@ import net.minecraft.util.*;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.doll.data.TotemDollData;
+import net.lopymine.mtd.doll.model.TotemDollModel;
 import net.lopymine.mtd.model.base.MModel;
 import net.lopymine.mtd.pack.TotemDollModelFinder;
 import net.lopymine.mtd.tag.*;
@@ -47,23 +48,16 @@ public class TagsManager {
 		registerPostprocessorTag(
 				Tag.startBuilder('2')
 						.setAction((data) -> {
-							MModel part = data.getModel().getCape();
-							if (part == null) {
-								return;
-							}
-							part.visible = false;
+							TotemDollModel.disableIfPresent(data.getModel().getCape());
 						})
 						.build()
 		);
 
 		registerPostprocessorTag(
 				Tag.startBuilder('3')
-						.setAction((model) -> {
-							MModel part = model.getModel().getElytra();
-							if (part == null) {
-								return;
-							}
-							part.visible = true;
+						.setAction((data) -> {
+							TotemDollModel.disableIfPresent(data.getModel().getCape());
+							TotemDollModel.enableIfPresent(data.getModel().getElytra());
 						})
 						.build()
 		);

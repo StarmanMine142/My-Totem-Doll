@@ -51,7 +51,7 @@ public class TotemDollRenderer {
 		}
 
 		matrices.push();
-		matrices.translate(-0.5F, -0.5F, -0.5F);
+		matrices.translate(-0.5F, -1.0F, -0.5F);
 		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
 		matrices.pop();
 
@@ -92,11 +92,15 @@ public class TotemDollRenderer {
 		return true;
 	}
 
-	public static void renderPreview(DrawContext context, int x, int y, float size, @Nullable TotemDollData data) {
+	public static void renderPreview(DrawContext context, int x, int y, int width, int height, float size, @Nullable TotemDollData data) {
 		MatrixStack matrices = context.getMatrices();
 		Immediate consumers = context.vertexConsumers;
 
 		float i = (size / 2F);
+		float k = (i / 2F);
+		int centerX = x + (width / 2);
+		int centerY = y + (height / 2);
+
 		long currentTime = Util.getMeasuringTimeMs();
 		float rotationSpeed = 0.05f;
 
@@ -107,13 +111,15 @@ public class TotemDollRenderer {
 			DiffuseLighting.disableGuiDepthLighting();
 
 			matrices.push();
-			matrices.translate(x + i, y + (i * 2), 300F);
+			matrices.translate(centerX, centerY, 300F);
+
+			matrices.translate(0F, k, 0F);
+
 			matrices.multiply(RotationAxis.NEGATIVE_Z.rotationDegrees(180F));
 			matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(rotation));
 			matrices.scale(-i, i, i);
 
 			matrices.translate(-0.5F, -0.5F, -0.5F);
-
 			TotemDollRenderer.render(matrices, consumers, 15728880, OverlayTexture.DEFAULT_UV, data);
 
 			context.draw();
@@ -125,12 +131,12 @@ public class TotemDollRenderer {
 			float v = i / 16;
 			float d = i / 2;
 			matrices.push();
-			matrices.translate(x + d, y + d, 0);
-			matrices.translate(d, d, 400F);
+			matrices.translate(centerX - d, centerY - d, 400F);
+			matrices.translate(d, d, 0F);
 			matrices.multiply(RotationAxis.NEGATIVE_Y.rotationDegrees(rotation));
-			matrices.translate(-d, -d, 0);
+			matrices.translate(-d, -d, 0F);
 			matrices.scale(v, v, v);
-			matrices.translate(0, 0, -150F); // I hate this
+			matrices.translate(0F, 0F, -150F); // I hate this
 			context.drawItemWithoutEntity(Items.TOTEM_OF_UNDYING.getDefaultStack(), 0, 0);
 			matrices.pop();
 		}
@@ -190,10 +196,10 @@ public class TotemDollRenderer {
 		if (capeTexture != null) {
 			drawer.texture("cape", textures::getCapeTexture);
 			drawer.requestDrawingPart("cape");
-
-			drawer.texture("elytra", textures::getCapeTexture);
-			drawer.requestDrawingPart("elytra");
 		}
+
+		drawer.texture("elytra", textures::getElytraTexture);
+		drawer.requestDrawingPart("elytra");
 
 		drawer.draw(matrices, provider, skinTexture, light, overlay, /*? if >=1.21 {*/ -1 /*?} else {*/ /*1.0F, 1.0F, 1.0F, 1.0F *//*?}*/);
 

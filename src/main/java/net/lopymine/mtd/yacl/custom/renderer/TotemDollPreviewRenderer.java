@@ -14,7 +14,7 @@ import net.lopymine.mtd.config.totem.TotemDollSkinType;
 import net.lopymine.mtd.doll.data.TotemDollData;
 import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.doll.manager.StandardTotemDollManager;
-import net.lopymine.mtd.gui.BackgroundDrawer;
+import net.lopymine.mtd.gui.BackgroundRenderer;
 import net.lopymine.mtd.utils.ColorUtils;
 
 import org.jetbrains.annotations.Nullable;
@@ -82,7 +82,7 @@ public class TotemDollPreviewRenderer implements ImageRenderer {
 		matrices.translate(0, 0, 10);
 		int i = this.suggestionText.draw(context, x + 5, y + 5, 10, suggestionColor);
 		matrices.translate(0, 0, -5);
-		BackgroundDrawer.drawTransparencyWidgetBackground(context, x, y, width, i - y + 5, true, suggestionColor);
+		BackgroundRenderer.drawTransparencyWidgetBackground(context, x, y, width, i - y + 5, true, suggestionColor);
 
 		matrices.pop();
 
@@ -99,7 +99,7 @@ public class TotemDollPreviewRenderer implements ImageRenderer {
 	private void renderDollStatus(DrawContext context, int x, int y, int width) {
 		TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
-		BackgroundDrawer.drawTransparencyWidgetBackground(context, x, y, width, 30, true, true);
+		BackgroundRenderer.drawTransparencyWidgetBackground(context, x, y, width, 30, true, true);
 
 		ClickableWidget.drawScrollableText(context, textRenderer, MyTotemDoll.text("text.status").append(this.data.getTextures().getState().getText()), x + 2, y, x + width - 2, y + 30, -1);
 	}
@@ -107,12 +107,9 @@ public class TotemDollPreviewRenderer implements ImageRenderer {
 	private int renderDoll(DrawContext context, int x, int y, int size) {
 		MyTotemDollConfig config = MyTotemDollClient.getConfig();
 
-		BackgroundDrawer.drawTransparencyWidgetBackground(context, x, y, size, size, true, true);
+		BackgroundRenderer.drawTransparencyWidgetBackground(context, x, y, size, size, true, true);
 
-		float s = size / 1.5F;
-		int o = (int) (size - s) / 2;
-
-		TotemDollRenderer.renderPreview(context, x + o, y + o, s, config.isUseVanillaTotemModel() ? null : this.data);
+		TotemDollRenderer.renderPreview(context, x, y, size, size, size / 1.5F, config.isUseVanillaTotemModel() ? null : this.data);
 
 		return y + size + 2;
 	}

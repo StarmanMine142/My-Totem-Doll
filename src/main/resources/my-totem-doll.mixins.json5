@@ -27,7 +27,8 @@
 	    "ItemStackWithModdedBakedModelMixin",
 	    "ItemStackWithPlayerEntityMixin",
 	    "ItemStackMixin",
-	    "HandledScreenMixin"
+	    "HandledScreenMixin",
+	    "MinecraftClientMixin"
     ],
     "injectors": {
         "defaultRequire": 1
