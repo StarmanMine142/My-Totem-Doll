@@ -1,14 +1,12 @@
 package net.lopymine.mtd.api;
 
 import com.google.gson.*;
-import net.minecraft.util.*;
 import org.apache.http.client.HttpResponseException;
 
-import net.lopymine.mtd.MyTotemDoll;
-import net.lopymine.mtd.cache.CachedSkinsManager;
-import net.lopymine.mtd.client.MyTotemDollClient;
-import net.lopymine.mtd.utils.TextureUtils;
 
+
+import net.lopymine.mtd.client.MyTotemDollClient;
+import net.lopymine.mtd.skin.data.ParsedSkinData;
 import java.net.URI;
 import java.net.http.*;
 import java.net.http.HttpResponse.BodyHandlers;
@@ -17,14 +15,10 @@ import java.util.*;
 import org.jetbrains.annotations.*;
 
 //? if >=1.20.2 {
-import net.minecraft.client.util.SkinTextures;
-import net.minecraft.client.util.SkinTextures.Model;
 import com.mojang.util.UndashedUuid;
 //?} else {
-/*import net.lopymine.mtd.utils.SkinTextures;
-import net.lopymine.mtd.utils.SkinTextures.Model;
-import com.mojang.util.UUIDTypeAdapter;
-*///?}
+/*import com.mojang.util.UUIDTypeAdapter;
+ *///?}
 
 public class MojangAPI {
 
@@ -74,8 +68,9 @@ public class MojangAPI {
 			UUID uuid = UndashedUuid.fromStringLenient(uuidAsString);
 			//?} else {
 			/*UUID uuid = UUIDTypeAdapter.fromString(uuidAsString);
-			*///?}
+			 *///?}
 			return new Response<>(statusCode, uuid);
+		} catch (InterruptedException ignored) {
 		} catch (Exception e) {
 			MyTotemDollClient.LOGGER.error("Failed to get UUID: ", e);
 		}
@@ -83,13 +78,13 @@ public class MojangAPI {
 		return Response.empty(statusCode);
 	}
 
-	public static Response<SkinTextures> getSkinTextures(String nickname) {
+	public static Response<ParsedSkinData> getSkinData(String nickname) {
 		Response<UUID> response = MojangAPI.getUUID(nickname);
 		if (response.statusCode() == -1 && response.isEmpty()) { // Other error
-			return new Response<>(response.statusCode(), CachedSkinsManager.DEFAULT_DOLL_TEXTURES);
+			return new Response<>(response.statusCode(), null);
 		}
 		if (response.statusCode() == 404 && response.isEmpty()) { // Player not found
-			return new Response<>(response.statusCode(), CachedSkinsManager.DEFAULT_DOLL_TEXTURES);
+			return new Response<>(response.statusCode(), null);
 		}
 		if (response.statusCode() == 429 && response.isEmpty()) { // Too many requests
 			return Response.empty(response.statusCode());
@@ -97,11 +92,11 @@ public class MojangAPI {
 		if (response.isEmpty()) {
 			return Response.empty(response.statusCode());
 		}
-		return MojangAPI.getSkinTextures(response.value(), nickname);
+		return MojangAPI.getSkinData(response.value(), nickname);
 	}
 
 	@Nullable
-	public static Response<SkinTextures> getSkinTextures(UUID uuid, String nickname) {
+	public static Response<ParsedSkinData> getSkinData(UUID uuid, String nickname) {
 		try {
 			HttpClient httpClient = HttpClient.newHttpClient();
 			HttpRequest request = HttpRequest.newBuilder()
@@ -114,28 +109,17 @@ public class MojangAPI {
 			}
 
 			ParsedSkinData parsedSkinData = MojangAPI.parseSkinData(jsonObject);
-			if (parsedSkinData.skinUrl() == null || parsedSkinData.skinModel() == null) {
+			if (parsedSkinData.getSkinUrl() == null) {
 				return Response.empty(response.statusCode());
 			}
 
-			Identifier skinId = MyTotemDoll.id("doll/textures/skin/" + nickname.toLowerCase());
-			TextureUtils.registerUrlTexture(parsedSkinData.skinUrl(), skinId, null, true);
-
-			Identifier capeId = parsedSkinData.capeUrl() != null ? MyTotemDoll.id("doll/textures/cape/" + nickname.toLowerCase()) : null;
-			if (capeId != null) {
-				TextureUtils.registerUrlTexture(parsedSkinData.capeUrl(), capeId, null, true);
-			}
-
-			SkinTextures skinTextures = new SkinTextures(skinId, parsedSkinData.skinUrl(), capeId, null, Model.fromName(parsedSkinData.skinModel()), true);
-			return new Response<>(response.statusCode(), skinTextures);
+			return new Response<>(response.statusCode(), parsedSkinData);
 		} catch (Exception e) {
 			MyTotemDollClient.LOGGER.error("Failed to load skin textures for {}: ", nickname, e);
 		}
 		return null;
 	}
 
-
-	@Contract("_ -> new")
 	private static @NotNull ParsedSkinData parseSkinData(@NotNull JsonObject jsonObject) {
 		String skinUrl = null;
 		String capeUrl = null;
@@ -166,10 +150,6 @@ public class MojangAPI {
 			break;
 		}
 
-		return new ParsedSkinData(skinUrl, capeUrl, skinModel);
-	}
-
-	private record ParsedSkinData(String skinUrl, String capeUrl, String skinModel) {
-
+		return new ParsedSkinData(skinUrl, capeUrl, null, skinModel.equals("slim"));
 	}
 }

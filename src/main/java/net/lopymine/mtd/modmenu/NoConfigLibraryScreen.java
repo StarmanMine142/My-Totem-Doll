@@ -6,12 +6,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.*;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.util.Util;
-
-import net.fabricmc.loader.api.Version;
-
 import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.utils.ModMenuUtils;
-
 import java.net.*;
 import java.util.*;
 import org.jetbrains.annotations.*;
@@ -20,6 +16,7 @@ public class NoConfigLibraryScreen {
 
 	private static final Set<String> ALLOWED_PROTOCOLS = Sets.newHashSet("http", "https");
 	private static final String YACL_MODRINTH_LINK = "https://modrinth.com/mod/yacl/versions?l=fabric&g=";
+
 	private NoConfigLibraryScreen() {
 		throw new IllegalStateException("Screen class, use createScreen(...) method!");
 	}

@@ -2,20 +2,27 @@ package net.lopymine.mtd.client.command.reload;
 
 import net.minecraft.command.CommandSource;
 import net.minecraft.text.Text;
-
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
-import net.lopymine.mtd.cache.CachedSkinsManager;
+import net.lopymine.mtd.client.MyTotemDollClient;
 import net.lopymine.mtd.client.command.builder.CommandTextBuilder;
+import net.lopymine.mtd.doll.manager.TotemDollManager;
+
+import java.util.concurrent.CompletableFuture;
+
+import org.jetbrains.annotations.Nullable;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class RefreshCommand {
+
+	@Nullable
+	private static CompletableFuture<Float> currentRefreshingFuture;
 
 	public static LiteralArgumentBuilder<FabricClientCommandSource> getInstance() {
 		return literal("refresh")
@@ -23,7 +30,7 @@ public class RefreshCommand {
 						.executes(RefreshCommand::reloadAll))
 				.then(literal("player")
 						.then(argument("nickname", StringArgumentType.word())
-								.suggests((context, builder) -> CommandSource.suggestMatching(CachedSkinsManager.getLoadedPlayers(), builder))
+								.suggests((context, builder) -> CommandSource.suggestMatching(TotemDollManager.getAllLoadedKeys(), builder))
 								.executes(RefreshCommand::reloadForPlayer)
 						));
 	}
@@ -32,7 +39,7 @@ public class RefreshCommand {
 		Text startFeedback = CommandTextBuilder.startBuilder("command.refresh.all.start").build();
 		context.getSource().sendFeedback(startFeedback);
 
-		CachedSkinsManager.reload((seconds) -> {
+		RefreshCommand.currentRefreshingFuture = TotemDollManager.reload((seconds) -> {
 			Text endFeedback = CommandTextBuilder.startBuilder("command.refresh.all.end", seconds).build();
 			context.getSource().sendFeedback(endFeedback);
 		});
@@ -45,7 +52,7 @@ public class RefreshCommand {
 		Text startFeedback = CommandTextBuilder.startBuilder("command.refresh.player.start", nickname).build();
 		context.getSource().sendFeedback(startFeedback);
 
-		CachedSkinsManager.reload(nickname, (seconds) -> {
+		RefreshCommand.currentRefreshingFuture = TotemDollManager.reload(nickname, (seconds) -> {
 			Text feedback = CommandTextBuilder.startBuilder("command.refresh.player.end", nickname, seconds).build();
 			context.getSource().sendFeedback(feedback);
 		});

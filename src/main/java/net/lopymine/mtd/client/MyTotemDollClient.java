@@ -1,18 +1,17 @@
 package net.lopymine.mtd.client;
 
 import lombok.*;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import org.slf4j.*;
-
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.command.MyTotemDollCommandManager;
+import net.lopymine.mtd.client.event.MyTotemDollEvents;
+
+
 import net.lopymine.mtd.config.MyTotemDollConfig;
-import net.lopymine.mtd.doll.layer.DollLayers;
-import net.lopymine.mtd.doll.tag.DollTagManager;
+import net.lopymine.mtd.pack.*;
+import net.lopymine.mtd.tag.manager.*;
+import net.lopymine.mtd.utils.abc.TotemDollPlugin;
 
 public class MyTotemDollClient implements ClientModInitializer {
 
@@ -26,8 +25,12 @@ public class MyTotemDollClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		MyTotemDollClient.config = MyTotemDollConfig.getInstance();
 		LOGGER.info("{} Client Initialized", MyTotemDoll.MOD_NAME);
-		DollLayers.register();
-		DollTagManager.register();
+		TagsManager.register();
+		TagsSkinProviders.register();
 		MyTotemDollCommandManager.register();
+		MyTotemDollEvents.register();
+		MyTotemDollReloadListener.register();
+		TotemDollPlugin.register();
+		TotemDollModelFinder.registerBuiltinModels();
 	}
 }

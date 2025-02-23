@@ -8,22 +8,22 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-//? if >=1.20.5 {
-import net.minecraft.component.DataComponentTypes;
- //?}
+
+
 import net.minecraft.item.*;
 import net.minecraft.util.Hand;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
+import net.lopymine.mtd.yacl.YACLConfigurationScreen;
+import net.lopymine.mtd.yacl.custom.category.rendering.RenderingCategoryTab;
 
-import net.lopymine.mtd.modmenu.yacl.YACLConfigurationScreen;
-import net.lopymine.mtd.modmenu.yacl.custom.category.tab.RenderingCategoryTab;
+//? if >=1.20.5 {
+import net.minecraft.component.DataComponentTypes;
+//?}
 
-@Pseudo
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
 
-	@Dynamic
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderFirstPersonItem(Lnet/minecraft/client/network/AbstractClientPlayerEntity;FFLnet/minecraft/util/Hand;FLnet/minecraft/item/ItemStack;FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"), method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V")
 	private void renderDoll(HeldItemRenderer instance, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, Operation<Void> original) {
 		MinecraftClient client = MinecraftClient.getInstance();
@@ -47,9 +47,9 @@ public class HeldItemRendererMixin {
 
 			//? if >=1.20.5 {
 			totem.set(DataComponentTypes.CUSTOM_NAME, player.getName());
-			 //?} else {
+			//?} else {
 			/*totem.setCustomName(player.getName());
-			*///?}
+			 *///?}
 
 			original.call(instance, player, tickDelta, pitch, hand, swingProgress, totem, equipProgress, matrices, vertexConsumers, light);
 		} else {

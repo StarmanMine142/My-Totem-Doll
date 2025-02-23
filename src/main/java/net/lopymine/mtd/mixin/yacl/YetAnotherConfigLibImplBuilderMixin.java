@@ -7,7 +7,7 @@ import dev.isxander.yacl3.impl.YetAnotherConfigLibImpl;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 
-import net.lopymine.mtd.modmenu.yacl.custom.screen.*;
+import net.lopymine.mtd.utils.mixin.yacl.*;
 
 @Pseudo
 @Mixin(YetAnotherConfigLibImpl.BuilderImpl.class)

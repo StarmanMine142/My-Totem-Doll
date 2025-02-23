@@ -1,40 +1,82 @@
 package net.lopymine.mtd.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.*;
+//? if <=1.21.3 {
+
+/*import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.*;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.*;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
-import org.spongepowered.asm.mixin.injection.*;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.lopymine.mtd.client.MyTotemDollClient;
-import net.lopymine.mtd.doll.render.DollRenderer;
-import net.lopymine.mtd.mixin.accessor.BuiltinModelItemRendererAccessor;
+import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
+import net.lopymine.mtd.extension.ItemStackExtension;
 
+//? <=1.21.1
+import net.minecraft.client.render.model.json.ModelTransformationMode;
+
+import net.lopymine.mtd.MyTotemDoll;
+import net.minecraft.client.render.model.BakedModel;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.*;
+
+import net.lopymine.mtd.utils.abc.TotemDollPlugin;
+
+@ExtensionMethod(ItemStackExtension.class)
 @Mixin(ItemRenderer.class)
 public class ItemRendererMixin {
 
 	@Shadow
 	@Final
-	private BuiltinModelItemRenderer builtinModelItemRenderer;
+	private ItemModels models;
 
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;getModel(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;I)Lnet/minecraft/client/render/model/BakedModel;"), method = "renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;III)V")
-	private BakedModel wrapTotemModelToDefaultIfModEnabled(ItemRenderer instance, ItemStack itemStack, World world, LivingEntity entity, int seed, Operation<BakedModel> original) {
-		//ItemStack stack = MyTotemDollClient.getConfig().isModEnabled() ? Items.TOTEM_OF_UNDYING.getDefaultStack() : itemStack;
-		return original.call(instance, itemStack, world, entity, seed);
+	//? if >=1.21.2 {
+	/^@Inject(at = @At(value = "HEAD"), method = "getModel(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;I)Lnet/minecraft/client/render/model/BakedModel;", cancellable = true)
+	private void renderDoll(ItemStack stack, World world, LivingEntity entity, int seed, CallbackInfoReturnable<BakedModel> cir) {
+	^///?} else {
+	@Inject(at = @At(value = "HEAD"), method = "getModel", cancellable = true)
+	private void renderDoll(ItemStack stack, World world, LivingEntity entity, int seed, CallbackInfoReturnable<BakedModel> cir) {
+	//?}
+		if (!MyTotemDollClient.getConfig().isModEnabled() || !stack.isOf(Items.TOTEM_OF_UNDYING)) {
+			return;
+		}
+
+		String string = stack.getName().getString();
+		if (TotemDollPlugin.work(string)) {
+			BakedModel model = this.models/^? <=1.21.1 {^/ .getModelManager() /^?}^/.getModel(MyTotemDoll.id("item/something_mtd"));
+			stack.setModdedModel(true);
+			cir.setReturnValue(model);
+		}
 	}
 
+
+	//? if >=1.21.2 {
+	/^@Inject(at = @At(value = "HEAD"), method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;ZF)V", cancellable = true)
+	private void renderDoll(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, boolean useInventoryModel, float z, CallbackInfo ci) {
+	^///?} else {
 	@Inject(at = @At(value = "HEAD"), method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V", cancellable = true)
 	private void renderDoll(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci) {
-		if (MyTotemDollClient.getConfig().isModEnabled() && stack.isOf(Items.TOTEM_OF_UNDYING)) {
-			DollRenderer.renderDoll(matrices, ((BuiltinModelItemRendererAccessor) this.builtinModelItemRenderer).getEntityModelLoader(), stack, renderMode, leftHanded, vertexConsumers, light, overlay, model);
+	//?}
+	if (TotemDollRenderer.rendered(matrices, stack, renderMode, leftHanded, vertexConsumers, light, overlay)) {
 			ci.cancel();
 		}
 	}
+
+	//? if >=1.21.2 {
+	/^@Inject(at = @At(value = "TAIL"), method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/item/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;ZF)V", cancellable = true)
+	private void disableModdedModel(ItemStack stack, ModelTransformationMode transformationMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, boolean useInventoryModel, float z, CallbackInfo ci) {
+	^///?} else {
+	@Inject(at = @At(value = "TAIL"), method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V", cancellable = true)
+	private void disableModdedModel(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci) {
+	//?}
+			if (stack.hasModdedModel()) {
+				stack.setModdedModel(false);
+			}
+		}
+
 }
+
+*///?}

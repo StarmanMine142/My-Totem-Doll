@@ -6,13 +6,13 @@ import dev.isxander.yacl3.api.ConfigCategory.Builder;
 import dev.isxander.yacl3.impl.ConfigCategoryImpl;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-
-import net.lopymine.mtd.modmenu.yacl.custom.category.impl.*;
-import net.lopymine.mtd.utils.mixin.BetterCategoryBuilder;
+import net.lopymine.mtd.utils.mixin.yacl.BetterYACLCategoryBuilder;
+import net.lopymine.mtd.yacl.custom.category.better.BetterConfigCategoryImpl;
+import net.lopymine.mtd.yacl.custom.category.rendering.RenderingConfigCategoryImpl;
 
 @Pseudo
 @Mixin(ConfigCategoryImpl.BuilderImpl.class)
-public class ConfigCategoryImplBuilderImplMixin implements BetterCategoryBuilder {
+public class ConfigCategoryImplBuilderImplMixin implements BetterYACLCategoryBuilder {
 
 	@Unique
 	private int custom = -1;
