@@ -8,13 +8,13 @@
     ],
 	"client": [
 		//? =1.20.1 {
-		/*"category.TabButtonWidgetMixin",
+		"category.TabButtonWidgetMixin",
 		"category.TabNavigationWidgetMixin",
-		*///?}
+		//?}
 
 		//? >=1.21.4 {
-		"category.ScrollableWidgetMixin",
-		//?}
+		/*"category.ScrollableWidgetMixin",
+		*///?}
 
 		"ScreenMixin",
 		"YACLScreenMixin",

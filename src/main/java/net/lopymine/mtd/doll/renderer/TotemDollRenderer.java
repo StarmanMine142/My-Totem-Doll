@@ -6,6 +6,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
+import net.minecraft.client.render.model.json.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.*;
 import net.minecraft.text.Text;
@@ -201,7 +202,7 @@ public class TotemDollRenderer {
 		drawer.texture("elytra", textures::getElytraTexture);
 		drawer.requestDrawingPart("elytra");
 
-		drawer.draw(matrices, provider, skinTexture, light, overlay, /*? if >=1.21 {*/ -1 /*?} else {*/ /*1.0F, 1.0F, 1.0F, 1.0F *//*?}*/);
+		drawer.draw(matrices, provider, skinTexture, light, overlay, /*? if >=1.21 {*/ /*-1 *//*?} else {*/ 1.0F, 1.0F, 1.0F, 1.0F /*?}*/);
 
 //		if (LoadedMods.EARS_LOADED) {
 //			TotemDollEarsRenderer renderer = TotemDollEarsRenderer.getInstance();
@@ -215,9 +216,7 @@ public class TotemDollRenderer {
 		AbstractClientPlayerEntity playerEntity = stack.getPlayerEntity();
 		if ((playerEntity != null) && MyTotemDollClient.getConfig().getStandardTotemDollSkinType() == TotemDollSkinType.HOLDING_PLAYER) {
 			totemDollData.setCurrentTempTextures(TotemDollTextures.of(playerEntity));
-			totemDollData.getModel().apply(totemDollData.getRenderTextures());
-		} else {
-			totemDollData.getModel().apply(totemDollData.getRenderTextures());
+			totemDollData.getModel().setSlim(totemDollData.getRenderTextures().getArmsType().isSlim()); // TODO add property when you can override slim and when can't
 		}
 	}
 

@@ -33,11 +33,11 @@ public class ButtonListEntryWidget extends Entry<ButtonListEntryWidget> {
 		this.widget.setWidth(entryWidth);
 		this.widget.setX(x);
 		//? if >=1.21 {
-		this.widget.setHeight(entryHeight);
+		/*this.widget.setHeight(entryHeight);
 		this.widget.setY(y);
-		//?} else {
-		/*this.widget.setY(y + ((entryHeight - 20) / 2));
-		*///?}
+		*///?} else {
+		this.widget.setY(y + ((entryHeight - 20) / 2));
+		//?}
 
 		this.widget.render(context, mouseX, mouseY, tickDelta);
 	}

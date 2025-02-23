@@ -7,7 +7,7 @@ import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.*;
 
 //? <=1.21.3 {
-/*import com.llamalad7.mixinextras.injector.wrapoperation.*;
+import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
@@ -18,16 +18,16 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.lopymine.mtd.yacl.YACLConfigurationScreen;
 import net.lopymine.mtd.yacl.custom.TransparencySprites;
 import java.util.function.Function;
-*///?}
+//?}
 
 @Mixin(EntryListWidget.class)
-public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWidget /*?}*/ {
+public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ /*extends ClickableWidget *//*?}*/ {
 
 	@Unique
-	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ "renderWidget" /*?} else {*/ /*"render" *//*?}*/;
+	private static final String RENDER_METHOD = /*? >=1.20.3 {*/ /*"renderWidget" *//*?} else {*/ "render" /*?}*/;
 
 	//? <=1.20.2 {
-	/*@Shadow
+	@Shadow
 	protected int bottom;
 	@Shadow
 	protected int top;
@@ -35,13 +35,13 @@ public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWid
 	protected int width;
 	@Shadow
 	protected int height;
-	*///?}
+	//?}
 
 	//? >=1.20.3 {
-	public EntryListWidgetMixin(int x, int y, int width, int height, Text message) {
+	/*public EntryListWidgetMixin(int x, int y, int width, int height, Text message) {
 		super(x, y, width, height, message);
 	}
-	//?}
+	*///?}
 
 	//? if =1.21.2 || =1.21.3 {
 	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Ljava/util/function/Function;Lnet/minecraft/util/Identifier;IIII)V", ordinal = 0), method = "renderWidget")
@@ -83,7 +83,7 @@ public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWid
 
 	*///?} elif <=1.21.3 {
 
-	/*@Shadow
+	@Shadow
 	protected abstract int getScrollbarPositionX();
 
 	@ModifyExpressionValue(at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderBackground:Z"), method = RENDER_METHOD)
@@ -94,11 +94,11 @@ public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWid
 		return false;
 	}
 
-	*///?}
+	//?}
 
 	//? <=1.20.1 {
 
-	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V", ordinal = 0), method = "render")
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V", ordinal = 0), method = "render")
 	private void renderTransparencyScrollerBackground1(DrawContext context, int x1, int y1, int x2, int y2, int color, Operation<Void> original) {
 		if (YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen)) {
 			original.call(context, x1, y1, x2, y2, color);
@@ -126,11 +126,11 @@ public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWid
 		return YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen);
 	}
 
-	*///?}
+	//?}
 
 	//? <=1.20.1 {
 
-	/*@ModifyExpressionValue(at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderHorizontalShadows:Z"), method = "render")
+	@ModifyExpressionValue(at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/EntryListWidget;renderHorizontalShadows:Z"), method = "render")
 	private boolean disableShadows(boolean original) {
 		if (YACLConfigurationScreen.notOpen(MinecraftClient.getInstance().currentScreen)) {
 			return original;
@@ -138,5 +138,5 @@ public abstract class EntryListWidgetMixin /*? >=1.20.3 {*/ extends ClickableWid
 		return false;
 	}
 
-	*///?}
+	//?}
 }

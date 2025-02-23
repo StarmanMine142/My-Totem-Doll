@@ -20,8 +20,8 @@ public abstract class ScreenMixin {
 
 	//? if >=1.20.5 {
 
-	@WrapWithCondition(method = "renderBackground", at = @At(value = "INVOKE", target = /*? >=1.21.2 {*/ "Lnet/minecraft/client/gui/screen/Screen;applyBlur()V" /*?} else {*/ /*"Lnet/minecraft/client/gui/screen/Screen;applyBlur(F)V" *//*?}*/))
-	public boolean disableBlur(Screen instance /*? <=1.21.1 {*//*, float v *//*?}*/) {
+	/*@WrapWithCondition(method = "renderBackground", at = @At(value = "INVOKE", target = /^? >=1.21.2 {^/ /^"Lnet/minecraft/client/gui/screen/Screen;applyBlur()V" ^//^?} else {^/ "Lnet/minecraft/client/gui/screen/Screen;applyBlur(F)V" /^?}^/))
+	public boolean disableBlur(Screen instance /^? <=1.21.1 {^/, float v /^?}^/) {
 		return YACLConfigurationScreen.notOpen(((Screen) (Object) this));
 	}
 
@@ -32,10 +32,10 @@ public abstract class ScreenMixin {
 		}
 		return TransparencySprites.getMenuBackgroundTexture();
 	}
-	//?} else {
+	*///?} else {
 
 	
-	/*@Shadow @Nullable
+	@Shadow @Nullable
 	public MinecraftClient client;
 
 	@Inject(at = @At("HEAD"), method = "renderBackgroundTexture", cancellable = true)
@@ -46,7 +46,7 @@ public abstract class ScreenMixin {
 	}
 
 	@Unique
-	private static final String INJECT_METHOD = /^? >=1.20.2 {^/ /^"renderInGameBackground" ^//^?} else {^/ "renderBackground" /^?}^/;
+	private static final String INJECT_METHOD = /*? >=1.20.2 {*/ /*"renderInGameBackground" *//*?} else {*/ "renderBackground" /*?}*/;
 
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;fillGradient(IIIIII)V"), method = INJECT_METHOD)
 	private void swapBackgroundGradientColor(DrawContext context, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, Operation<Void> original) {
@@ -70,5 +70,5 @@ public abstract class ScreenMixin {
 
 	//?}
 
-	*///?}
+	//?}
 }

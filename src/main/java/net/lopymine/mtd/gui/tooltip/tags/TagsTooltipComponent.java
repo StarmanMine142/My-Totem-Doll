@@ -28,7 +28,7 @@ public class TagsTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public int getHeight(/*? >=1.21.2 {*/TextRenderer textRenderer/*?}*/) {
+	public int getHeight(/*? >=1.21.2 {*//*TextRenderer textRenderer*//*?}*/) {
 		return 10 * this.rows.size();
 	}
 
@@ -43,7 +43,7 @@ public class TagsTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public void drawItems(TextRenderer textRenderer, int x, int y,/*? >=1.21.2 {*/int w, int h,/*?}*/ DrawContext context) {
+	public void drawItems(TextRenderer textRenderer, int x, int y,/*? >=1.21.2 {*//*int w, int h,*//*?}*/ DrawContext context) {
 		int yOffset = 0;
 
 		int space = textRenderer.getWidth(ScreenTexts.space());

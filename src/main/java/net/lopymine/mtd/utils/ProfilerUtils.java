@@ -7,8 +7,8 @@ public class ProfilerUtils {
 
 	public static Profiler getProfiler() {
 		/*? >=1.21.2 {*/
-		return Profilers.get();
-		/*?} else {*/ /*return MinecraftClient.getInstance().getProfiler(); *//*?}*/
+		/*return Profilers.get();
+		*//*?} else {*/ return MinecraftClient.getInstance().getProfiler(); /*?}*/
 	}
 
 }

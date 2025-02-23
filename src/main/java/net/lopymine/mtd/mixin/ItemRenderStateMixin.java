@@ -1,7 +1,7 @@
 package net.lopymine.mtd.mixin;
 
 //? if >=1.21.4 {
-import lombok.experimental.ExtensionMethod;
+/*import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderState;
@@ -45,4 +45,4 @@ public class ItemRenderStateMixin implements ItemRenderStateWithStack {
 	}
 }
 
-//?}
+*///?}

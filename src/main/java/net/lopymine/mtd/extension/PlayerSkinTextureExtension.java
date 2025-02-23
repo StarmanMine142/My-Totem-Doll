@@ -1,7 +1,7 @@
 package net.lopymine.mtd.extension;
 
 //? <=1.21.3 {
-/*import net.lopymine.mtd.utils.mixin.MTDPlayerSkinTexture;
+import net.lopymine.mtd.utils.mixin.MTDPlayerSkinTexture;
 import net.lopymine.mtd.utils.texture.*;
 
 import org.jetbrains.annotations.Nullable;
@@ -23,11 +23,11 @@ public class PlayerSkinTextureExtension {
 	}
 }
 
-*///?} else {
+//?} else {
 
 
-public class PlayerSkinTextureExtension {
+/*public class PlayerSkinTextureExtension {
 
 }
 
-//?}
+*///?}

@@ -107,11 +107,6 @@ dependencies {
 	if (sodium != "unknown") {
 		modImplementation "maven.modrinth:sodium:${sodium}"
 	}
-
-	def renders = prop("dep.isometric-renders")
-	if (renders != "unknown") {
-		modImplementation "maven.modrinth:isometric-renders:${renders}"
-	}
 }
 
 loom {

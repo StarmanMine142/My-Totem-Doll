@@ -6,7 +6,11 @@
 	"plugin": "net.lopymine.mtd.compat.sodium.SodiumCompatPlugin",
     "mixins": [],
     "client": [
-	    "CubeMixinMixin"
+	    //? =1.20.1 {
+	    "ModelPartMixinMixin"
+	    //?} else {
+	    /*"CubeMixinMixin"
+	    *///?}
     ],
     "injectors": {
         "defaultRequire": 1

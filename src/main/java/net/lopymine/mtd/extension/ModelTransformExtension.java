@@ -16,27 +16,27 @@ public class ModelTransformExtension {
 	}
 	
 	public static float getPivotX(ModelTransform transform) {
-		return /*? >=1.21.2 {*/ transform.pivotX(); /*?} else {*/ /*transform.pivotX; *//*?}*/
+		return /*? >=1.21.2 {*/ /*transform.pivotX(); *//*?} else {*/ transform.pivotX; /*?}*/
 	}
 
 	public static float getPivotY(ModelTransform transform) {
-		return /*? >=1.21.2 {*/ transform.pivotY(); /*?} else {*/ /*transform.pivotY; *//*?}*/
+		return /*? >=1.21.2 {*/ /*transform.pivotY(); *//*?} else {*/ transform.pivotY; /*?}*/
 	}
 
 	public static float getPivotZ(ModelTransform transform) {
-		return /*? >=1.21.2 {*/ transform.pivotZ(); /*?} else {*/ /*transform.pivotZ; *//*?}*/
+		return /*? >=1.21.2 {*/ /*transform.pivotZ(); *//*?} else {*/ transform.pivotZ; /*?}*/
 	}
 
 	public static float getPitch(ModelTransform transform) {
-		return /*? >=1.21.2 {*/ transform.pitch(); /*?} else {*/ /*transform.pitch; *//*?}*/
+		return /*? >=1.21.2 {*/ /*transform.pitch(); *//*?} else {*/ transform.pitch; /*?}*/
 	}
 
 	public static float getYaw(ModelTransform transform) {
-		return /*? >=1.21.2 {*/ transform.yaw(); /*?} else {*/ /*transform.yaw; *//*?}*/
+		return /*? >=1.21.2 {*/ /*transform.yaw(); *//*?} else {*/ transform.yaw; /*?}*/
 	}
 
 	public static float getRoll(ModelTransform transform) {
-		return /*? >=1.21.2 {*/ transform.roll(); /*?} else {*/ /*transform.roll; *//*?}*/
+		return /*? >=1.21.2 {*/ /*transform.roll(); *//*?} else {*/ transform.roll; /*?}*/
 	}
 
 	public static ModelTransform getBlockBenchedModelTransform(ModelTransform transform) {

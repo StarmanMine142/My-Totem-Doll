@@ -10,7 +10,7 @@ import net.lopymine.mtd.skin.provider.StandardSkinProvider;
 
 public class NameMCSkinProvider extends StandardSkinProvider {
 
-	public static final String NAME_MC_SKIN_REGEX = "(?i)namemc\\s*\\|\\s*([a-z0-9]{16})$";
+	public static final String NAME_MC_SKIN_REGEX = "([a-z0-9]{16})$";
 
 	private static final NameMCSkinProvider INSTANCE = new NameMCSkinProvider();
 

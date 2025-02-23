@@ -11,7 +11,7 @@ public class MyTotemDoll implements ModInitializer {
 	public static final String MOD_NAME = /*$ mod_name*/ "My Totem Doll";
 	public static final String MOD_ID = /*$ mod_id*/ "my-totem-doll";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
-	public static final String YACL_DEPEND_VERSION = /*$ yacl_version*/ "3.6.2+1.21.4-fabric";
+	public static final String YACL_DEPEND_VERSION = /*$ yacl_version*/ "3.6.2+1.20.1-fabric";
 
 	public static Identifier id(String path) {
 		return Identifier.of(MOD_ID, path);
@@ -31,10 +31,10 @@ public class MyTotemDoll implements ModInitializer {
 
 	public static Identifier spriteId(String path) {
 		//? if >=1.20.2 {
-		return id(path);
-		//?} else {
-		/*return id(String.format("textures/1.20.1/gui/sprites/%s.png", path));
-		 *///?}
+		/*return id(path);
+		*///?} else {
+		return id(String.format("textures/1.20.1/gui/sprites/%s.png", path));
+		 //?}
 	}
 
 	@Override

@@ -25,15 +25,14 @@ public class TotemDollModelFinder {
 
 		FOUNDED_TOTEM_MODELS.clear();
 		for (ResourcePack pack : list) {
-			if (pack.getId().equals(MyTotemDoll.MOD_ID)) {
+			String packId = pack./*? if >=1.21 {*//*getId()*//*?} else {*/getName()/*?}*/.replace("file/", "");
+			if (packId.equals(MyTotemDoll.MOD_ID) /*? if =1.20.1 {*/ || pack instanceof net.fabricmc.fabric.impl.resource.loader.FabricModResourcePack /*?}*/) {
 				continue;
 			}
 			pack.findResources(ResourceType.CLIENT_RESOURCES, MyTotemDoll.MOD_ID, "dolls", (id, input) -> {
 				if (!isModelPath(id)) {
 					return;
 				}
-
-				String packId = pack./*? if >=1.21 {*/getId/*?} else {*//*getName*//*?}*/().replace("file/", "");
 
 				Set<Identifier> set = FOUNDED_TOTEM_MODELS.getOrDefault(packId, new LinkedHashSet<>());
 				set.add(id);

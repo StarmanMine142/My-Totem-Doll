@@ -28,12 +28,12 @@ public class WrappedTextTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public int getHeight(/*? >=1.21.2 {*/TextRenderer textRenderer/*?}*/) {
+	public int getHeight(/*? >=1.21.2 {*//*TextRenderer textRenderer*//*?}*/) {
 		return this.texts.size() * 10;
 	}
 
 	@Override
-	public void drawItems(TextRenderer textRenderer, int x, int y, /*? >=1.21.2 {*/int w, int h,/*?}*/ DrawContext context) {
+	public void drawItems(TextRenderer textRenderer, int x, int y, /*? >=1.21.2 {*//*int w, int h,*//*?}*/ DrawContext context) {
 		int offset = 0;
 		for (OrderedText text : this.texts) {
 			context.drawText(textRenderer, text, x, y + offset, -1, true);

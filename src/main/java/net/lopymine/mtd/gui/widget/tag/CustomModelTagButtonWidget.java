@@ -64,7 +64,7 @@ public class CustomModelTagButtonWidget extends TagButtonWidget {
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, /*? if >=1.21 {*/ double horizontalAmount, /*?}*/ double verticalAmount) {
+	public boolean mouseScrolled(double mouseX, double mouseY, /*? if >=1.21 {*/ /*double horizontalAmount, *//*?}*/ double verticalAmount) {
 		if (!this.isMouseOver(mouseX, mouseY)) {
 			return false;
 		}

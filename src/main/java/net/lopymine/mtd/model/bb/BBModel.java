@@ -17,7 +17,7 @@ import static net.lopymine.mtd.utils.CodecUtils.option;
 import static net.lopymine.mtd.utils.CodecUtils.optional;
 
 //? >=1.21.2
-import net.minecraft.item.ModelTransformationMode;
+/*import net.minecraft.item.ModelTransformationMode;*/
 
 @Setter
 @Getter

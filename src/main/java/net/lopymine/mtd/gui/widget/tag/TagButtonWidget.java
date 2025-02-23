@@ -19,10 +19,10 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 //? if >=1.21 {
-import net.minecraft.client.gui.screen.ButtonTextures;
-//?} else {
-/*import net.lopymine.mtd.utils.ButtonTextures;
-*///?}
+/*import net.minecraft.client.gui.screen.ButtonTextures;
+*///?} else {
+import net.lopymine.mtd.utils.ButtonTextures;
+//?}
 
 @Getter
 @Setter
@@ -76,7 +76,7 @@ public class TagButtonWidget extends ButtonWidget {
 
 
 	@Override
-	public void /*? if >=1.21 {*/renderWidget/*?} else {*//*renderButton*//*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
+	public void /*? if >=1.21 {*//*renderWidget*//*?} else {*/renderButton/*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
 		this.renderButton(context, this.getX(), this.getY());
 		this.requestTooltip();
 	}

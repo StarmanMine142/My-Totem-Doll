@@ -99,7 +99,7 @@
 	"my-totem-doll.command.refresh.player.end": "&aRefreshed skin textures for &f%s&a in &f%s&a seconds",
 
 	"my-totem-doll.welcome_screen.title": "Welcome screen",
-	"my-totem-doll.welcome_screen.text": "&lWelcome Screen&r\n\nIt looks like you're launching the game with the &lMy Totem Doll mod&r for the first time!\nWhich standard model would you like to use for your totems?",
+	"my-totem-doll.welcome_screen.text": "&lWelcome Screen&r\n\nIt looks like you're launching the game with the &lMy Totem Doll mod&r for the first time.\nWhich standard model would you like to use for your totems?",
 	"my-totem-doll.welcome_screen.option.3d": "&l3D Doll",
 	"my-totem-doll.welcome_screen.option.2d": "&l2D Totem",
 

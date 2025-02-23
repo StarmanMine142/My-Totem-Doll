@@ -97,7 +97,7 @@
 	"my-totem-doll.command.refresh.player.end": "&aБыл перезагружен скин игрока &f%s&a за &f%s&a секунд(у)",
 
 	"my-totem-doll.welcome_screen.title": "Экран приветствия",
-	"my-totem-doll.welcome_screen.text": "&lЭкран приветствия&r\n\nПохоже, что вы впервые запустили игру с модом &lMy Totem Doll&r !\nКакую стандартную модель вы бы хотели использовать для своих тотемов?",
+	"my-totem-doll.welcome_screen.text": "&lЭкран приветствия&r\n\nПохоже, что вы впервые запустили игру с модом &lMy Totem Doll&r.\nКакую стандартную модель вы бы хотели использовать для своих тотемов?",
 	"my-totem-doll.welcome_screen.option.3d": "&l3D Кукла",
 	"my-totem-doll.welcome_screen.option.2d": "&l2D Тотем",
 

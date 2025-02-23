@@ -153,11 +153,11 @@ public class RenderingCategoryTab implements TabExt {
 		MutableText cancelResetButtonTooltip = Text.translatable("yacl.gui.reset.tooltip");
 
 		//? >=1.20.3 {
-		this.saveFinishedButton.setTooltip(new YACLTooltip(saveFinishedButtonTooltip, this.saveFinishedButton));
+		/*this.saveFinishedButton.setTooltip(new YACLTooltip(saveFinishedButtonTooltip, this.saveFinishedButton));
 		this.cancelResetButton.setTooltip(new YACLTooltip(cancelResetButtonTooltip, this.cancelResetButton));
-		//?} else {
-		/*this.saveFinishedButton.setTooltip(Tooltip.of(saveFinishedButtonTooltip));
+		*///?} else {
+		this.saveFinishedButton.setTooltip(Tooltip.of(saveFinishedButtonTooltip));
 		this.cancelResetButton.setTooltip(Tooltip.of(cancelResetButtonTooltip));
-		*///?}
+		//?}
 	}
 }

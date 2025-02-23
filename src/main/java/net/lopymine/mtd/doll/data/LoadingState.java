@@ -18,10 +18,7 @@ public enum LoadingState {
 	REGISTERING, // X
 	DOWNLOADED; // X
 
-	private final Text text;
-
-	LoadingState() {
-		this.text = MyTotemDoll.text("modmenu.option.standard_doll_skin_type.result.%s".formatted(this.name().toLowerCase()));
+	public Text getText() {
+		return MyTotemDoll.text("modmenu.option.standard_doll_skin_type.result.%s".formatted(this.name().toLowerCase()));
 	}
-
 }

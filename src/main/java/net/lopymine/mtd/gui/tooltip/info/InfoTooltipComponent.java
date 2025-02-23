@@ -26,7 +26,7 @@ public class InfoTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public int getHeight(/*? >=1.21.2 {*/TextRenderer textRenderer/*?}*/) {
+	public int getHeight(/*? >=1.21.2 {*//*TextRenderer textRenderer*//*?}*/) {
 		return (this.text.count() * 10) + 26 + 2 + 5 + 2 + 5;
 	}
 
@@ -36,7 +36,7 @@ public class InfoTooltipComponent implements TooltipComponent {
 	}
 
 	@Override
-	public void drawItems(TextRenderer textRenderer, int x, int y, /*? >=1.21.2 {*/int w, int h,/*?}*/ DrawContext context) {
+	public void drawItems(TextRenderer textRenderer, int x, int y, /*? >=1.21.2 {*//*int w, int h,*//*?}*/ DrawContext context) {
 		int width = this.getWidth(textRenderer);
 		int titleWidth = textRenderer.getWidth(this.title);
 		context.drawText(textRenderer, this.title, x + (((width) / 2) - (titleWidth / 2)), y + 8, -1, false);

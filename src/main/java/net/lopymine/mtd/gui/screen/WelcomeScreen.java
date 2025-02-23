@@ -2,8 +2,8 @@ package net.lopymine.mtd.gui.screen;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.MultilineText;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.screen.*;
 import net.minecraft.util.Identifier;
 
 import net.lopymine.mtd.MyTotemDoll;
@@ -27,9 +27,16 @@ public class WelcomeScreen extends Screen {
 	private TotemDollModelPreviewWidget secondDollPreviewWidget;
 	private MultilineText text;
 
+	//? if =1.20.1 {
+	private final RotatingCubeMapRenderer backgroundRenderer;
+	//?}
+
 	public WelcomeScreen(Runnable onClose) {
 		super(MyTotemDoll.text("welcome_screen.title"));
 		this.onClose = onClose;
+		//? if =1.20.1 {
+		this.backgroundRenderer = new RotatingCubeMapRenderer(TitleScreen.PANORAMA_CUBE_MAP);
+		//?}
 	}
 
 	@Override
@@ -75,6 +82,11 @@ public class WelcomeScreen extends Screen {
 	@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 		super.render(context, mouseX, mouseY, delta);
+
+		//? if =1.20.1 {
+		this.backgroundRenderer.render(delta, 1.0F);
+		context.fill(0, 0, this.width, this.height, -1877995504);
+		//?}
 
 		BackgroundRenderer.drawTransparencyWidgetBackground(context, this.textArea.getX(), this.textArea.getY(), this.textArea.getWidth(), this.textArea.getHeight(), true, false);
 		this.text.drawCenterWithShadow(context, this.textArea.getX() + (this.textArea.getWidth() / 2), this.textArea.getY() + 5, 9, -1);

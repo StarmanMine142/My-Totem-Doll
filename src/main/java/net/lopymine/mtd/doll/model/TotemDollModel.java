@@ -43,7 +43,7 @@ public class TotemDollModel extends Model {
 	private Drawer drawer;
 
 	public TotemDollModel(MModel root, boolean slim) {
-		super(/*? >=1.21.2 {*/ root, /*?}*/RenderLayer::getEntityTranslucent);
+		super(/*? >=1.21.2 {*/ /*root, *//*?}*/RenderLayer::getEntityTranslucent);
 
 		this.head         = root.findModels("head");
 		this.body         = root.findModels("body");
@@ -105,12 +105,12 @@ public class TotemDollModel extends Model {
 
 	//? <=1.21.1 {
 
-	/*@Override
-	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, /^? if >=1.21 {^/ int color /^?} else {^/ /^float r, float g, float b, float a^//^?}^/) {
+	@Override
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, /*? if >=1.21 {*/ /*int color *//*?} else {*/ float r, float g, float b, float a/*?}*/) {
 		// NO-OP
 	}
 
-	*///?}
+	//?}
 
 	public void apply(TotemDollTextures textures) {
 		this.slim = textures.getArmsType().isSlim();
@@ -161,14 +161,14 @@ public class TotemDollModel extends Model {
 			return this;
 		}
 
-		public void draw(MatrixStack matrices, VertexConsumerProvider provider, Identifier mainTexture, int light, int overlay, /*? if >=1.21 {*/int color/*?} else {*//*float red, float green, float blue, float alpha *//*?}*/) {
+		public void draw(MatrixStack matrices, VertexConsumerProvider provider, Identifier mainTexture, int light, int overlay, /*? if >=1.21 {*//*int color*//*?} else {*/float red, float green, float blue, float alpha /*?}*/) {
 			MModelCollection leftArm = this.model.getLeftArm();
 			MModelCollection rightArm = this.model.getRightArm();
 
 			enableIfPresent(leftArm);
 			enableIfPresent(rightArm);
 
-			this.model.getMain().draw(matrices, provider, this.layerFunction, mainTexture, this.textures, this.requestedParts, light, overlay, /*? if >=1.21 {*/color/*?} else {*/ /*red, green, blue, alpha*//*?}*/);
+			this.model.getMain().draw(matrices, provider, this.layerFunction, mainTexture, this.textures, this.requestedParts, light, overlay, /*? if >=1.21 {*//*color*//*?} else {*/ red, green, blue, alpha/*?}*/);
 
 			disableIfPresent(leftArm);
 			disableIfPresent(rightArm);

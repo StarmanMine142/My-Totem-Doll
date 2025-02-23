@@ -85,7 +85,7 @@ public class MyTotemDollConfig {
 	private static @NotNull MyTotemDollConfig create() {
 		MyTotemDollConfig config = new MyTotemDollConfig();
 		try (FileWriter writer = new FileWriter(CONFIG_FILE, StandardCharsets.UTF_8)) {
-			String json = GSON.toJson(CODEC.encode(config, JsonOps.INSTANCE, JsonOps.INSTANCE.empty())/*? if >=1.20.5 {*/.getOrThrow());/*?} else*//*.getOrThrow(false, LOGGER::error));*/
+			String json = GSON.toJson(CODEC.encode(config, JsonOps.INSTANCE, JsonOps.INSTANCE.empty())/*? if >=1.20.5 {*//*.getOrThrow());*//*?} else*/.getOrThrow(false, LOGGER::error));
 			writer.write(json);
 		} catch (Exception e) {
 			LOGGER.error("Failed to create config", e);
@@ -99,7 +99,7 @@ public class MyTotemDollConfig {
 		}
 
 		try (FileReader reader = new FileReader(CONFIG_FILE, StandardCharsets.UTF_8)) {
-			return CODEC.decode(JsonOps.INSTANCE, JsonParser.parseReader(reader))/*? if >=1.20.5 {*/.getOrThrow()/*?} else {*//*.getOrThrow(false, LOGGER::error)*//*?}*/.getFirst();
+			return CODEC.decode(JsonOps.INSTANCE, JsonParser.parseReader(reader))/*? if >=1.20.5 {*//*.getOrThrow()*//*?} else {*/.getOrThrow(false, LOGGER::error)/*?}*/.getFirst();
 		} catch (Exception e) {
 			LOGGER.error("Failed to read config", e);
 		}
@@ -110,7 +110,7 @@ public class MyTotemDollConfig {
 		MyTotemDollClient.setConfig(this);
 		CompletableFuture.runAsync(() -> {
 			try (FileWriter writer = new FileWriter(CONFIG_FILE, StandardCharsets.UTF_8)) {
-				String json = GSON.toJson(CODEC.encode(this, JsonOps.INSTANCE, JsonOps.INSTANCE.empty())/*? if >=1.20.5 {*/.getOrThrow());/*?} else*//*.getOrThrow(false, LOGGER::error));*/
+				String json = GSON.toJson(CODEC.encode(this, JsonOps.INSTANCE, JsonOps.INSTANCE.empty())/*? if >=1.20.5 {*//*.getOrThrow());*//*?} else*/.getOrThrow(false, LOGGER::error));
 				writer.write(json);
 			} catch (Exception e) {
 				LOGGER.error("Failed to save config", e);

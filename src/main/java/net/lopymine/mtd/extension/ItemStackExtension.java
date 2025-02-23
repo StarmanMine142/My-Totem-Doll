@@ -2,7 +2,9 @@ package net.lopymine.mtd.extension;
 
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
+import net.minecraft.text.Text.Serializer;
 
 import net.lopymine.mtd.doll.data.*;
 import net.lopymine.mtd.doll.manager.*;
@@ -17,9 +19,9 @@ public class ItemStackExtension {
 	@Nullable
 	public static Text getRealCustomName(ItemStack itemStack) {
 		//? if >=1.21 {
-		return itemStack.get(net.minecraft.component.DataComponentTypes.CUSTOM_NAME);
-		//?} else {
-		/*NbtCompound nbtCompound = itemStack.getSubNbt("display");
+		/*return itemStack.get(net.minecraft.component.DataComponentTypes.CUSTOM_NAME);
+		*///?} else {
+		NbtCompound nbtCompound = itemStack.getSubNbt("display");
 		if (nbtCompound != null && nbtCompound.contains("Name", 8)) {
 			try {
 				Text text = Serializer.fromJson(nbtCompound.getString("Name"));
@@ -34,7 +36,7 @@ public class ItemStackExtension {
 		}
 
 		return null;
-		*///?}
+		//?}
 	}
 
 	public static TotemDollData getTotemDollData(ItemStack stack) {
@@ -43,10 +45,8 @@ public class ItemStackExtension {
 		if (customName != null) {
 			String o = TagsManager.getNicknameOrSkinProviderFromName(customName.getString());
 			TotemDollData data = TotemDollManager.getDoll(o);
-			TotemDollTextures textures = data.getTextures();
-			TotemDollModel model = data.getModel();
 
-			model.apply(textures);
+			data.refreshBeforeRendering();
 
 			String tags = TagsManager.getTagsFromName(customName.getString());
 			if (tags != null) {
@@ -56,7 +56,7 @@ public class ItemStackExtension {
 			return data;
 		}
 
-		return StandardTotemDollManager.getStandardDoll();
+		return StandardTotemDollManager.getStandardDoll().refreshBeforeRendering();
 	}
 
 	public static void setModdedModel(ItemStack itemStack, boolean modded) {

@@ -98,12 +98,12 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, /*? if >=1.21 {*/ double horizontalAmount, /*?}*/ double verticalAmount) {
+	public boolean mouseScrolled(double mouseX, double mouseY, /*? if >=1.21 {*/ /*double horizontalAmount, *//*?}*/ double verticalAmount) {
 		TagRow entry = this.getEntryAtPosition(mouseX, mouseY);
-		if (entry != null && entry.mouseScrolled(mouseX, mouseY, /*? if >=1.21 {*/horizontalAmount, /*?}*/ verticalAmount)) {
+		if (entry != null && entry.mouseScrolled(mouseX, mouseY, /*? if >=1.21 {*//*horizontalAmount, *//*?}*/ verticalAmount)) {
 			return true;
 		}
-		return super.mouseScrolled(mouseX, mouseY, /*? if >=1.21 {*/horizontalAmount, /*?}*/ verticalAmount);
+		return super.mouseScrolled(mouseX, mouseY, /*? if >=1.21 {*//*horizontalAmount, *//*?}*/ verticalAmount);
 	}
 
 	@Override

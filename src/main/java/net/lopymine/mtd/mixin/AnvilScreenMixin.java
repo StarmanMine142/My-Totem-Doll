@@ -119,6 +119,13 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 		this.updateWidgetsPositions();
 	}
 
+	//? if =1.20.1 {
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/TextFieldWidget;setEditable(Z)V"), method = "setup")
+	private void fixingMojangBugOmg(TextFieldWidget instance, boolean editable, Operation<Void> original) {
+		original.call(instance, this.handler.getSlot(0).hasStack());
+	}
+	//?}
+
 	@Unique
 	private void updateWidgetsPositions() {
 		MyTotemDollConfig config = MyTotemDollClient.getConfig();
@@ -176,14 +183,14 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 	}
 
 	//? <1.21 {
-	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), method = "drawInvalidRecipeArrow")
+	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"), method = "drawInvalidRecipeArrow")
 	private void swapBackgroundValue(DrawContext instance, Identifier identifier, int x, int y, int a, int b, int c, int d, Operation<Void> original) {
 		if (!MyTotemDollClient.getConfig().isModEnabled()) {
 			original.call(instance, identifier, x, y, a, b, c, d);
 		}
 		original.call(instance, identifier, x, y, a - this.backgroundWidth + 176, b, c, d);
 	}
-	*///?}
+	//?}
 
 	@Inject(at = @At("HEAD"), method = "onSlotUpdate")
 	private void checkTotem(ScreenHandler handler, int slotId, ItemStack stack, CallbackInfo ci) {
