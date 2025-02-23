@@ -2,7 +2,7 @@ package net.lopymine.mtd.mixin.yacl.category;
 
 //? >=1.21.4 {
 
-/*import com.llamalad7.mixinextras.injector.wrapoperation.*;
+import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ScrollableWidget;
@@ -38,4 +38,4 @@ public class ScrollableWidgetMixin {
 
 }
 
-*///?}
+//?}

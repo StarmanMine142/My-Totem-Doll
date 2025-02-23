@@ -14,34 +14,34 @@ public abstract class ListWithStaticHeaderWidget<E extends Entry<E>> extends Ele
 	protected final int heightOfStaticHeader;
 
 	//? if <1.21 {
-	public boolean visible = true;
-	//?}
+	/*public boolean visible = true;
+	*///?}
 
 	public ListWithStaticHeaderWidget(int x, int y, int width, int height, int itemHeight, int headerHeight) {
-		super(MinecraftClient.getInstance(), width, height - headerHeight, y + headerHeight /*? if <1.21 {*/, y + height /*?}*/, itemHeight);
+		super(MinecraftClient.getInstance(), width, height - headerHeight, y + headerHeight /*? if <1.21 {*//*, y + height *//*?}*/, itemHeight);
 		this.setX(x);
 		//? if <1.21 {
-		this.setRenderBackground(false);
+		/*this.setRenderBackground(false);
 		this.setRenderHorizontalShadows(false);
-		//?}
+		*///?}
 		this.setRenderHeader(true, 0);
 		this.heightOfStaticHeader = headerHeight;
 	}
 
 	//? >=1.21.4 {
-	/*private void setRenderHeader(boolean bl, int height) {
+	private void setRenderHeader(boolean bl, int height) {
 		this.renderHeader = bl;
 	}
-	*///?}
+	//?}
 
 	//? if >=1.21 {
-	/*@Override
+	@Override
 	protected void drawHeaderAndFooterSeparators(DrawContext context) {
 	}
-	*///?}
+	//?}
 
 	//? if <1.21 {
-	@Override
+	/*@Override
 	protected void renderBackground(DrawContext context) {
 		this.drawMenuListBackground(context);
 	}
@@ -49,17 +49,17 @@ public abstract class ListWithStaticHeaderWidget<E extends Entry<E>> extends Ele
 	protected void drawMenuListBackground(DrawContext context) {
 
 	}
-	//?}
+	*///?}
 
 	//? if <1.21 {
-	@Override
+	/*@Override
 	public void render(DrawContext context, int mouseX, int mouseY, float delta) {
 		if (!this.visible) {
 			return;
 		}
 		super.render(context, mouseX, mouseY, delta);
 	}
-	//?}
+	*///?}
 
 	@Override
 	protected void renderList(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -100,7 +100,7 @@ public abstract class ListWithStaticHeaderWidget<E extends Entry<E>> extends Ele
 	}
 
 	@Override
-	/*? >=1.21.2 {*/ /*public*//*?} else {*/ protected /*?}*/ int getRowTop(int index) {
+	/*? >=1.21.2 {*/ public/*?} else {*/ /*protected *//*?}*/ int getRowTop(int index) {
 		return super.getRowTop(index) - 4;
 	}
 
@@ -110,31 +110,31 @@ public abstract class ListWithStaticHeaderWidget<E extends Entry<E>> extends Ele
 
 	public void setListScrollAmount(int i) {
 		//? >=1.21.4 {
-		/*this.setScrollY(i);
-		*///?} else {
-		this.setScrollAmount(i);
-		//?}
+		this.setScrollY(i);
+		//?} else {
+		/*this.setScrollAmount(i);
+		*///?}
 	}
 
 	//? >=1.21.4 {
 
-	/*@Override
+	@Override
 	protected boolean overflows() {
 		return this.needScrollBar() && super.overflows();
 	}
 
-	*///?} else {
+	//?} else {
 
 
-	/*? if >=1.21 {*//*@Override*//*?}*/
+	/*/^? if >=1.21 {^//^@Override^//^?}^/
 	public boolean isScrollbarVisible() {
 		return this.needScrollBar();
 	}
 
-	//?}
+	*///?}
 
 	//? if <=1.20.1 {
-	public int getX() {
+	/*public int getX() {
 		return this.left;
 	}
 
@@ -177,9 +177,9 @@ public abstract class ListWithStaticHeaderWidget<E extends Entry<E>> extends Ele
 		return this.getX() + this.getWidth();
 	}
 
-	//?} else {
+	*///?} else {
 
-	/*@Override
+	@Override
 	public void setHeight(int height) {
 		super.setHeight(height - this.heightOfStaticHeader);
 	}
@@ -189,7 +189,7 @@ public abstract class ListWithStaticHeaderWidget<E extends Entry<E>> extends Ele
 		super.setY(y + this.heightOfStaticHeader);
 	}
 
-	*///?}
+	//?}
 
 	protected abstract boolean needScrollBar();
 }

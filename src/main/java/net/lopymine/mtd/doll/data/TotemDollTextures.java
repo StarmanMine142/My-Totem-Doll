@@ -18,10 +18,10 @@ public class TotemDollTextures {
 
 	public static final Identifier STEVE_SKIN = Identifier.of("minecraft", "textures/entity/player/wide/steve.png");
 	//? if >=1.21.2 {
-	/*public static final Identifier ELYTRA_TEXTURE = Identifier.of("textures/entity/equipment/wings/elytra.png");
-	*///?} else {
-	public static final Identifier ELYTRA_TEXTURE = Identifier.of("minecraft","textures/entity/elytra.png");
-	//?}
+	public static final Identifier ELYTRA_TEXTURE = Identifier.of("textures/entity/equipment/wings/elytra.png");
+	//?} else {
+	/*public static final Identifier ELYTRA_TEXTURE = Identifier.of("minecraft","textures/entity/elytra.png");
+	*///?}
 
 	@NotNull
 	private LoadingState state = LoadingState.NOT_DOWNLOADED;
@@ -48,13 +48,13 @@ public class TotemDollTextures {
 
 	public static TotemDollTextures of(AbstractClientPlayerEntity player) {
 		//? if >=1.21 {
-		/*net.minecraft.client.util.SkinTextures skinTextures = player.getSkinTextures();
+		net.minecraft.client.util.SkinTextures skinTextures = player.getSkinTextures();
 		Identifier capeTexture = PlayerSkinUtils.remapTextureIfRequired(skinTextures.capeTexture());
 		TotemDollTextures totemDollTextures = new TotemDollTextures(skinTextures.texture(), capeTexture, skinTextures.elytraTexture(), TotemDollArmsType.of(skinTextures.model().getName()));
-		*///?} else {
-		Identifier capeTexture = PlayerSkinUtils.remapTextureIfRequired(player.getCapeTexture());
+		//?} else {
+		/*Identifier capeTexture = PlayerSkinUtils.remapTextureIfRequired(player.getCapeTexture());
 		TotemDollTextures totemDollTextures = new TotemDollTextures(player.getSkinTexture(), capeTexture, player.getElytraTexture(), TotemDollArmsType.of(player.getModel()));
-		//?}
+		*///?}
 
 		totemDollTextures.setState(LoadingState.DOWNLOADED);
 		return totemDollTextures;

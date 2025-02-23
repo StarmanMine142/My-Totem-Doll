@@ -18,8 +18,8 @@ import net.lopymine.mtd.yacl.YACLConfigurationScreen;
 import net.lopymine.mtd.yacl.custom.category.rendering.RenderingCategoryTab;
 
 //? if >=1.20.5 {
-/*import net.minecraft.component.DataComponentTypes;
-*///?}
+import net.minecraft.component.DataComponentTypes;
+//?}
 
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
@@ -46,10 +46,10 @@ public class HeldItemRendererMixin {
 			ItemStack totem = Items.TOTEM_OF_UNDYING.getDefaultStack();
 
 			//? if >=1.20.5 {
-			/*totem.set(DataComponentTypes.CUSTOM_NAME, player.getName());
-			*///?} else {
-			totem.setCustomName(player.getName());
-			 //?}
+			totem.set(DataComponentTypes.CUSTOM_NAME, player.getName());
+			//?} else {
+			/*totem.setCustomName(player.getName());
+			 *///?}
 
 			original.call(instance, player, tickDelta, pitch, hand, swingProgress, totem, equipProgress, matrices, vertexConsumers, light);
 		} else {

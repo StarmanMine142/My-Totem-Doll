@@ -35,7 +35,7 @@ public class TotemDollModelPreviewWidget extends ClickableWidget {
 	}
 
 	@Override
-	protected void /*? if >=1.21 {*//*renderWidget*//*?} else {*/renderButton/*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
+	protected void /*? if >=1.21 {*/renderWidget/*?} else {*//*renderButton*//*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
 		context.enableScissor(this.getX(), this.getY(), (this.getX() + this.getWidth()), (int) (this.getY() + this.getHeight()));
 		if (this.loading) {
 			this.renderLoadingText(context);

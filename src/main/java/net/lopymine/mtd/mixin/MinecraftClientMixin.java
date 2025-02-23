@@ -23,7 +23,7 @@ import java.util.function.Function;
 public class MinecraftClientMixin {
 
 	//? if >=1.21 {
-	/*@Inject(at = @At("HEAD"), method = "createInitScreens")
+	@Inject(at = @At("HEAD"), method = "createInitScreens")
 	private void generated(List<Function<Runnable, Screen>> list, CallbackInfo ci) {
 		MyTotemDollConfig config = MyTotemDollClient.getConfig();
 		if (config.isFirstRun() || FabricLoader.getInstance().isDevelopmentEnvironment()) {
@@ -31,8 +31,8 @@ public class MinecraftClientMixin {
 			config.setFirstRun(false);
 		}
 	}
-	*///?} else {
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;onInitFinished(Lnet/minecraft/client/realms/RealmsClient;Lnet/minecraft/resource/ResourceReload;Lnet/minecraft/client/RunArgs$QuickPlay;)V"), method = "<init>")
+	//?} else {
+	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MinecraftClient;onInitFinished(Lnet/minecraft/client/realms/RealmsClient;Lnet/minecraft/resource/ResourceReload;Lnet/minecraft/client/RunArgs$QuickPlay;)V"), method = "<init>")
 	private void generated(MinecraftClient instance, RealmsClient realmsClient, ResourceReload resourceReload, QuickPlay quickPlay, Operation<Void> original) {
 		Runnable runnable = () -> original.call(instance, realmsClient, resourceReload, quickPlay);
 
@@ -44,6 +44,6 @@ public class MinecraftClientMixin {
 			runnable.run();
 		}
 	}
-	//?}
+	*///?}
 
 }

@@ -40,7 +40,7 @@ public class HandledScreenMixin {
 	}
 
 	//? if >=1.21.2 {
-	/*@Inject(at = @At("HEAD"), method = "mouseScrolled", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "mouseScrolled", cancellable = true)
 	private void onMouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount, CallbackInfoReturnable<Boolean> cir) {
 		if (!(this instanceof MTDAnvilScreen anvilScreen)) {
 			return;
@@ -53,5 +53,5 @@ public class HandledScreenMixin {
 			cir.setReturnValue(true);
 		}
 	}
-	*///?}
+	//?}
 }

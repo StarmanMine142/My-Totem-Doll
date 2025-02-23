@@ -202,7 +202,7 @@ public class TotemDollRenderer {
 		drawer.texture("elytra", textures::getElytraTexture);
 		drawer.requestDrawingPart("elytra");
 
-		drawer.draw(matrices, provider, skinTexture, light, overlay, /*? if >=1.21 {*/ /*-1 *//*?} else {*/ 1.0F, 1.0F, 1.0F, 1.0F /*?}*/);
+		drawer.draw(matrices, provider, skinTexture, light, overlay, /*? if >=1.21 {*/ -1 /*?} else {*/ /*1.0F, 1.0F, 1.0F, 1.0F *//*?}*/);
 
 //		if (LoadedMods.EARS_LOADED) {
 //			TotemDollEarsRenderer renderer = TotemDollEarsRenderer.getInstance();

@@ -19,9 +19,9 @@ public class ItemStackExtension {
 	@Nullable
 	public static Text getRealCustomName(ItemStack itemStack) {
 		//? if >=1.21 {
-		/*return itemStack.get(net.minecraft.component.DataComponentTypes.CUSTOM_NAME);
-		*///?} else {
-		NbtCompound nbtCompound = itemStack.getSubNbt("display");
+		return itemStack.get(net.minecraft.component.DataComponentTypes.CUSTOM_NAME);
+		//?} else {
+		/*NbtCompound nbtCompound = itemStack.getSubNbt("display");
 		if (nbtCompound != null && nbtCompound.contains("Name", 8)) {
 			try {
 				Text text = Serializer.fromJson(nbtCompound.getString("Name"));
@@ -36,7 +36,7 @@ public class ItemStackExtension {
 		}
 
 		return null;
-		//?}
+		*///?}
 	}
 
 	public static TotemDollData getTotemDollData(ItemStack stack) {

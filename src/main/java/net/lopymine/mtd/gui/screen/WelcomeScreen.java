@@ -28,15 +28,15 @@ public class WelcomeScreen extends Screen {
 	private MultilineText text;
 
 	//? if =1.20.1 {
-	private final RotatingCubeMapRenderer backgroundRenderer;
-	//?}
+	/*private final RotatingCubeMapRenderer backgroundRenderer;
+	*///?}
 
 	public WelcomeScreen(Runnable onClose) {
 		super(MyTotemDoll.text("welcome_screen.title"));
 		this.onClose = onClose;
 		//? if =1.20.1 {
-		this.backgroundRenderer = new RotatingCubeMapRenderer(TitleScreen.PANORAMA_CUBE_MAP);
-		//?}
+		/*this.backgroundRenderer = new RotatingCubeMapRenderer(TitleScreen.PANORAMA_CUBE_MAP);
+		*///?}
 	}
 
 	@Override
@@ -84,9 +84,9 @@ public class WelcomeScreen extends Screen {
 		super.render(context, mouseX, mouseY, delta);
 
 		//? if =1.20.1 {
-		this.backgroundRenderer.render(delta, 1.0F);
+		/*this.backgroundRenderer.render(delta, 1.0F);
 		context.fill(0, 0, this.width, this.height, -1877995504);
-		//?}
+		*///?}
 
 		BackgroundRenderer.drawTransparencyWidgetBackground(context, this.textArea.getX(), this.textArea.getY(), this.textArea.getWidth(), this.textArea.getHeight(), true, false);
 		this.text.drawCenterWithShadow(context, this.textArea.getX() + (this.textArea.getWidth() / 2), this.textArea.getY() + 5, 9, -1);

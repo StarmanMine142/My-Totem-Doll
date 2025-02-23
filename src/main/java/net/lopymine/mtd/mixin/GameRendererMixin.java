@@ -17,15 +17,15 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 //? if <=1.21.1 {
-import net.minecraft.client.render.model.json.ModelTransformationMode;
- //?}
+/*import net.minecraft.client.render.model.json.ModelTransformationMode;
+ *///?}
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
 
 	//? if >=1.21.2 {
 
-	/*@Shadow
+	@Shadow
 	@Nullable
 	private ItemStack floatingItem;
 
@@ -43,7 +43,7 @@ public class GameRendererMixin {
 		}
 	}
 
-	*///?} elif >=1.21 {
+	//?} elif >=1.21 {
 
 	/*@Shadow
 	@Nullable
@@ -65,7 +65,7 @@ public class GameRendererMixin {
 
 	*///?} else {
 
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;IILnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;I)V"), method = "renderFloatingItem")
+	/*@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;IILnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;I)V"), method = "renderFloatingItem")
 	private void renderFloatingDoll(ItemRenderer itemRenderer, ItemStack stack, ModelTransformationMode transformationType, int light, int overlay, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, int seed, Operation<Void> original) {
 		if (TotemDollRenderer.canRender(stack) ) {
 			if (!TotemDollRenderer.renderFloatingDoll(matrices, stack, vertexConsumers, light, overlay)) {
@@ -76,6 +76,6 @@ public class GameRendererMixin {
 		}
 	}
 
-	//?}
+	*///?}
 }
 

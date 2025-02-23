@@ -308,9 +308,9 @@ publishMods {
 	def incompatibleDepends = prop("incompatible_depends").toString().split(" ")
 	def versionTypeProperty = prop("version_type").toString()
 	def maxJavaVersion = JavaVersion.toVersion(prop("max_java_version"))
-	def isClient = Boolean.parseBoolean(prop("is_for_client)").toString())
-	def isTesting = Boolean.parseBoolean(prop("test_publish)").toString())
-	def isServer = Boolean.parseBoolean(prop("is_for_server)").toString())
+	def isClient = Boolean.parseBoolean(prop("is_for_client").toString())
+	def isTesting = Boolean.parseBoolean(prop("test_publish").toString())
+	def isServer = Boolean.parseBoolean(prop("is_for_server").toString())
 	def versionName = "[${currentMultiVersion.toVersionRange()}] ${prop("mod_name")} v${prop("mod_version")}"
 	def bl = providers.environmentVariable("CURSEFORGE_API_KEY").getOrNull() == null
 	def bl2 = providers.environmentVariable("MODRINTH_API_KEY").getOrNull() == null
@@ -522,7 +522,7 @@ def getVerifiedOrDefaultJar(String modName, String modVersion, String minecraftV
 }
 
 String getChangeLog() {
-	def file = project.rootProject.file("publish/CHANGELOG.md")
+	def file = project.rootProject.file("CHANGELOG.md")
 	if (file.exists()) {
 		def text = file.getText()
 		if (!text.isBlank()) {

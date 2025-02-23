@@ -1,7 +1,7 @@
 package net.lopymine.mtd.mixin;
 
 //? >=1.21.4 {
-/*import com.llamalad7.mixinextras.injector.wrapoperation.*;
+import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.item.ItemModelManager;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -48,4 +48,4 @@ public class ItemModelManagerMixin {
 
 }
 
-*///?}
+//?}

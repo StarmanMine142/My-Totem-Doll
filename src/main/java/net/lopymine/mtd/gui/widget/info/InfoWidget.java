@@ -7,10 +7,10 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.*;
 //? if >=1.21 {
-/*import net.minecraft.item.tooltip.TooltipData;
- *///?} else {
-import net.minecraft.client.item.TooltipData;
-//?}
+import net.minecraft.item.tooltip.TooltipData;
+ //?} else {
+/*import net.minecraft.client.item.TooltipData;
+*///?}
 import net.minecraft.util.Identifier;
 
 import net.lopymine.mtd.utils.DrawUtils;
@@ -51,7 +51,7 @@ public class InfoWidget implements Drawable {
 			return;
 		}
 
-		this.hovered = /*? if >=1.21 {*//*context.scissorContains(mouseX, mouseY) &&  *//*?}*/ mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
+		this.hovered = /*? if >=1.21 {*/context.scissorContains(mouseX, mouseY) &&  /*?}*/ mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
 
 		DrawUtils.drawTexture(context, this.texture, this.getX(), this.getY(), 0, 0, this.getWidth(), this.getHeight(), this.getWidth(), this.getHeight());
 

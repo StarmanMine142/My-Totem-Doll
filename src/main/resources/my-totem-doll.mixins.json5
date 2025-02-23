@@ -7,15 +7,15 @@
     ],
     "client": [
 	    //? if <=1.21.3 {
-	    "PlayerSkinTextureMixin",
+	    /*"PlayerSkinTextureMixin",
 	    "ItemRendererMixin",
 	    "HeldItemRendererMixin",
-	    //?}
+	    *///?}
 
 	    //? if >=1.21.4 {
-	    /*"ItemModelManagerMixin",
+	    "ItemModelManagerMixin",
 	    "ItemRenderStateMixin",
-	    *///?}
+	    //?}
 
 	    "accessor.DilationAccessor",
 	    "GameRendererMixin",

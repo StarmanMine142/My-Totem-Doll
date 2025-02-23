@@ -15,10 +15,10 @@ import java.util.*;
 import org.jetbrains.annotations.*;
 
 //? if >=1.20.2 {
-/*import com.mojang.util.UndashedUuid;
-*///?} else {
-import com.mojang.util.UUIDTypeAdapter;
- //?}
+import com.mojang.util.UndashedUuid;
+//?} else {
+/*import com.mojang.util.UUIDTypeAdapter;
+ *///?}
 
 public class MojangAPI {
 
@@ -65,10 +65,10 @@ public class MojangAPI {
 			}
 			String uuidAsString = jsonObject.get("id").getAsString();
 			//? if >=1.20.2 {
-			/*UUID uuid = UndashedUuid.fromStringLenient(uuidAsString);
-			*///?} else {
-			UUID uuid = UUIDTypeAdapter.fromString(uuidAsString);
-			 //?}
+			UUID uuid = UndashedUuid.fromStringLenient(uuidAsString);
+			//?} else {
+			/*UUID uuid = UUIDTypeAdapter.fromString(uuidAsString);
+			 *///?}
 			return new Response<>(statusCode, uuid);
 		} catch (InterruptedException ignored) {
 		} catch (Exception e) {

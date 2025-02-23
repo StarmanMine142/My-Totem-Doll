@@ -128,8 +128,8 @@ public class TotemDollModelSelectionScreen extends Screen {
 	}
 
 	@Override
-	public void renderBackground(DrawContext context /*? if >=1.21 {*/ /*,int mouseX, int mouseY, float delta*//*?}*/) {
-		super.renderBackground(context/*? if >=1.21 {*/ /*, mouseX, mouseY, delta *//*?}*/);
+	public void renderBackground(DrawContext context /*? if >=1.21 {*/ ,int mouseX, int mouseY, float delta/*?}*/) {
+		super.renderBackground(context/*? if >=1.21 {*/ , mouseX, mouseY, delta /*?}*/);
 
 		BackgroundRenderer.drawTransparencyBackground(context, this.modelPanelDimension.x(), this.modelPanelDimension.y(), this.modelPanelDimension.width(), this.modelPanelDimension.height(), true);
 		BackgroundRenderer.drawTransparencyBackground(context, this.listPanelDimension.x(), this.listPanelDimension.y(), this.listPanelDimension.width(), this.listPanelDimension.height(), true);

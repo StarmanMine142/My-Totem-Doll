@@ -43,7 +43,7 @@ public class DraggingTagButtonWidget extends TagButtonWidget {
 	}
 
 	@Override
-	public void /*? if >=1.21 {*/ /*renderWidget *//*?} else {*/renderButton /*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
+	public void /*? if >=1.21 {*/ renderWidget /*?} else {*//*renderButton *//*?}*/(DrawContext context, int mouseX, int mouseY, float delta) {
 		int x = this.isDragging() ? mouseX - (this.getWidth() / 2) : this.getX();
 		int y = this.isDragging() ? mouseY - (this.getHeight() / 2): this.getY();
 		super.renderButton(context, x, y);
