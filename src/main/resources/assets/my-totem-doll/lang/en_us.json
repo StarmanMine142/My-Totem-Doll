@@ -1,5 +1,5 @@
 {
-	"modmenu.descriptionTranslation.my-totem-doll": "Simple Fabric mod which replaces all totems with player dolls. Just rename your totem to player's nickname in anvil to use it's skin!",
+  "modmenu.descriptionTranslation.my-totem-doll": "Simple Fabric mod which replaces all totems with player dolls. Just rename your totem to player's nickname in anvil to use it's skin!",
 	"my-totem-doll.modmenu.title": "&lMy Totem Doll",
 	"my-totem-doll.modmenu.no_config_library_screen.message": "You need to install &6&lYet Another Config Lib [YACL]&f to open My Totem Doll Configuration Screen\n\n&a&lOpen &6&lYACL &a&lModrinth page?",
 	"my-totem-doll.modmenu.old_config_library_screen.message": "Your &6&lYet Another Config Lib [YACL]&f with version %s is outdated for configuration My Totem Doll. Please update &6&lYACL&f with version %s or higher.\n\n&a&lOpen &6&lYACL &a&lModrinth page?",
