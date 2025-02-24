@@ -87,26 +87,26 @@ dependencies {
 
 	// CITResewn
 
-	def cit = prop("dep.cit-resewn")
-	if (cit != "unknown") {
-		modImplementation "maven.modrinth:cit-resewn:${cit}"
-		modImplementation "maven.modrinth:cit-resewn-defaults:${cit}"
-	}
+	// def cit = prop("dep.cit-resewn")
+	// if (cit != "unknown") {
+	// 	modImplementation "maven.modrinth:cit-resewn:${cit}"
+	// 	modImplementation "maven.modrinth:cit-resewn-defaults:${cit}"
+	// }
 
 	// Mixin^2
 	include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${prop("build.mixin_squared")}")))
 
 	// Ears
 
-	def ears = prop("dep.ears")
-	if (ears != "unknown") {
-		modImplementation "maven.modrinth:ears:${ ears}"
-	}
+	// def ears = prop("dep.ears")
+	// if (ears != "unknown") {
+	// 	modImplementation "maven.modrinth:ears:${ ears}"
+	// }
 
-	def sodium = prop("dep.sodium")
-	if (sodium != "unknown") {
-		modImplementation "maven.modrinth:sodium:${sodium}"
-	}
+	// def sodium = prop("dep.sodium")
+	// if (sodium != "unknown") {
+	// 	modImplementation "maven.modrinth:sodium:${sodium}"
+	// }
 }
 
 loom {
