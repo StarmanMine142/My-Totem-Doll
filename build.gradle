@@ -1,5 +1,5 @@
 plugins {
-	id("fabric-loom") version "1.8-SNAPSHOT"
+	id("fabric-loom") version "1.10-SNAPSHOT"
 	id("dev.kikugie.j52j") version "2.0"
 	id("me.modmuss50.mod-publish-plugin") version "0.7.4"
 }
@@ -87,26 +87,26 @@ dependencies {
 
 	// CITResewn
 
-	def cit = prop("dep.cit-resewn")
-	if (cit != "unknown") {
-		modImplementation "maven.modrinth:cit-resewn:${cit}"
-		modImplementation "maven.modrinth:cit-resewn-defaults:${cit}"
-	}
+	// def cit = prop("dep.cit-resewn")
+	// if (cit != "unknown") {
+	// 	modImplementation "maven.modrinth:cit-resewn:${cit}"
+	// 	modImplementation "maven.modrinth:cit-resewn-defaults:${cit}"
+	// }
 
 	// Mixin^2
 	include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${prop("build.mixin_squared")}")))
 
 	// Ears
 
-	def ears = prop("dep.ears")
-	if (ears != "unknown") {
-		modImplementation "maven.modrinth:ears:${ ears}"
-	}
+	// def ears = prop("dep.ears")
+	// if (ears != "unknown") {
+	// 	modImplementation "maven.modrinth:ears:${ ears}"
+	// }
 
-	def sodium = prop("dep.sodium")
-	if (sodium != "unknown") {
-		modImplementation "maven.modrinth:sodium:${sodium}"
-	}
+	// def sodium = prop("dep.sodium")
+	// if (sodium != "unknown") {
+	// 	modImplementation "maven.modrinth:sodium:${sodium}"
+	// }
 }
 
 loom {
