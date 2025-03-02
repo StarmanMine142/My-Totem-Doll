@@ -165,7 +165,7 @@ processResources {
 		inputs.property key, value
 	}
 
-	filesMatching(["fabric.mod.json", "${modId}.mixins.json5".toString(), "${modId}-yacl.mixins.json5".toString(), "${modId}-sodium.mixins.json5".toString(), "${modId}-cit-resewn.mixins.json5".toString(), "assets/${modId}/lang/*.json".toString()]) {
+	filesMatching(["fabric.mod.json", "${modId}.mixins.json5".toString(), "${modId}-yacl.mixins.json5".toString(), "${modId}-cit-resewn.mixins.json5".toString(), "assets/${modId}/lang/*.json".toString()]) {
 		expand(props)
 	}
 

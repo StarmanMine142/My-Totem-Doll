@@ -1,18 +1,18 @@
 {
-    "required": true,
-    "package": "net.lopymine.mtd.mixin.sodium",
-    "refmap": "${mod_id}.refmap.json",
-    "compatibilityLevel": "JAVA_${java}",
-	"plugin": "net.lopymine.mtd.compat.sodium.SodiumCompatPlugin",
-    "mixins": [],
-    "client": [
-	    //? =1.20.1 {
-	    /*"ModelPartMixinMixin"
-	    *///?} else {
-	    "CubeMixinMixin"
-	    //?}
-    ],
-    "injectors": {
-        "defaultRequire": 1
-    }
+//    "required": true,
+//    "package": "net.lopymine.mtd.mixin.sodium",
+//    "refmap": "${mod_id}.refmap.json",
+//    "compatibilityLevel": "JAVA_${java}",
+//	"plugin": "net.lopymine.mtd.compat.sodium.SodiumCompatPlugin",
+//    "mixins": [],
+//    "client": [
+//	    // =1.20.1 {
+//	    /*"ModelPartMixinMixin"
+//	    *///} else {
+//	    "CubeMixinMixin"
+//	    //}
+//    ],
+//    "injectors": {
+//        "defaultRequire": 1
+//    }
 }
