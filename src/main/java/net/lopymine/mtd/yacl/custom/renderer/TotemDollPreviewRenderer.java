@@ -16,6 +16,7 @@ import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
 import net.lopymine.mtd.doll.manager.StandardTotemDollManager;
 import net.lopymine.mtd.gui.BackgroundRenderer;
 import net.lopymine.mtd.utils.ColorUtils;
+import net.lopymine.mtd.utils.plugin.TotemDollPlugin;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -109,7 +110,7 @@ public class TotemDollPreviewRenderer implements ImageRenderer {
 
 		BackgroundRenderer.drawTransparencyWidgetBackground(context, x, y, size, size, true, true);
 
-		TotemDollRenderer.renderPreview(context, x, y, size, size, size / 1.5F, config.isUseVanillaTotemModel() ? null : this.data);
+		TotemDollRenderer.renderPreview(context, x, y, size, size, size / 1.5F, config.isUseVanillaTotemModel() || TotemDollPlugin.work(config.getStandardTotemDollSkinValue()) ? null : this.data);
 
 		return y + size + 2;
 	}

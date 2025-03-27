@@ -2,7 +2,6 @@ package net.lopymine.mtd.mixin;
 
 //? if >=1.21.4 {
 import lombok.experimental.ExtensionMethod;
-import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderState;
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,7 +10,7 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.lopymine.mtd.doll.renderer.TotemDollRenderer;
+import net.lopymine.mtd.doll.renderer.*;
 import net.lopymine.mtd.extension.ItemStackExtension;
 import net.lopymine.mtd.utils.mixin.ItemRenderStateWithStack;
 
@@ -21,8 +20,14 @@ import org.jetbrains.annotations.Nullable;
 @Mixin(ItemRenderState.class)
 public class ItemRenderStateMixin implements ItemRenderStateWithStack {
 
-	@Shadow ModelTransformationMode modelTransformationMode;
-	@Shadow boolean leftHand;
+	//? if <=1.21.4 {
+	/*@Shadow
+	ModelTransformationMode modelTransformationMode;
+	@Shadow
+	boolean leftHand;
+	*///?} else {
+	@Shadow ItemDisplayContext displayContext;
+	//?}
 
 	@Unique
 	@Nullable
@@ -30,7 +35,9 @@ public class ItemRenderStateMixin implements ItemRenderStateWithStack {
 
 	@Inject(at = @At("HEAD"), method = "render", cancellable = true)
 	private void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
-		if (this.stack != null && TotemDollRenderer.rendered(matrices, this.stack, this.modelTransformationMode, this.leftHand, vertexConsumers, light, overlay)) {
+		DollRenderContext context = DollRenderContext.of(/*? if <=1.21.4 {*//*this.modelTransformationMode*//*?} else {*/ this.displayContext /*?}*/);
+
+		if (this.stack != null && TotemDollRenderer.rendered(matrices, this.stack, context, vertexConsumers, light, overlay)) {
 			ci.cancel();
 		}
 		if (this.stack != null && this.stack.hasModdedModel()) {

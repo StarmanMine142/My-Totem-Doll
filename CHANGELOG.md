@@ -1,7 +1,1 @@
-- Added support for newer MC versions
-- Added Tags Menu
-- Added compatibility with CIT-Resewn, Sodium and other
-- Updated Mod Menu
-- Added support for 2d totems
-- Added support for resource pack models
-- Bug fixes and other changes
+- Fixed some bugs

@@ -6,10 +6,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.VertexConsumerProvider.Immediate;
-import net.minecraft.client.render.model.json.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.*;
-import net.minecraft.text.Text;
 
 import net.lopymine.mtd.MyTotemDoll;
 import net.lopymine.mtd.client.MyTotemDollClient;
@@ -17,12 +15,13 @@ import net.lopymine.mtd.config.MyTotemDollConfig;
 import net.lopymine.mtd.config.rendering.*;
 import net.lopymine.mtd.config.totem.TotemDollSkinType;
 import net.lopymine.mtd.doll.data.*;
+import net.lopymine.mtd.doll.manager.StandardTotemDollManager;
 import net.lopymine.mtd.doll.model.TotemDollModel;
 import net.lopymine.mtd.doll.model.TotemDollModel.Drawer;
 import net.lopymine.mtd.extension.ItemStackExtension;
-import net.lopymine.mtd.doll.manager.*;
-import net.lopymine.mtd.tag.manager.TagsManager;
 import net.lopymine.mtd.utils.ProfilerUtils;
+import net.lopymine.mtd.utils.plugin.TotemDollPlugin;
+
 import net.minecraft.util.math.*;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.*;
@@ -32,58 +31,37 @@ import org.jetbrains.annotations.Nullable;
 @ExtensionMethod(ItemStackExtension.class)
 public class TotemDollRenderer {
 
-	public static boolean rendered(MatrixStack matrices, ItemStack stack, ModelTransformationMode modelTransformationMode, boolean leftHanded, VertexConsumerProvider vertexConsumers, int light, int uv) {
+	public static boolean rendered(MatrixStack matrices, ItemStack stack, DollRenderContext context, VertexConsumerProvider vertexConsumers, int light, int uv) {
 		if (canRender(stack)) {
-			return TotemDollRenderer.renderDoll(matrices, stack, modelTransformationMode, leftHanded, vertexConsumers, light, uv);
+			return TotemDollRenderer.renderDoll(matrices, stack, context, vertexConsumers, light, uv);
 		}
 		return false;
 	}
 
-	public static boolean renderFloatingDoll(MatrixStack matrices, ItemStack stack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		beforeDollRendered(null, stack);
-
-		TotemDollData totemDollData = stack.getTotemDollData();
-
-		if (StandardTotemDollManager.getStandardDoll().equals(totemDollData)) {
-			if (MyTotemDollClient.getConfig().isUseVanillaTotemModel()) {
-				return false;
-			}
-			TotemDollRenderer.prepareStandardDollForRendering(stack, totemDollData);
+	public static boolean renderedFloatingDoll(MatrixStack matrices, ItemStack stack, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		if (canRender(stack)) {
+			return renderDoll(matrices, stack, DollRenderContext.D_FLOATING, vertexConsumers, light, overlay);
 		}
-
-		matrices.push();
-		matrices.translate(-0.5F, -1.0F, -0.5F);
-		TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
-		matrices.pop();
-
-		afterDollRendered(totemDollData);
-		return true;
+		return false;
 	}
 
-	public static boolean renderDoll(MatrixStack matrices, ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-		ModelTransformationMode mode = renderMode == ModelTransformationMode.NONE ? ModelTransformationMode.GUI : renderMode;
-
-		beforeDollRendered(mode, stack);
-
+	public static boolean renderDoll(MatrixStack matrices, ItemStack stack, DollRenderContext context, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+		DollRenderContext renderContext = context == DollRenderContext.D_NONE ? DollRenderContext.D_GUI : context;
 		TotemDollData totemDollData = stack.getTotemDollData();
 
-		if (StandardTotemDollManager.getStandardDoll().equals(totemDollData)) {
-			if (MyTotemDollClient.getConfig().isUseVanillaTotemModel()) {
-				return false;
-			}
-
-			prepareStandardDollForRendering(stack, totemDollData);
+		if (!beforeDollRendered(renderContext, stack, totemDollData)) {
+			return false;
 		}
 
 		matrices.push();
-		totemDollData.getModel().getMain().getTransformation().getTransformation(mode).apply(leftHanded, matrices);
+		renderContext.apply(totemDollData.getModel().getMain(), matrices);
 		matrices.translate(-0.5F, -1.0F, -0.5F);
 
-		switch (mode) {
-			case FIRST_PERSON_LEFT_HAND,
-			     FIRST_PERSON_RIGHT_HAND -> TotemDollRenderer.renderInHand(leftHanded, true, matrices, vertexConsumers, light, overlay, totemDollData);
-			case THIRD_PERSON_LEFT_HAND,
-			     THIRD_PERSON_RIGHT_HAND -> TotemDollRenderer.renderInHand(leftHanded, false, matrices, vertexConsumers, light, overlay, totemDollData);
+		switch (renderContext) {
+			case D_FIRST_PERSON_LEFT_HAND,
+			     D_FIRST_PERSON_RIGHT_HAND -> TotemDollRenderer.renderInHand(renderContext.isLeftHanded(), true, matrices, vertexConsumers, light, overlay, totemDollData);
+			case D_THIRD_PERSON_LEFT_HAND,
+			     D_THIRD_PERSON_RIGHT_HAND -> TotemDollRenderer.renderInHand(renderContext.isLeftHanded(), false, matrices, vertexConsumers, light, overlay, totemDollData);
 			default -> TotemDollRenderer.render(matrices, vertexConsumers, light, overlay, totemDollData);
 		}
 
@@ -220,12 +198,23 @@ public class TotemDollRenderer {
 		}
 	}
 
-	private static void beforeDollRendered(@Nullable ModelTransformationMode modelTransformationMode, ItemStack stack) {
+	private static boolean beforeDollRendered(@Nullable DollRenderContext context, ItemStack stack, TotemDollData totemDollData) {
+		boolean standardDoll = StandardTotemDollManager.getStandardDoll().equals(totemDollData);
+		if (standardDoll && (MyTotemDollClient.getConfig().isUseVanillaTotemModel() || TotemDollPlugin.work(MyTotemDollClient.getConfig().getStandardTotemDollSkinValue()))) {
+			return false;
+		}
+
 		Profiler profiler = ProfilerUtils.getProfiler();
 		profiler.swap(MyTotemDoll.MOD_ID);
-		if (modelTransformationMode == ModelTransformationMode.GUI) {
+		if (context == DollRenderContext.D_GUI) {
 			stack.setPlayerEntity(MinecraftClient.getInstance().player);
 		}
+
+		if (standardDoll) {
+			TotemDollRenderer.prepareStandardDollForRendering(stack, totemDollData);
+		}
+
+		return true;
 	}
 
 	private static void afterDollRendered(TotemDollData totemDollData) {

@@ -15,7 +15,7 @@ import net.minecraft.util.math.RotationAxis;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.lopymine.mtd.utils.DrawUtils;
+import net.lopymine.mtd.utils.*;
 import net.lopymine.mtd.yacl.custom.TransparencySprites;
 import net.lopymine.mtd.yacl.custom.screen.MyTotemDollYACLScreen;
 
@@ -102,8 +102,8 @@ public class RenderingCategoryTab implements TabExt {
 
 	@Override
 	public void renderBackground(DrawContext context) {
-		RenderSystem.enableBlend();
-		RenderSystem.enableDepthTest();
+		RenderUtils.enableBlend();
+		RenderUtils.enableDepthTest();
 
 		// right pane darker db
 		DrawUtils.drawTexture(context, TransparencySprites.getMenuListBackgroundTexture(), this.rightPaneDim.getLeft(), this.rightPaneDim.getTop(), this.rightPaneDim.getRight() + 2, this.rightPaneDim.getBottom() + 2, this.rightPaneDim.width() + 2, this.rightPaneDim.height() + 2, 32, 32);
@@ -128,8 +128,8 @@ public class RenderingCategoryTab implements TabExt {
 		DrawUtils.drawTexture(context, TransparencySprites.getMenuSeparatorTexture(), 0, 0, 0f, 0f, this.rightPaneDim.height() + 2, 2, 32, 2);
 		context.getMatrices().pop();
 
-		RenderSystem.disableBlend();
-		RenderSystem.disableDepthTest();
+		RenderUtils.disableBlend();
+		RenderUtils.disableDepthTest();
 	}
 
 

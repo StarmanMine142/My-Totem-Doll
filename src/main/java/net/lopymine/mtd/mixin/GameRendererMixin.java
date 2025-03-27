@@ -4,10 +4,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.*;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.*;
-import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -32,15 +30,11 @@ public class GameRendererMixin {
 
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;draw(Ljava/util/function/Consumer;)V"), method = "renderFloatingItem")
 	private void renderFloatingDoll(DrawContext drawContext, Consumer<?> drawCallback, Operation<Void> original, @Local MatrixStack matrices) {
-		if (TotemDollRenderer.canRender(this.floatingItem)) {
-			drawContext.draw((sus) -> {
-				if (!TotemDollRenderer.renderFloatingDoll(matrices, this.floatingItem, drawContext.vertexConsumers, 15728880, OverlayTexture.DEFAULT_UV)) {
-					original.call(drawContext, drawCallback);
-				}
-			});
-		} else {
-			original.call(drawContext, drawCallback);
-		}
+		drawContext.draw((sus) -> {
+			if (!TotemDollRenderer.renderedFloatingDoll(matrices, this.floatingItem, drawContext.vertexConsumers, 15728880, OverlayTexture.DEFAULT_UV)) {
+				original.call(drawContext, drawCallback);
+			}
+		});
 	}
 
 	//?} elif >=1.21 {

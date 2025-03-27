@@ -17,6 +17,12 @@
 	    "ItemRenderStateMixin",
 	    //?}
 
+	    //? if >=1.21.2 && <=1.21.3 {
+	    /*"ItemEntityRendererMixin",
+		"LivingEntityRendererMixin",
+		*///?}
+
+
 	    "accessor.DilationAccessor",
 	    "GameRendererMixin",
 	    "AnvilScreenMixin",

@@ -14,6 +14,7 @@ import net.lopymine.mtd.extension.PlayerSkinTextureExtension;
 import java.io.*;
 import java.nio.file.*;
 import java.util.Optional;
+import java.util.function.Supplier;
 import org.jetbrains.annotations.*;
 
 //? <=1.21.3 {
@@ -25,20 +26,23 @@ public class PlayerSkinUtils {
 
 	public static void downloadSkin(@NotNull String textureUrl, @NotNull Identifier textureId, @Nullable SuccessAction onSuccessRegistration, @Nullable FailedAction onFailedRegistration, boolean cape, Path cachedTexturePath) {
 		try {
-			AbstractTexture texture = PlayerSkinUtils.download(cachedTexturePath, textureUrl, cape); // DO NOT CLOSE
-
-			//? <=1.21.3 {
-			/*if (texture instanceof PlayerSkinTexture playerSkinTexture) {
-				playerSkinTexture.setOnSuccessAction(onSuccessRegistration);
-				playerSkinTexture.setOnFailedAction(onFailedRegistration);
-				if (cape) {
-					playerSkinTexture.markAsCape();
-				}
-			}
-			*///?}
+			// TODO check with completable future
+			Supplier<AbstractTexture> supplier = PlayerSkinUtils.download(cachedTexturePath, textureUrl, cape, textureId); // DO NOT CLOSE
 
 			MinecraftClient.getInstance().send(() -> {
-				MinecraftClient.getInstance().getTextureManager().registerTexture(textureId, texture);
+				AbstractTexture abstractTexture = supplier.get();
+
+				//? <=1.21.3 {
+				/*if (supplier instanceof PlayerSkinTexture playerSkinTexture) {
+					playerSkinTexture.setOnSuccessAction(onSuccessRegistration);
+					playerSkinTexture.setOnFailedAction(onFailedRegistration);
+					if (cape) {
+						playerSkinTexture.markAsCape();
+					}
+				}
+				*///?}
+
+				MinecraftClient.getInstance().getTextureManager().registerTexture(textureId, abstractTexture);
 				//? >=1.21.4 {
 				if (onSuccessRegistration != null) {
 					onSuccessRegistration.onSuccess();
@@ -53,7 +57,7 @@ public class PlayerSkinUtils {
 		}
 	}
 
-	private static AbstractTexture download(Path path, String uri, boolean cape) throws IOException {
+	private static Supplier<AbstractTexture> download(Path path, String uri, boolean cape, Identifier id) throws IOException {
 		//? >=1.21.4 {
 		NativeImage download = PlayerSkinTextureDownloader.download(path, uri);
 		if (cape) {
@@ -61,9 +65,10 @@ public class PlayerSkinUtils {
 		} else {
 			download = PlayerSkinTextureDownloader.remapTexture(download, uri);
 		}
-		return new NativeImageBackedTexture(download);
+		NativeImage image = download;
+		return () -> new NativeImageBackedTexture(/*? if >=1.21.5 {*/ id::toString, /*?}*/ image);
 		//?} else {
-		/*return new PlayerSkinTexture(path.toFile(), uri, DefaultSkinHelper.getTexture(), true, () -> {
+		/*return () -> new PlayerSkinTexture(path.toFile(), uri, DefaultSkinHelper.getTexture(), true, () -> {
 			try {
 				if (path.toFile().exists()) {
 					Files.delete(path);
@@ -112,7 +117,7 @@ public class PlayerSkinUtils {
 			return id;
 		}
 		NativeImage remapped = remapTextureToStandardSize(image, false);
-		textureManager.registerTexture(identifier, new NativeImageBackedTexture(remapped));
+		textureManager.registerTexture(identifier, new NativeImageBackedTexture(/*? if >=1.21.5 {*/ identifier::toString, /*?}*/ remapped));
 		return identifier;
 	}
 

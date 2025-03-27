@@ -18,7 +18,7 @@ import net.lopymine.mtd.gui.widget.list.ListWithStaticHeaderWidget;
 import net.lopymine.mtd.gui.widget.tag.TagMenuWidget.TagRow;
 import net.lopymine.mtd.tag.*;
 import net.lopymine.mtd.tag.manager.TagsManager;
-import net.lopymine.mtd.utils.DrawUtils;
+import net.lopymine.mtd.utils.*;
 import net.lopymine.mtd.utils.tooltip.IRequestableTooltipScreen;
 import java.util.*;
 import java.util.stream.*;
@@ -261,9 +261,9 @@ public class TagMenuWidget extends ListWithStaticHeaderWidget<TagRow> {
 			MinecraftClient client = MinecraftClient.getInstance();
 			TextRenderer textRenderer = client.textRenderer;
 
-			RenderSystem.enableBlend();
+			RenderUtils.enableBlend();
 			DrawUtils.drawTexture(context, SEPARATOR, x - 1, y + (entryHeight / 2) - 3, 0, 0, 32, 7, 32, 7);
-			RenderSystem.disableBlend();
+			RenderUtils.disableBlend();
 
 			if (hovered) {
 				if (!(client.currentScreen instanceof IRequestableTooltipScreen tooltipScreen)) {

@@ -9,15 +9,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.lopymine.mtd.config.other.vector.Vec3f;
+import net.lopymine.mtd.doll.renderer.DollRenderContext;
 import net.lopymine.mtd.extension.ModelTransformationExtension;
 
 import java.util.*;
 import org.jetbrains.annotations.Nullable;
 import static net.lopymine.mtd.utils.CodecUtils.option;
 import static net.lopymine.mtd.utils.CodecUtils.optional;
-
-//? >=1.21.2
-import net.minecraft.item.ModelTransformationMode;
 
 @Setter
 @Getter
@@ -81,9 +79,9 @@ public class BBModel {
 		private static final Vec3f DEFAULT_SCALE = new Vec3f(1.0F, 1.0F, 1.0F);
 
 		public static final Codec<Transformation> TRANSFORMATION_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-				optional("rotation", DEFAULT_ROTATION, Vec3f.CODEC, (o) -> new Vec3f(o.rotation)),
-				optional("translation", DEFAULT_TRANSLATION, Vec3f.CODEC, (o) -> new Vec3f(o.translation)),
-				optional("scale", DEFAULT_SCALE, Vec3f.CODEC, (o) -> new Vec3f(o.scale))
+				optional("rotation", DEFAULT_ROTATION, Vec3f.CODEC, (o) -> new Vec3f(o.rotation/*? if >=1.21.5 {*/()/*?}*/)),
+				optional("translation", DEFAULT_TRANSLATION, Vec3f.CODEC, (o) -> new Vec3f(o.translation/*? if >=1.21.5 {*/()/*?}*/)),
+				optional("scale", DEFAULT_SCALE, Vec3f.CODEC, (o) -> new Vec3f(o.scale/*? if >=1.21.5 {*/()/*?}*/))
 		).apply(instance, Transformations::prepareTransformation));
 
 		private static Transformation prepareTransformation(Vec3f rotation, Vec3f translation, Vec3f scale) {
@@ -92,14 +90,14 @@ public class BBModel {
 		}
 
 		public static final Codec<ModelTransformation> MODEL_TRANSFORMATION_CODEC = RecordCodecBuilder.create((instance) -> instance.group(
-				optional(ModelTransformationMode.THIRD_PERSON_LEFT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getTl()),
-				optional(ModelTransformationMode.THIRD_PERSON_RIGHT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getTr()),
-				optional(ModelTransformationMode.FIRST_PERSON_LEFT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFl()),
-				optional(ModelTransformationMode.FIRST_PERSON_RIGHT_HAND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFr()),
-				optional(ModelTransformationMode.HEAD.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getHead()),
-				optional(ModelTransformationMode.GUI.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getGui()),
-				optional(ModelTransformationMode.GROUND.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getGround()),
-				optional(ModelTransformationMode.FIXED.asString(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFixed())
+				optional(DollRenderContext.D_THIRD_PERSON_LEFT_HAND.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getTl()),
+				optional(DollRenderContext.D_THIRD_PERSON_RIGHT_HAND.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getTr()),
+				optional(DollRenderContext.D_FIRST_PERSON_LEFT_HAND.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFl()),
+				optional(DollRenderContext.D_FIRST_PERSON_RIGHT_HAND.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFr()),
+				optional(DollRenderContext.D_HEAD.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getHead()),
+				optional(DollRenderContext.D_GUI.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getGui()),
+				optional(DollRenderContext.D_GROUND.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getGround()),
+				optional(DollRenderContext.D_FIXED.getId(), Transformation.IDENTITY, TRANSFORMATION_CODEC, (o) -> o.getFixed())
 		).apply(instance, ModelTransformation::new));
 
 	}

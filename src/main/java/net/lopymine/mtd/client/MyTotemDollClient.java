@@ -11,7 +11,7 @@ import net.lopymine.mtd.client.event.MyTotemDollEvents;
 import net.lopymine.mtd.config.MyTotemDollConfig;
 import net.lopymine.mtd.pack.*;
 import net.lopymine.mtd.tag.manager.*;
-import net.lopymine.mtd.utils.abc.TotemDollPlugin;
+import net.lopymine.mtd.utils.plugin.TotemDollPlugin;
 
 public class MyTotemDollClient implements ClientModInitializer {
 

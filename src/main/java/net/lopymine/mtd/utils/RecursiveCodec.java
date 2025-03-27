@@ -1,5 +1,8 @@
 package net.lopymine.mtd.utils;
 
+//? if <1.21 {
+/*
+
 import com.google.common.base.Suppliers;
 
 import com.mojang.datafixers.util.Pair;
@@ -13,7 +16,7 @@ public class RecursiveCodec<T> implements Codec<T> {
 	private final Supplier<Codec<T>> wrapped;
 
 	public RecursiveCodec(final String name, final Function<Codec<T>, Codec<T>> wrapped) {
-		this.name = name;
+		this.name    = name;
 		this.wrapped = Suppliers.memoize(() -> wrapped.apply(this));
 	}
 
@@ -32,3 +35,5 @@ public class RecursiveCodec<T> implements Codec<T> {
 		return "RecursiveCodec[" + name + ']';
 	}
 }
+*/
+//?}

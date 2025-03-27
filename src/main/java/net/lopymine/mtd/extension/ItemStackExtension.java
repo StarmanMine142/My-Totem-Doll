@@ -2,13 +2,9 @@ package net.lopymine.mtd.extension;
 
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.Text.Serializer;
-
 import net.lopymine.mtd.doll.data.*;
 import net.lopymine.mtd.doll.manager.*;
-import net.lopymine.mtd.doll.model.TotemDollModel;
 import net.lopymine.mtd.tag.manager.TagsManager;
 import net.lopymine.mtd.utils.mixin.*;
 
@@ -21,10 +17,10 @@ public class ItemStackExtension {
 		//? if >=1.21 {
 		return itemStack.get(net.minecraft.component.DataComponentTypes.CUSTOM_NAME);
 		//?} else {
-		/*NbtCompound nbtCompound = itemStack.getSubNbt("display");
+		/*net.minecraft.nbt.NbtCompound nbtCompound = itemStack.getSubNbt("display");
 		if (nbtCompound != null && nbtCompound.contains("Name", 8)) {
 			try {
-				Text text = Serializer.fromJson(nbtCompound.getString("Name"));
+				Text text = net.minecraft.text.Text.Serializer.fromJson(nbtCompound.getString("Name"));
 				if (text != null) {
 					return text;
 				}

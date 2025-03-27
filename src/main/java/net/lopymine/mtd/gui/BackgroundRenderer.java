@@ -7,7 +7,7 @@ import net.minecraft.util.math.RotationAxis;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.lopymine.mtd.utils.DrawUtils;
+import net.lopymine.mtd.utils.*;
 import net.lopymine.mtd.yacl.custom.TransparencySprites;
 
 public class BackgroundRenderer {
@@ -54,7 +54,7 @@ public class BackgroundRenderer {
 
 		MatrixStack matrices = context.getMatrices();
 
-		RenderSystem.enableBlend();
+		RenderUtils.enableBlend();
 
 		// BACKGROUND
 		DrawUtils.drawTexture(context, backgroundTexture, x + 2, y + 2, 0, 0, width - 4, height - 4, 32, 32);
@@ -111,6 +111,6 @@ public class BackgroundRenderer {
 			DrawUtils.drawTexture(context, separatorTexture, x + width - 2, y + height - 1, 0, 0, 2, 1, 1, 0);
 		}
 
-		RenderSystem.disableBlend();
+		RenderUtils.disableBlend();
 	}
 }
