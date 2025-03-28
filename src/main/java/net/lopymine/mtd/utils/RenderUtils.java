@@ -1,8 +1,8 @@
 package net.lopymine.mtd.utils;
 
 //? if <=1.21.4 {
-import com.mojang.blaze3d.systems.RenderSystem;
-//?}
+/*import com.mojang.blaze3d.systems.RenderSystem;
+*///?}
 
 public class RenderUtils {
 

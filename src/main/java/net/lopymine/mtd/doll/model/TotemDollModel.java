@@ -106,7 +106,7 @@ public class TotemDollModel extends Model {
 	//? <=1.21.1 {
 
 	/*@Override
-	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, /^? if >=1.21 {^/ int color /^?} else {^/ /^float r, float g, float b, float a^//^?}^/) {
+	public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, /^? if >=1.21 {^/ /^int color ^//^?} else {^/ float r, float g, float b, float a/^?}^/) {
 		// NO-OP
 	}
 

@@ -29,6 +29,7 @@ public class MinecraftClientMixin {
 		if (config.isFirstRun() || FabricLoader.getInstance().isDevelopmentEnvironment()) {
 			list.add(WelcomeScreen::new);
 			config.setFirstRun(false);
+			config.save();
 		}
 	}
 	//?} else {

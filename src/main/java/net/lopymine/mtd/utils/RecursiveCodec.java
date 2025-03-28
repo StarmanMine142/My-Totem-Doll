@@ -1,9 +1,9 @@
 package net.lopymine.mtd.utils;
 
 //? if <1.21 {
-/*
 
-import com.google.common.base.Suppliers;
+
+/*import com.google.common.base.Suppliers;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
@@ -35,5 +35,5 @@ public class RecursiveCodec<T> implements Codec<T> {
 		return "RecursiveCodec[" + name + ']';
 	}
 }
-*/
-//?}
+
+*///?}

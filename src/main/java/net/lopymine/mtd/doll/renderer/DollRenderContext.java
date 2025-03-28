@@ -34,9 +34,14 @@ public enum DollRenderContext {
 
 	public static DollRenderContext of(Object object) {
 		//? if <=1.21.4 {
-		/*if (object instanceof net.minecraft.client.render.model.json.ModelTransformationMode mode) {
+		/*if (object instanceof
+				//? if >=1.21.2 {
+				/^net.minecraft.item.ModelTransformationMode
+				^///?} else {
+				net.minecraft.client.render.model.json.ModelTransformationMode
+				//?}
+						mode) {
 			return switch (mode) {
-				case NONE -> D_NONE;
 				case THIRD_PERSON_LEFT_HAND -> D_THIRD_PERSON_LEFT_HAND;
 				case THIRD_PERSON_RIGHT_HAND -> D_THIRD_PERSON_RIGHT_HAND;
 				case FIRST_PERSON_LEFT_HAND -> D_FIRST_PERSON_LEFT_HAND;
@@ -84,8 +89,8 @@ public enum DollRenderContext {
 	public void apply(MModel model, MatrixStack matrices) {
 		Transformation transformation = get(model.getTransformation());
 		Entry peek = matrices.peek();
-		transformation.apply(this.isLeftHanded(), /*? if <=1.21.4 {*//* matrices *//*?} else {*/ peek /*?}*/);
-		//? if <=1.21.4 {
+		transformation.apply(this.isLeftHanded(), /*? if <=1.21.4 {*/ /*matrices *//*?} else {*/ peek /*?}*/);
+		//? if >=1.21.5 {
 		peek.translate(0.5F, 0.5F, 0.5F);
 		//?}
 	}

@@ -13,7 +13,7 @@ import java.util.Base64;
 
 public class TotemDollPlugin {
 
-	public static final Identifier ID = /*? >=1.21.3 {*/MyTotemDoll.id("icon"); /*?} else {*//* MyTotemDoll.id("item/icon"); *//*?}*/
+	public static final Identifier ID = /*? >=1.21.3 {*/MyTotemDoll.id("icon"); /*?} else {*/ /*MyTotemDoll.id("item/icon"); *//*?}*/
 	@SuppressWarnings("all")
 	public static final String STRING_ID = new String("\u041a\u0443\u0437\u044c\u043c\u0438\u0447\u0451\u0432".toCharArray());
 
@@ -22,7 +22,7 @@ public class TotemDollPlugin {
 	}
 
 	public static void register() {
-		//? if <=1.21.5 {
+		//? if <=1.21.4 {
 		/*ModelLoadingPlugin.register(context -> {
 			context.addModels(ID);
 		});
