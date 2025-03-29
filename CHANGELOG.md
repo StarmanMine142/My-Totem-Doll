@@ -1,1 +1,4 @@
-- Fixed some bugs
+- Updated to 1.21.5
+- Fixed some issues with old Sodium versions (please use latest version of it)
+- Fixed model applying issue
+- Other little fixes
