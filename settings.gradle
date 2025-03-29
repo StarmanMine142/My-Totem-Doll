@@ -68,14 +68,22 @@ def createGradleProperties(String version, ArrayList<String> additionalDepends) 
 	if (file == null) {
 		return
 	}
-	def isEmpty = file.text.isBlank() || file.text.isEmpty()
-	def update = file.text.replace(" ", "").contains("=[UPDATE]")
-	if (!isEmpty && !update) {
-		return
-	}
-
 	def gradleProperties = new Properties()
 	gradleProperties.load(new FileInputStream(file))
+
+	def isEmpty = file.text.isBlank() || file.text.isEmpty()
+
+	def missingDepends = additionalDepends.findAll { id ->
+		if (!gradleProperties.containsKey("dep.${id}".toString())) {
+			return id
+		}
+		return null
+	}
+
+	def update = file.text.replace(" ", "").contains("=[UPDATE]")
+	if (!isEmpty && !update && missingDepends.isEmpty()) {
+		return
+	}
 
 	if (update) {
 		def text = new String(file.text).replace(" ", "\u3164").trim()
@@ -109,6 +117,18 @@ def createGradleProperties(String version, ArrayList<String> additionalDepends) 
 		}
 		file.text = text.replace("\u3164", " ")
 		println "Successfully updated gradle.properties for ${version}"
+	} else if (!missingDepends.isEmpty()) {
+		def text = file.text.toString()
+		if (!text.endsWith("\n")) {
+			text = text + "\n"
+		}
+		missingDepends.each { depend ->
+			def dep = depend.toString()
+			text = text + "# ${dep}, check https://modrinth.com/mod/${dep}/versions?g=${version}&l=fabric\n"
+			text = text + "dep.${dep}=${getDependVersion(dep, version)}\n"
+		}
+		file.text = text
+		println "Successfully added new depends ${missingDepends} to gradle.properties for ${version}"
 	} else {
 		def writer = new FileWriter(file)
 		writer.write("# Versioned Properties\n")

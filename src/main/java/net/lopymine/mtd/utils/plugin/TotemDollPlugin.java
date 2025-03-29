@@ -23,10 +23,10 @@ public class TotemDollPlugin {
 
 	public static void register() {
 		//? if <=1.21.4 {
-		/*ModelLoadingPlugin.register(context -> {
+		ModelLoadingPlugin.register(context -> {
 			context.addModels(ID);
 		});
-		*///?}
+		//?}
 	}
 
 }

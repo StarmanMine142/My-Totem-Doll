@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "package": "net.lopymine.mtd.mixin.skinlayers",
+    "refmap": "${mod_id}.refmap.json",
+    "compatibilityLevel": "JAVA_${java}",
+	"plugin": "net.lopymine.mtd.compat.skinlayers.SkinLayers3DCompatPlugin",
+    "mixins": [
+    ],
+	"client": [
+		"SolidPixelWrapperMixin"
+	],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
